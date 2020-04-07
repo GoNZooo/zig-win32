@@ -13,10 +13,14 @@ pub fn MAKEINTRESOURCEW(value: windows.INT) windows.LPSTR {
     return @ptrCast(windows.LPWSTR, @intToPtr(*windows.ULONG_PTR, @intCast(windows.WORD, value)));
 }
 
+/// Takes the lower 32 bits of a value `x: T`. Really only meant to be used with `DWORD`-like
+/// things in the Win32 API.
 pub fn lowWord(comptime T: type, x: T) T {
     return x & 0xffff;
 }
 
+/// Extracts the upper 32 bits of a value `x: T`. Really only meant to be used with `DWORD`-like
+/// things in the Win32 API.
 pub fn highWord(comptime T: type, x: T) T {
     return (x & 0xffff0000) >> 16;
 }
