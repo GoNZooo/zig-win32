@@ -139,7 +139,7 @@ pub const struct__IMAGE_RUNTIME_FUNCTION_ENTRY = extern struct {
 };
 pub const PRUNTIME_FUNCTION = [*c]struct__IMAGE_RUNTIME_FUNCTION_ENTRY;
 pub const PCONTEXT = [*c]struct__CONTEXT;
-pub const EXCEPTION_ROUTINE = extern fn ([*c]struct__EXCEPTION_RECORD, PVOID, [*c]struct__CONTEXT, PVOID) EXCEPTION_DISPOSITION;
+pub const EXCEPTION_ROUTINE = fn ([*c]struct__EXCEPTION_RECORD, PVOID, [*c]struct__CONTEXT, PVOID) callconv(.C) EXCEPTION_DISPOSITION;
 pub const PEXCEPTION_ROUTINE = [*c]EXCEPTION_ROUTINE;
 pub const struct__UNWIND_HISTORY_TABLE_ENTRY = extern struct {
     ImageBase: DWORD64,
@@ -1054,9 +1054,9 @@ pub const SCOPE_TABLE = SCOPE_TABLE_AMD64;
 pub const PSCOPE_TABLE = [*c]SCOPE_TABLE_AMD64;
 pub const PUNWIND_HISTORY_TABLE_ENTRY = [*c]struct__UNWIND_HISTORY_TABLE_ENTRY;
 pub const UNWIND_HISTORY_TABLE = struct__UNWIND_HISTORY_TABLE;
-pub const GET_RUNTIME_FUNCTION_CALLBACK = extern fn (DWORD64, PVOID) PRUNTIME_FUNCTION;
+pub const GET_RUNTIME_FUNCTION_CALLBACK = fn (DWORD64, PVOID) callconv(.C) PRUNTIME_FUNCTION;
 pub const PGET_RUNTIME_FUNCTION_CALLBACK = ?GET_RUNTIME_FUNCTION_CALLBACK;
-pub const OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK = extern fn (HANDLE, PVOID, PDWORD, [*c]PRUNTIME_FUNCTION) DWORD;
+pub const OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK = fn (HANDLE, PVOID, PDWORD, [*c]PRUNTIME_FUNCTION) callconv(.C) DWORD;
 pub const POUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK = ?OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK;
 pub const DISPATCHER_CONTEXT = struct__DISPATCHER_CONTEXT;
 pub const PDISPATCHER_CONTEXT = [*c]struct__DISPATCHER_CONTEXT;
@@ -1066,8 +1066,8 @@ pub const struct__EXCEPTION_POINTERS = extern struct {
     ExceptionRecord: PEXCEPTION_RECORD,
     ContextRecord: PCONTEXT,
 };
-pub const PEXCEPTION_FILTER = ?extern fn ([*c]struct__EXCEPTION_POINTERS, PVOID) LONG;
-pub const PTERMINATION_HANDLER = ?extern fn (BOOLEAN, PVOID) void;
+pub const PEXCEPTION_FILTER = ?fn ([*c]struct__EXCEPTION_POINTERS, PVOID) callconv(.C) LONG;
+pub const PTERMINATION_HANDLER = ?fn (BOOLEAN, PVOID) callconv(.C) void;
 pub const struct__KNONVOLATILE_CONTEXT_POINTERS = extern struct {
     @"": extern union {
         FloatingContext: [16]PM128A,
@@ -3572,7 +3572,7 @@ pub const struct__ENCLAVE_INIT_INFO_VBS = extern struct {
 };
 pub const ENCLAVE_INIT_INFO_VBS = struct__ENCLAVE_INIT_INFO_VBS;
 pub const PENCLAVE_INIT_INFO_VBS = [*c]struct__ENCLAVE_INIT_INFO_VBS;
-pub const ENCLAVE_TARGET_FUNCTION = extern fn (PVOID) PVOID;
+pub const ENCLAVE_TARGET_FUNCTION = fn (PVOID) callconv(.C) PVOID;
 pub const PENCLAVE_TARGET_FUNCTION = [*c]ENCLAVE_TARGET_FUNCTION;
 pub const LPENCLAVE_TARGET_FUNCTION = PENCLAVE_TARGET_FUNCTION;
 pub const struct__FILE_ID_128 = extern struct {
@@ -5565,7 +5565,7 @@ pub const struct__IMAGE_THUNK_DATA32 = extern struct {
 };
 pub const IMAGE_THUNK_DATA32 = struct__IMAGE_THUNK_DATA32;
 pub const PIMAGE_THUNK_DATA32 = [*c]IMAGE_THUNK_DATA32;
-pub const PIMAGE_TLS_CALLBACK = ?extern fn (PVOID, DWORD, PVOID) void;
+pub const PIMAGE_TLS_CALLBACK = ?fn (PVOID, DWORD, PVOID) callconv(.C) void;
 pub const struct__IMAGE_TLS_DIRECTORY64 = extern struct {
     StartAddressOfRawData: ULONGLONG,
     EndAddressOfRawData: ULONGLONG,
@@ -6325,7 +6325,7 @@ pub const enum__RTL_UMS_SCHEDULER_REASON = extern enum {
 };
 pub const RTL_UMS_SCHEDULER_REASON = enum__RTL_UMS_SCHEDULER_REASON;
 pub const PRTL_UMS_SCHEDULER_REASON = [*c]enum__RTL_UMS_SCHEDULER_REASON;
-pub const RTL_UMS_SCHEDULER_ENTRY_POINT = extern fn (RTL_UMS_SCHEDULER_REASON, ULONG_PTR, PVOID) void;
+pub const RTL_UMS_SCHEDULER_ENTRY_POINT = fn (RTL_UMS_SCHEDULER_REASON, ULONG_PTR, PVOID) callconv(.C) void;
 pub const PRTL_UMS_SCHEDULER_ENTRY_POINT = [*c]RTL_UMS_SCHEDULER_ENTRY_POINT;
 pub extern fn RtlCrc32(Buffer: ?*const c_void, Size: usize, InitialCrc: DWORD) DWORD;
 pub extern fn RtlCrc64(Buffer: ?*const c_void, Size: usize, InitialCrc: ULONGLONG) ULONGLONG;
@@ -6495,8 +6495,8 @@ pub const struct__RTL_CONDITION_VARIABLE = extern struct {
 };
 pub const RTL_CONDITION_VARIABLE = struct__RTL_CONDITION_VARIABLE;
 pub const PRTL_CONDITION_VARIABLE = [*c]struct__RTL_CONDITION_VARIABLE;
-pub const PAPCFUNC = ?extern fn (ULONG_PTR) void;
-pub const PVECTORED_EXCEPTION_HANDLER = ?extern fn ([*c]struct__EXCEPTION_POINTERS) LONG;
+pub const PAPCFUNC = ?fn (ULONG_PTR) callconv(.C) void;
+pub const PVECTORED_EXCEPTION_HANDLER = ?fn ([*c]struct__EXCEPTION_POINTERS) callconv(.C) LONG;
 pub const HeapCompatibilityInformation = enum__HEAP_INFORMATION_CLASS.HeapCompatibilityInformation;
 pub const HeapEnableTerminationOnCorruption = enum__HEAP_INFORMATION_CLASS.HeapEnableTerminationOnCorruption;
 pub const HeapOptimizeResources = enum__HEAP_INFORMATION_CLASS.HeapOptimizeResources;
@@ -6512,12 +6512,12 @@ pub const struct__HEAP_OPTIMIZE_RESOURCES_INFORMATION = extern struct {
 };
 pub const HEAP_OPTIMIZE_RESOURCES_INFORMATION = struct__HEAP_OPTIMIZE_RESOURCES_INFORMATION;
 pub const PHEAP_OPTIMIZE_RESOURCES_INFORMATION = [*c]struct__HEAP_OPTIMIZE_RESOURCES_INFORMATION;
-pub const WAITORTIMERCALLBACKFUNC = ?extern fn (PVOID, BOOLEAN) void;
-pub const WORKERCALLBACKFUNC = ?extern fn (PVOID) void;
-pub const APC_CALLBACK_FUNCTION = ?extern fn (DWORD, PVOID, PVOID) void;
+pub const WAITORTIMERCALLBACKFUNC = ?fn (PVOID, BOOLEAN) callconv(.C) void;
+pub const WORKERCALLBACKFUNC = ?fn (PVOID) callconv(.C) void;
+pub const APC_CALLBACK_FUNCTION = ?fn (DWORD, PVOID, PVOID) callconv(.C) void;
 pub const WAITORTIMERCALLBACK = WAITORTIMERCALLBACKFUNC;
-pub const PFLS_CALLBACK_FUNCTION = ?extern fn (PVOID) void;
-pub const PSECURE_MEMORY_CACHE_CALLBACK = ?extern fn (PVOID, SIZE_T) BOOLEAN;
+pub const PFLS_CALLBACK_FUNCTION = ?fn (PVOID) callconv(.C) void;
+pub const PSECURE_MEMORY_CACHE_CALLBACK = ?fn (PVOID, SIZE_T) callconv(.C) BOOLEAN;
 pub const ActivationContextBasicInformation = enum__ACTIVATION_CONTEXT_INFO_CLASS.ActivationContextBasicInformation;
 pub const ActivationContextDetailedInformation = enum__ACTIVATION_CONTEXT_INFO_CLASS.ActivationContextDetailedInformation;
 pub const AssemblyDetailedInformationInActivationContext = enum__ACTIVATION_CONTEXT_INFO_CLASS.AssemblyDetailedInformationInActivationContext;
@@ -7141,7 +7141,7 @@ pub const PTP_VERSION = [*c]DWORD;
 pub const struct__TP_CALLBACK_INSTANCE = @OpaqueType();
 pub const TP_CALLBACK_INSTANCE = struct__TP_CALLBACK_INSTANCE;
 pub const PTP_CALLBACK_INSTANCE = ?*struct__TP_CALLBACK_INSTANCE;
-pub const PTP_SIMPLE_CALLBACK = ?extern fn (PTP_CALLBACK_INSTANCE, PVOID) void;
+pub const PTP_SIMPLE_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID) callconv(.C) void;
 pub const struct__TP_POOL = @OpaqueType();
 pub const TP_POOL = struct__TP_POOL;
 pub const PTP_POOL = ?*struct__TP_POOL;
@@ -7167,7 +7167,7 @@ pub const PTP_POOL_STACK_INFORMATION = [*c]struct__TP_POOL_STACK_INFORMATION;
 pub const struct__TP_CLEANUP_GROUP = @OpaqueType();
 pub const TP_CLEANUP_GROUP = struct__TP_CLEANUP_GROUP;
 pub const PTP_CLEANUP_GROUP = ?*struct__TP_CLEANUP_GROUP;
-pub const PTP_CLEANUP_GROUP_CANCEL_CALLBACK = ?extern fn (PVOID, PVOID) void;
+pub const PTP_CLEANUP_GROUP_CANCEL_CALLBACK = ?fn (PVOID, PVOID) callconv(.C) void;
 pub const struct__ACTIVATION_CONTEXT = @OpaqueType();
 pub const struct__TP_CALLBACK_ENVIRON_V3 = extern struct {
     Version: TP_VERSION,
@@ -7233,16 +7233,16 @@ pub fn TpDestroyCallbackEnviron(CallbackEnviron: PTP_CALLBACK_ENVIRON) void {
 pub const struct__TP_WORK = @OpaqueType();
 pub const TP_WORK = struct__TP_WORK;
 pub const PTP_WORK = ?*struct__TP_WORK;
-pub const PTP_WORK_CALLBACK = ?extern fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_WORK) void;
+pub const PTP_WORK_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_WORK) callconv(.C) void;
 pub const struct__TP_TIMER = @OpaqueType();
 pub const TP_TIMER = struct__TP_TIMER;
 pub const PTP_TIMER = ?*struct__TP_TIMER;
-pub const PTP_TIMER_CALLBACK = ?extern fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_TIMER) void;
+pub const PTP_TIMER_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_TIMER) callconv(.C) void;
 pub const TP_WAIT_RESULT = DWORD;
 pub const struct__TP_WAIT = @OpaqueType();
 pub const TP_WAIT = struct__TP_WAIT;
 pub const PTP_WAIT = ?*struct__TP_WAIT;
-pub const PTP_WAIT_CALLBACK = ?extern fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_WAIT, TP_WAIT_RESULT) void;
+pub const PTP_WAIT_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_WAIT, TP_WAIT_RESULT) callconv(.C) void;
 pub const struct__TP_IO = @OpaqueType();
 pub const TP_IO = struct__TP_IO;
 pub const PTP_IO = ?*struct__TP_IO;
@@ -7259,9 +7259,9 @@ pub const HGLOBAL = HANDLE;
 pub const HLOCAL = HANDLE;
 pub const GLOBALHANDLE = HANDLE;
 pub const LOCALHANDLE = HANDLE;
-pub const FARPROC = [*c]extern fn () INT_PTR;
-pub const NEARPROC = [*c]extern fn () INT_PTR;
-pub const PROC = [*c]extern fn () INT_PTR;
+pub const FARPROC = [*c]fn () callconv(.C) INT_PTR;
+pub const NEARPROC = [*c]fn () callconv(.C) INT_PTR;
+pub const PROC = [*c]fn () callconv(.C) INT_PTR;
 pub const ATOM = WORD;
 pub const struct_HKEY__ = extern struct {
     unused: c_int,
@@ -7642,7 +7642,7 @@ pub const LPCRITICAL_SECTION = PRTL_CRITICAL_SECTION;
 pub const CRITICAL_SECTION_DEBUG = RTL_CRITICAL_SECTION_DEBUG;
 pub const PCRITICAL_SECTION_DEBUG = PRTL_CRITICAL_SECTION_DEBUG;
 pub const LPCRITICAL_SECTION_DEBUG = PRTL_CRITICAL_SECTION_DEBUG;
-pub const LPOVERLAPPED_COMPLETION_ROUTINE = ?extern fn (DWORD, DWORD, LPOVERLAPPED) void;
+pub const LPOVERLAPPED_COMPLETION_ROUTINE = ?fn (DWORD, DWORD, LPOVERLAPPED) callconv(.C) void;
 pub const struct__PROCESS_HEAP_ENTRY = extern struct {
     lpData: PVOID,
     cbData: DWORD,
@@ -7680,9 +7680,9 @@ pub const struct__REASON_CONTEXT = extern struct {
 };
 pub const REASON_CONTEXT = struct__REASON_CONTEXT;
 pub const PREASON_CONTEXT = [*c]struct__REASON_CONTEXT;
-pub const PTHREAD_START_ROUTINE = ?extern fn (LPVOID) DWORD;
+pub const PTHREAD_START_ROUTINE = ?fn (LPVOID) callconv(.C) DWORD;
 pub const LPTHREAD_START_ROUTINE = PTHREAD_START_ROUTINE;
-pub const PENCLAVE_ROUTINE = ?extern fn (LPVOID) LPVOID;
+pub const PENCLAVE_ROUTINE = ?fn (LPVOID) callconv(.C) LPVOID;
 pub const LPENCLAVE_ROUTINE = PENCLAVE_ROUTINE;
 pub const struct__EXCEPTION_DEBUG_INFO = extern struct {
     ExceptionRecord: EXCEPTION_RECORD,
@@ -7985,7 +7985,7 @@ pub extern "kernel32" fn DuplicateHandle(hSourceProcessHandle: HANDLE, hSourceHa
 pub extern "kernel32" fn CompareObjectHandles(hFirstObjectHandle: HANDLE, hSecondObjectHandle: HANDLE) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn GetHandleInformation(hObject: HANDLE, lpdwFlags: LPDWORD) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn SetHandleInformation(hObject: HANDLE, dwMask: DWORD, dwFlags: DWORD) callconv(.Stdcall) BOOL;
-pub const PTOP_LEVEL_EXCEPTION_FILTER = ?extern fn ([*c]struct__EXCEPTION_POINTERS) LONG;
+pub const PTOP_LEVEL_EXCEPTION_FILTER = ?fn ([*c]struct__EXCEPTION_POINTERS) callconv(.C) LONG;
 pub const LPTOP_LEVEL_EXCEPTION_FILTER = PTOP_LEVEL_EXCEPTION_FILTER;
 pub extern "kernel32" fn RaiseException(dwExceptionCode: DWORD, dwExceptionFlags: DWORD, nNumberOfArguments: DWORD, lpArguments: [*c]const ULONG_PTR) callconv(.Stdcall) void;
 pub extern "kernel32" fn UnhandledExceptionFilter(ExceptionInfo: [*c]struct__EXCEPTION_POINTERS) callconv(.Stdcall) LONG;
@@ -8080,7 +8080,7 @@ pub extern "kernel32" fn DeleteCriticalSection(lpCriticalSection: LPCRITICAL_SEC
 pub const INIT_ONCE = RTL_RUN_ONCE;
 pub const PINIT_ONCE = PRTL_RUN_ONCE;
 pub const LPINIT_ONCE = PRTL_RUN_ONCE;
-pub const PINIT_ONCE_FN = ?extern fn (PINIT_ONCE, PVOID, [*c]PVOID) BOOL;
+pub const PINIT_ONCE_FN = ?fn (PINIT_ONCE, PVOID, [*c]PVOID) callconv(.C) BOOL;
 pub extern "kernel32" fn InitOnceInitialize(InitOnce: PINIT_ONCE) callconv(.Stdcall) void;
 pub extern "kernel32" fn InitOnceExecuteOnce(InitOnce: PINIT_ONCE, InitFn: PINIT_ONCE_FN, Parameter: PVOID, Context: [*c]LPVOID) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn InitOnceBeginInitialize(lpInitOnce: LPINIT_ONCE, dwFlags: DWORD, fPending: PBOOL, lpContext: [*c]LPVOID) callconv(.Stdcall) BOOL;
@@ -8108,7 +8108,7 @@ pub extern "kernel32" fn CreateEventW(lpEventAttributes: LPSECURITY_ATTRIBUTES, 
 pub extern "kernel32" fn OpenEventA(dwDesiredAccess: DWORD, bInheritHandle: BOOL, lpName: LPCSTR) callconv(.Stdcall) HANDLE;
 pub extern "kernel32" fn OpenEventW(dwDesiredAccess: DWORD, bInheritHandle: BOOL, lpName: LPCWSTR) callconv(.Stdcall) HANDLE;
 pub extern "kernel32" fn OpenSemaphoreW(dwDesiredAccess: DWORD, bInheritHandle: BOOL, lpName: LPCWSTR) callconv(.Stdcall) HANDLE;
-pub const PTIMERAPCROUTINE = ?extern fn (LPVOID, DWORD, DWORD) void;
+pub const PTIMERAPCROUTINE = ?fn (LPVOID, DWORD, DWORD) callconv(.C) void;
 pub extern "kernel32" fn OpenWaitableTimerW(dwDesiredAccess: DWORD, bInheritHandle: BOOL, lpTimerName: LPCWSTR) callconv(.Stdcall) HANDLE;
 pub extern "kernel32" fn SetWaitableTimerEx(hTimer: HANDLE, lpDueTime: [*c]const LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: PTIMERAPCROUTINE, lpArgToCompletionRoutine: LPVOID, WakeContext: PREASON_CONTEXT, TolerableDelay: ULONG) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn SetWaitableTimer(hTimer: HANDLE, lpDueTime: [*c]const LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: PTIMERAPCROUTINE, lpArgToCompletionRoutine: LPVOID, fResume: BOOL) callconv(.Stdcall) BOOL;
@@ -8527,7 +8527,7 @@ pub extern "kernel32" fn MapUserPhysicalPages(VirtualAddress: PVOID, NumberOfPag
 pub extern "kernel32" fn AllocateUserPhysicalPagesNuma(hProcess: HANDLE, NumberOfPages: PULONG_PTR, PageArray: PULONG_PTR, nndPreferred: DWORD) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn VirtualAllocExNuma(hProcess: HANDLE, lpAddress: LPVOID, dwSize: SIZE_T, flAllocationType: DWORD, flProtect: DWORD, nndPreferred: DWORD) callconv(.Stdcall) LPVOID;
 pub extern "kernel32" fn GetMemoryErrorHandlingCapabilities(Capabilities: PULONG) callconv(.Stdcall) BOOL;
-pub const BAD_MEMORY_CALLBACK_ROUTINE = extern fn () void;
+pub const BAD_MEMORY_CALLBACK_ROUTINE = fn () callconv(.C) void;
 pub const PBAD_MEMORY_CALLBACK_ROUTINE = [*c]BAD_MEMORY_CALLBACK_ROUTINE;
 pub extern "kernel32" fn RegisterBadMemoryNotification(Callback: PBAD_MEMORY_CALLBACK_ROUTINE) callconv(.Stdcall) PVOID;
 pub extern "kernel32" fn UnregisterBadMemoryNotification(RegistrationHandle: PVOID) callconv(.Stdcall) BOOL;
@@ -8594,7 +8594,7 @@ pub extern "kernel32" fn CreateTimerQueueTimer(phNewTimer: PHANDLE, TimerQueue: 
 pub extern "kernel32" fn ChangeTimerQueueTimer(TimerQueue: HANDLE, Timer: HANDLE, DueTime: ULONG, Period: ULONG) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn DeleteTimerQueueTimer(TimerQueue: HANDLE, Timer: HANDLE, CompletionEvent: HANDLE) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn DeleteTimerQueueEx(TimerQueue: HANDLE, CompletionEvent: HANDLE) callconv(.Stdcall) BOOL;
-pub const PTP_WIN32_IO_CALLBACK = ?extern fn (PTP_CALLBACK_INSTANCE, PVOID, PVOID, ULONG, ULONG_PTR, PTP_IO) void;
+pub const PTP_WIN32_IO_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PVOID, ULONG, ULONG_PTR, PTP_IO) callconv(.C) void;
 pub extern "kernel32" fn CreateThreadpool(reserved: PVOID) callconv(.Stdcall) PTP_POOL;
 pub extern "kernel32" fn SetThreadpoolThreadMaximum(ptpp: PTP_POOL, cthrdMost: DWORD) callconv(.Stdcall) void;
 pub extern "kernel32" fn SetThreadpoolThreadMinimum(ptpp: PTP_POOL, cthrdMic: DWORD) callconv(.Stdcall) BOOL;
@@ -8668,12 +8668,12 @@ pub const struct_tagENUMUILANG = extern struct {
 };
 pub const ENUMUILANG = struct_tagENUMUILANG;
 pub const PENUMUILANG = [*c]struct_tagENUMUILANG;
-pub const ENUMRESLANGPROCA = ?extern fn (HMODULE, LPCSTR, LPCSTR, WORD, LONG_PTR) BOOL;
-pub const ENUMRESLANGPROCW = ?extern fn (HMODULE, LPCWSTR, LPCWSTR, WORD, LONG_PTR) BOOL;
-pub const ENUMRESNAMEPROCA = ?extern fn (HMODULE, LPCSTR, LPSTR, LONG_PTR) BOOL;
-pub const ENUMRESNAMEPROCW = ?extern fn (HMODULE, LPCWSTR, LPWSTR, LONG_PTR) BOOL;
-pub const ENUMRESTYPEPROCA = ?extern fn (HMODULE, LPSTR, LONG_PTR) BOOL;
-pub const ENUMRESTYPEPROCW = ?extern fn (HMODULE, LPWSTR, LONG_PTR) BOOL;
+pub const ENUMRESLANGPROCA = ?fn (HMODULE, LPCSTR, LPCSTR, WORD, LONG_PTR) callconv(.C) BOOL;
+pub const ENUMRESLANGPROCW = ?fn (HMODULE, LPCWSTR, LPCWSTR, WORD, LONG_PTR) callconv(.C) BOOL;
+pub const ENUMRESNAMEPROCA = ?fn (HMODULE, LPCSTR, LPSTR, LONG_PTR) callconv(.C) BOOL;
+pub const ENUMRESNAMEPROCW = ?fn (HMODULE, LPCWSTR, LPWSTR, LONG_PTR) callconv(.C) BOOL;
+pub const ENUMRESTYPEPROCA = ?fn (HMODULE, LPSTR, LONG_PTR) callconv(.C) BOOL;
+pub const ENUMRESTYPEPROCW = ?fn (HMODULE, LPWSTR, LONG_PTR) callconv(.C) BOOL;
 pub extern "kernel32" fn DisableThreadLibraryCalls(hLibModule: HMODULE) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn FindResourceExW(hModule: HMODULE, lpType: LPCWSTR, lpName: LPCWSTR, wLanguage: WORD) callconv(.Stdcall) HRSRC;
 pub extern "kernel32" fn FindStringOrdinal(dwFindStringOrdinalFlags: DWORD, lpStringSource: LPCWSTR, cchSource: c_int, lpStringValue: LPCWSTR, cchValue: c_int, bIgnoreCase: BOOL) callconv(.Stdcall) c_int;
@@ -8684,8 +8684,8 @@ pub extern "kernel32" fn GetModuleFileNameA(hModule: HMODULE, lpFilename: LPSTR,
 pub extern "kernel32" fn GetModuleFileNameW(hModule: HMODULE, lpFilename: LPWSTR, nSize: DWORD) callconv(.Stdcall) DWORD;
 pub extern "kernel32" fn GetModuleHandleA(lpModuleName: LPCSTR) callconv(.Stdcall) HMODULE;
 pub extern "kernel32" fn GetModuleHandleW(lpModuleName: LPCWSTR) callconv(.Stdcall) HMODULE;
-pub const PGET_MODULE_HANDLE_EXA = ?extern fn (DWORD, LPCSTR, [*c]HMODULE) BOOL;
-pub const PGET_MODULE_HANDLE_EXW = ?extern fn (DWORD, LPCWSTR, [*c]HMODULE) BOOL;
+pub const PGET_MODULE_HANDLE_EXA = ?fn (DWORD, LPCSTR, [*c]HMODULE) callconv(.C) BOOL;
+pub const PGET_MODULE_HANDLE_EXW = ?fn (DWORD, LPCWSTR, [*c]HMODULE) callconv(.C) BOOL;
 pub extern "kernel32" fn GetModuleHandleExA(dwFlags: DWORD, lpModuleName: LPCSTR, phModule: [*c]HMODULE) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn GetModuleHandleExW(dwFlags: DWORD, lpModuleName: LPCWSTR, phModule: [*c]HMODULE) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn GetProcAddress(hModule: HMODULE, lpProcName: LPCSTR) callconv(.Stdcall) FARPROC;
@@ -8855,9 +8855,9 @@ pub extern "mincore" fn QueryUnbiasedInterruptTime(UnbiasedTime: PULONGLONG) cal
 pub extern "mincore" fn QueryAuxiliaryCounterFrequency(lpAuxiliaryCounterFrequency: PULONGLONG) callconv(.Stdcall) HRESULT;
 pub extern "mincore" fn ConvertAuxiliaryCounterToPerformanceCounter(ullAuxiliaryCounterValue: ULONGLONG, lpPerformanceCounterValue: PULONGLONG, lpConversionError: PULONGLONG) callconv(.Stdcall) HRESULT;
 pub extern "mincore" fn ConvertPerformanceCounterToAuxiliaryCounter(ullPerformanceCounterValue: ULONGLONG, lpAuxiliaryCounterValue: PULONGLONG, lpConversionError: PULONGLONG) callconv(.Stdcall) HRESULT;
-pub const PFIBER_START_ROUTINE = ?extern fn (LPVOID) void;
+pub const PFIBER_START_ROUTINE = ?fn (LPVOID) callconv(.C) void;
 pub const LPFIBER_START_ROUTINE = PFIBER_START_ROUTINE;
-pub const PFIBER_CALLOUT_ROUTINE = ?extern fn (LPVOID) LPVOID;
+pub const PFIBER_CALLOUT_ROUTINE = ?fn (LPVOID) callconv(.C) LPVOID;
 pub const LPLDT_ENTRY = LPVOID;
 pub const struct__COMMPROP = extern struct {
     wPacketLength: WORD,
@@ -9122,8 +9122,8 @@ pub extern "advapi32" fn DecryptFileA(lpFileName: LPCSTR, dwReserved: DWORD) cal
 pub extern "advapi32" fn DecryptFileW(lpFileName: LPCWSTR, dwReserved: DWORD) callconv(.Stdcall) BOOL;
 pub extern "advapi32" fn FileEncryptionStatusA(lpFileName: LPCSTR, lpStatus: LPDWORD) callconv(.Stdcall) BOOL;
 pub extern "advapi32" fn FileEncryptionStatusW(lpFileName: LPCWSTR, lpStatus: LPDWORD) callconv(.Stdcall) BOOL;
-pub const PFE_EXPORT_FUNC = ?extern fn (PBYTE, PVOID, ULONG) DWORD;
-pub const PFE_IMPORT_FUNC = ?extern fn (PBYTE, PVOID, PULONG) DWORD;
+pub const PFE_EXPORT_FUNC = ?fn (PBYTE, PVOID, ULONG) callconv(.C) DWORD;
+pub const PFE_IMPORT_FUNC = ?fn (PBYTE, PVOID, PULONG) callconv(.C) DWORD;
 pub extern "advapi32" fn OpenEncryptedFileRawA(lpFileName: LPCSTR, ulFlags: ULONG, pvContext: [*c]PVOID) callconv(.Stdcall) DWORD;
 pub extern "advapi32" fn OpenEncryptedFileRawW(lpFileName: LPCWSTR, ulFlags: ULONG, pvContext: [*c]PVOID) callconv(.Stdcall) DWORD;
 pub extern "advapi32" fn ReadEncryptedFileRaw(pfExportCallback: PFE_EXPORT_FUNC, pvCallbackContext: PVOID, pvContext: PVOID) callconv(.Stdcall) DWORD;
@@ -9291,8 +9291,8 @@ pub extern "kernel32" fn GetPrivateProfileStructW(lpszSection: LPCWSTR, lpszKey:
 pub extern "kernel32" fn WritePrivateProfileStructA(lpszSection: LPCSTR, lpszKey: LPCSTR, lpStruct: LPVOID, uSizeStruct: UINT, szFile: LPCSTR) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn WritePrivateProfileStructW(lpszSection: LPCWSTR, lpszKey: LPCWSTR, lpStruct: LPVOID, uSizeStruct: UINT, szFile: LPCWSTR) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn Wow64EnableWow64FsRedirection(Wow64FsEnableRedirection: BOOLEAN) callconv(.Stdcall) BOOLEAN;
-pub const PGET_SYSTEM_WOW64_DIRECTORY_A = ?extern fn (LPSTR, UINT) UINT;
-pub const PGET_SYSTEM_WOW64_DIRECTORY_W = ?extern fn (LPWSTR, UINT) UINT;
+pub const PGET_SYSTEM_WOW64_DIRECTORY_A = ?fn (LPSTR, UINT) callconv(.C) UINT;
+pub const PGET_SYSTEM_WOW64_DIRECTORY_W = ?fn (LPWSTR, UINT) callconv(.C) UINT;
 pub extern "kernel32" fn SetDllDirectoryA(lpPathName: LPCSTR) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn SetDllDirectoryW(lpPathName: LPCWSTR) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn GetDllDirectoryA(nBufferLength: DWORD, lpBuffer: LPSTR) callconv(.Stdcall) DWORD;
@@ -9325,7 +9325,7 @@ pub extern "kernel32" fn FindFirstFileTransactedA(lpFileName: LPCSTR, fInfoLevel
 pub extern "kernel32" fn FindFirstFileTransactedW(lpFileName: LPCWSTR, fInfoLevelId: FINDEX_INFO_LEVELS, lpFindFileData: LPVOID, fSearchOp: FINDEX_SEARCH_OPS, lpSearchFilter: LPVOID, dwAdditionalFlags: DWORD, hTransaction: HANDLE) callconv(.Stdcall) HANDLE;
 pub extern "kernel32" fn CopyFileA(lpExistingFileName: LPCSTR, lpNewFileName: LPCSTR, bFailIfExists: BOOL) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn CopyFileW(lpExistingFileName: LPCWSTR, lpNewFileName: LPCWSTR, bFailIfExists: BOOL) callconv(.Stdcall) BOOL;
-pub const LPPROGRESS_ROUTINE = ?extern fn (LARGE_INTEGER, LARGE_INTEGER, LARGE_INTEGER, LARGE_INTEGER, DWORD, DWORD, HANDLE, HANDLE, LPVOID) DWORD;
+pub const LPPROGRESS_ROUTINE = ?fn (LARGE_INTEGER, LARGE_INTEGER, LARGE_INTEGER, LARGE_INTEGER, DWORD, DWORD, HANDLE, HANDLE, LPVOID) callconv(.C) DWORD;
 pub extern "kernel32" fn CopyFileExA(lpExistingFileName: LPCSTR, lpNewFileName: LPCSTR, lpProgressRoutine: LPPROGRESS_ROUTINE, lpData: LPVOID, pbCancel: LPBOOL, dwCopyFlags: DWORD) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn CopyFileExW(lpExistingFileName: LPCWSTR, lpNewFileName: LPCWSTR, lpProgressRoutine: LPPROGRESS_ROUTINE, lpData: LPVOID, pbCancel: LPBOOL, dwCopyFlags: DWORD) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn CopyFileTransactedA(lpExistingFileName: LPCSTR, lpNewFileName: LPCSTR, lpProgressRoutine: LPPROGRESS_ROUTINE, lpData: LPVOID, pbCancel: LPBOOL, dwCopyFlags: DWORD, hTransaction: HANDLE) callconv(.Stdcall) BOOL;
@@ -9442,7 +9442,7 @@ pub const struct_COPYFILE2_MESSAGE = extern struct {
     },
 };
 pub const COPYFILE2_MESSAGE = struct_COPYFILE2_MESSAGE;
-pub const PCOPYFILE2_PROGRESS_ROUTINE = ?extern fn ([*c]const COPYFILE2_MESSAGE, PVOID) COPYFILE2_MESSAGE_ACTION;
+pub const PCOPYFILE2_PROGRESS_ROUTINE = ?fn ([*c]const COPYFILE2_MESSAGE, PVOID) callconv(.C) COPYFILE2_MESSAGE_ACTION;
 pub const struct_COPYFILE2_EXTENDED_PARAMETERS = extern struct {
     dwSize: DWORD,
     dwCopyFlags: DWORD,
@@ -9800,7 +9800,7 @@ pub const ACTIVATION_CONTEXT_BASIC_INFORMATION = struct__ACTIVATION_CONTEXT_BASI
 pub const PACTIVATION_CONTEXT_BASIC_INFORMATION = [*c]struct__ACTIVATION_CONTEXT_BASIC_INFORMATION;
 pub const PCACTIVATION_CONTEXT_BASIC_INFORMATION = [*c]const struct__ACTIVATION_CONTEXT_BASIC_INFORMATION;
 pub extern "kernel32" fn QueryActCtxW(dwFlags: DWORD, hActCtx: HANDLE, pvSubInstance: PVOID, ulInfoClass: ULONG, pvBuffer: PVOID, cbBuffer: SIZE_T, pcbWrittenOrRequired: [*c]SIZE_T) callconv(.Stdcall) BOOL;
-pub const PQUERYACTCTXW_FUNC = ?extern fn (DWORD, HANDLE, PVOID, ULONG, PVOID, SIZE_T, [*c]SIZE_T) BOOL;
+pub const PQUERYACTCTXW_FUNC = ?fn (DWORD, HANDLE, PVOID, ULONG, PVOID, SIZE_T, [*c]SIZE_T) callconv(.C) BOOL;
 pub extern "kernel32" fn WTSGetActiveConsoleSessionId() callconv(.Stdcall) DWORD;
 pub extern "kernel32" fn WTSGetServiceSessionId() callconv(.Stdcall) DWORD;
 pub extern "kernel32" fn WTSIsServerContainer() callconv(.Stdcall) BOOLEAN;
@@ -9815,7 +9815,7 @@ pub extern "kernel32" fn GetNumaNodeProcessorMask(Node: UCHAR, ProcessorMask: PU
 pub extern "kernel32" fn GetNumaAvailableMemoryNode(Node: UCHAR, AvailableBytes: PULONGLONG) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn GetNumaAvailableMemoryNodeEx(Node: USHORT, AvailableBytes: PULONGLONG) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn GetNumaProximityNode(ProximityId: ULONG, NodeNumber: PUCHAR) callconv(.Stdcall) BOOL;
-pub const APPLICATION_RECOVERY_CALLBACK = ?extern fn (PVOID) DWORD;
+pub const APPLICATION_RECOVERY_CALLBACK = ?fn (PVOID) callconv(.C) DWORD;
 pub extern "kernel32" fn RegisterApplicationRecoveryCallback(pRecoveyCallback: APPLICATION_RECOVERY_CALLBACK, pvParameter: PVOID, dwPingInterval: DWORD, dwFlags: DWORD) callconv(.Stdcall) HRESULT;
 pub extern "kernel32" fn UnregisterApplicationRecoveryCallback() callconv(.Stdcall) HRESULT;
 pub extern "kernel32" fn RegisterApplicationRestart(pwzCommandline: PCWSTR, dwFlags: DWORD) callconv(.Stdcall) HRESULT;
@@ -11540,13 +11540,13 @@ pub const struct_tagPIXELFORMATDESCRIPTOR = extern struct {
 pub const PIXELFORMATDESCRIPTOR = struct_tagPIXELFORMATDESCRIPTOR;
 pub const PPIXELFORMATDESCRIPTOR = [*c]struct_tagPIXELFORMATDESCRIPTOR;
 pub const LPPIXELFORMATDESCRIPTOR = [*c]struct_tagPIXELFORMATDESCRIPTOR;
-pub const OLDFONTENUMPROCA = ?extern fn ([*c]const LOGFONTA, [*c]const TEXTMETRICA, DWORD, LPARAM) c_int;
-pub const OLDFONTENUMPROCW = ?extern fn ([*c]const LOGFONTW, [*c]const TEXTMETRICW, DWORD, LPARAM) c_int;
+pub const OLDFONTENUMPROCA = ?fn ([*c]const LOGFONTA, [*c]const TEXTMETRICA, DWORD, LPARAM) callconv(.C) c_int;
+pub const OLDFONTENUMPROCW = ?fn ([*c]const LOGFONTW, [*c]const TEXTMETRICW, DWORD, LPARAM) callconv(.C) c_int;
 pub const FONTENUMPROCA = OLDFONTENUMPROCA;
 pub const FONTENUMPROCW = OLDFONTENUMPROCW;
 pub const FONTENUMPROC = FONTENUMPROCA;
-pub const GOBJENUMPROC = ?extern fn (LPVOID, LPARAM) c_int;
-pub const LINEDDAPROC = ?extern fn (c_int, c_int, LPARAM) void;
+pub const GOBJENUMPROC = ?fn (LPVOID, LPARAM) callconv(.C) c_int;
+pub const LINEDDAPROC = ?fn (c_int, c_int, LPARAM) callconv(.C) void;
 pub extern "gdi32" fn AddFontResourceA(arg0: LPCSTR) callconv(.Stdcall) c_int;
 pub extern "gdi32" fn AddFontResourceW(arg0: LPCWSTR) callconv(.Stdcall) c_int;
 pub extern "gdi32" fn AnimatePalette(hPal: HPALETTE, iStartIndex: UINT, cEntries: UINT, ppe: [*c]const PALETTEENTRY) callconv(.Stdcall) BOOL;
@@ -11596,8 +11596,8 @@ pub extern "gdi32" fn DeleteDC(hdc: HDC) callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn DeleteMetaFile(hmf: HMETAFILE) callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn DeleteObject(ho: HGDIOBJ) callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn DescribePixelFormat(hdc: HDC, iPixelFormat: c_int, nBytes: UINT, ppfd: LPPIXELFORMATDESCRIPTOR) callconv(.Stdcall) c_int;
-pub const LPFNDEVMODE = ?extern fn (HWND, HMODULE, LPDEVMODE, LPSTR, LPSTR, LPDEVMODE, LPSTR, UINT) UINT;
-pub const LPFNDEVCAPS = ?extern fn (LPSTR, LPSTR, UINT, LPSTR, LPDEVMODE) DWORD;
+pub const LPFNDEVMODE = ?fn (HWND, HMODULE, LPDEVMODE, LPSTR, LPSTR, LPDEVMODE, LPSTR, UINT) callconv(.C) UINT;
+pub const LPFNDEVCAPS = ?fn (LPSTR, LPSTR, UINT, LPSTR, LPDEVMODE) callconv(.C) DWORD;
 pub extern "gdi32" fn DeviceCapabilitiesA(pDevice: LPCSTR, pPort: LPCSTR, fwCapability: WORD, pOutput: LPSTR, pDevMode: [*c]const DEVMODEA) callconv(.Stdcall) c_int;
 pub extern "gdi32" fn DeviceCapabilitiesW(pDevice: LPCWSTR, pPort: LPCWSTR, fwCapability: WORD, pOutput: LPWSTR, pDevMode: [*c]const DEVMODEW) callconv(.Stdcall) c_int;
 pub extern "gdi32" fn DrawEscape(hdc: HDC, iEscape: c_int, cjIn: c_int, lpIn: LPCSTR) callconv(.Stdcall) c_int;
@@ -11905,9 +11905,9 @@ pub extern "gdi32" fn GdiAlphaBlend(hdcDest: HDC, xoriginDest: c_int, yoriginDes
 pub extern "gdi32" fn GdiTransparentBlt(hdcDest: HDC, xoriginDest: c_int, yoriginDest: c_int, wDest: c_int, hDest: c_int, hdcSrc: HDC, xoriginSrc: c_int, yoriginSrc: c_int, wSrc: c_int, hSrc: c_int, crTransparent: UINT) callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn GdiGradientFill(hdc: HDC, pVertex: PTRIVERTEX, nVertex: ULONG, pMesh: PVOID, nCount: ULONG, ulMode: ULONG) callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn PlayMetaFileRecord(hdc: HDC, lpHandleTable: LPHANDLETABLE, lpMR: LPMETARECORD, noObjs: UINT) callconv(.Stdcall) BOOL;
-pub const MFENUMPROC = ?extern fn (HDC, [*c]HANDLETABLE, [*c]METARECORD, c_int, LPARAM) c_int;
+pub const MFENUMPROC = ?fn (HDC, [*c]HANDLETABLE, [*c]METARECORD, c_int, LPARAM) callconv(.C) c_int;
 pub extern "gdi32" fn EnumMetaFile(hdc: HDC, hmf: HMETAFILE, proc: MFENUMPROC, param: LPARAM) callconv(.Stdcall) BOOL;
-pub const ENHMFENUMPROC = ?extern fn (HDC, [*c]HANDLETABLE, [*c]const ENHMETARECORD, c_int, LPARAM) c_int;
+pub const ENHMFENUMPROC = ?fn (HDC, [*c]HANDLETABLE, [*c]const ENHMETARECORD, c_int, LPARAM) callconv(.C) c_int;
 pub extern "gdi32" fn CloseEnhMetaFile(hdc: HDC) callconv(.Stdcall) HENHMETAFILE;
 pub extern "gdi32" fn CopyEnhMetaFileA(hEnh: HENHMETAFILE, lpFileName: LPCSTR) callconv(.Stdcall) HENHMETAFILE;
 pub extern "gdi32" fn CopyEnhMetaFileW(hEnh: HENHMETAFILE, lpFileName: LPCWSTR) callconv(.Stdcall) HENHMETAFILE;
@@ -11970,7 +11970,7 @@ pub const LPCOLORADJUSTMENT = [*c]struct_tagCOLORADJUSTMENT;
 pub extern "gdi32" fn SetColorAdjustment(hdc: HDC, lpca: [*c]const COLORADJUSTMENT) callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn GetColorAdjustment(hdc: HDC, lpca: LPCOLORADJUSTMENT) callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn CreateHalftonePalette(hdc: HDC) callconv(.Stdcall) HPALETTE;
-pub const ABORTPROC = ?extern fn (HDC, c_int) BOOL;
+pub const ABORTPROC = ?fn (HDC, c_int) callconv(.C) BOOL;
 pub const struct__DOCINFOA = extern struct {
     cbSize: c_int,
     lpszDocName: LPCSTR,
@@ -12061,8 +12061,8 @@ pub extern "gdi32" fn UnrealizeObject(h: HGDIOBJ) callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn GdiFlush() callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn GdiSetBatchLimit(dw: DWORD) callconv(.Stdcall) DWORD;
 pub extern "gdi32" fn GdiGetBatchLimit() callconv(.Stdcall) DWORD;
-pub const ICMENUMPROCA = ?extern fn (LPSTR, LPARAM) c_int;
-pub const ICMENUMPROCW = ?extern fn (LPWSTR, LPARAM) c_int;
+pub const ICMENUMPROCA = ?fn (LPSTR, LPARAM) callconv(.C) c_int;
+pub const ICMENUMPROCW = ?fn (LPWSTR, LPARAM) callconv(.C) c_int;
 pub extern "gdi32" fn SetICMMode(hdc: HDC, mode: c_int) callconv(.Stdcall) c_int;
 pub extern "gdi32" fn CheckColorsInGamut(hdc: HDC, lpRGBTriple: LPRGBTRIPLE, dlpBuffer: LPVOID, nCount: DWORD) callconv(.Stdcall) BOOL;
 pub extern "gdi32" fn GetColorSpace(hdc: HDC) callconv(.Stdcall) HCOLORSPACE;
@@ -12923,25 +12923,25 @@ pub const MENUTEMPLATE = MENUTEMPLATEA;
 pub const LPMENUTEMPLATEA = PVOID;
 pub const LPMENUTEMPLATEW = PVOID;
 pub const LPMENUTEMPLATE = LPMENUTEMPLATEA;
-pub const WNDPROC = ?extern fn (HWND, UINT, WPARAM, LPARAM) LRESULT;
-pub const DLGPROC = ?extern fn (HWND, UINT, WPARAM, LPARAM) INT_PTR;
-pub const TIMERPROC = ?extern fn (HWND, UINT, UINT_PTR, DWORD) void;
-pub const GRAYSTRINGPROC = ?extern fn (HDC, LPARAM, c_int) BOOL;
-pub const WNDENUMPROC = ?extern fn (HWND, LPARAM) BOOL;
-pub const HOOKPROC = ?extern fn (c_int, WPARAM, LPARAM) LRESULT;
-pub const SENDASYNCPROC = ?extern fn (HWND, UINT, ULONG_PTR, LRESULT) void;
-pub const PROPENUMPROCA = ?extern fn (HWND, LPCSTR, HANDLE) BOOL;
-pub const PROPENUMPROCW = ?extern fn (HWND, LPCWSTR, HANDLE) BOOL;
-pub const PROPENUMPROCEXA = ?extern fn (HWND, LPSTR, HANDLE, ULONG_PTR) BOOL;
-pub const PROPENUMPROCEXW = ?extern fn (HWND, LPWSTR, HANDLE, ULONG_PTR) BOOL;
-pub const EDITWORDBREAKPROCA = ?extern fn (LPSTR, c_int, c_int, c_int) c_int;
-pub const EDITWORDBREAKPROCW = ?extern fn (LPWSTR, c_int, c_int, c_int) c_int;
-pub const DRAWSTATEPROC = ?extern fn (HDC, LPARAM, WPARAM, c_int, c_int) BOOL;
+pub const WNDPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) LRESULT;
+pub const DLGPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) INT_PTR;
+pub const TIMERPROC = ?fn (HWND, UINT, UINT_PTR, DWORD) callconv(.C) void;
+pub const GRAYSTRINGPROC = ?fn (HDC, LPARAM, c_int) callconv(.C) BOOL;
+pub const WNDENUMPROC = ?fn (HWND, LPARAM) callconv(.C) BOOL;
+pub const HOOKPROC = ?fn (c_int, WPARAM, LPARAM) callconv(.C) LRESULT;
+pub const SENDASYNCPROC = ?fn (HWND, UINT, ULONG_PTR, LRESULT) callconv(.C) void;
+pub const PROPENUMPROCA = ?fn (HWND, LPCSTR, HANDLE) callconv(.C) BOOL;
+pub const PROPENUMPROCW = ?fn (HWND, LPCWSTR, HANDLE) callconv(.C) BOOL;
+pub const PROPENUMPROCEXA = ?fn (HWND, LPSTR, HANDLE, ULONG_PTR) callconv(.C) BOOL;
+pub const PROPENUMPROCEXW = ?fn (HWND, LPWSTR, HANDLE, ULONG_PTR) callconv(.C) BOOL;
+pub const EDITWORDBREAKPROCA = ?fn (LPSTR, c_int, c_int, c_int) callconv(.C) c_int;
+pub const EDITWORDBREAKPROCW = ?fn (LPWSTR, c_int, c_int, c_int) callconv(.C) c_int;
+pub const DRAWSTATEPROC = ?fn (HDC, LPARAM, WPARAM, c_int, c_int) callconv(.C) BOOL;
 pub const PROPENUMPROC = PROPENUMPROCA;
 pub const PROPENUMPROCEX = PROPENUMPROCEXA;
 pub const EDITWORDBREAKPROC = EDITWORDBREAKPROCA;
-pub const NAMEENUMPROCA = ?extern fn (LPSTR, LPARAM) BOOL;
-pub const NAMEENUMPROCW = ?extern fn (LPWSTR, LPARAM) BOOL;
+pub const NAMEENUMPROCA = ?fn (LPSTR, LPARAM) callconv(.C) BOOL;
+pub const NAMEENUMPROCW = ?fn (LPWSTR, LPARAM) callconv(.C) BOOL;
 pub const WINSTAENUMPROCA = NAMEENUMPROCA;
 pub const DESKTOPENUMPROCA = NAMEENUMPROCA;
 pub const WINSTAENUMPROCW = NAMEENUMPROCW;
@@ -13495,7 +13495,7 @@ pub extern "user32" fn RegisterClassExA(arg0: [*c]const WNDCLASSEXA) callconv(.S
 pub extern "user32" fn RegisterClassExW(arg0: [*c]const WNDCLASSEXW) callconv(.Stdcall) ATOM;
 pub extern "user32" fn GetClassInfoExA(hInstance: HINSTANCE, lpszClass: LPCSTR, lpwcx: LPWNDCLASSEXA) callconv(.Stdcall) BOOL;
 pub extern "user32" fn GetClassInfoExW(hInstance: HINSTANCE, lpszClass: LPCWSTR, lpwcx: LPWNDCLASSEXW) callconv(.Stdcall) BOOL;
-pub const PREGISTERCLASSNAMEW = ?extern fn (LPCWSTR) BOOLEAN;
+pub const PREGISTERCLASSNAMEW = ?fn (LPCWSTR) callconv(.C) BOOLEAN;
 pub extern "user32" fn CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: c_int, Y: c_int, nWidth: c_int, nHeight: c_int, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID) callconv(.Stdcall) HWND;
 pub extern "user32" fn CreateWindowExW(dwExStyle: DWORD, lpClassName: LPCWSTR, lpWindowName: LPCWSTR, dwStyle: DWORD, X: c_int, Y: c_int, nWidth: c_int, nHeight: c_int, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID) callconv(.Stdcall) HWND;
 pub extern "user32" fn IsWindow(hWnd: HWND) callconv(.Stdcall) BOOL;
@@ -14260,7 +14260,7 @@ pub extern "user32" fn MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR
 pub extern "user32" fn MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: UINT) callconv(.Stdcall) c_int;
 pub extern "user32" fn MessageBoxExA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: UINT, wLanguageId: WORD) callconv(.Stdcall) c_int;
 pub extern "user32" fn MessageBoxExW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: UINT, wLanguageId: WORD) callconv(.Stdcall) c_int;
-pub const MSGBOXCALLBACK = ?extern fn (LPHELPINFO) void;
+pub const MSGBOXCALLBACK = ?fn (LPHELPINFO) callconv(.C) void;
 pub const struct_tagMSGBOXPARAMSA = extern struct {
     cbSize: UINT,
     hwndOwner: HWND,
@@ -14911,10 +14911,10 @@ pub const MONITORINFOEX = MONITORINFOEXA;
 pub const LPMONITORINFOEX = LPMONITORINFOEXA;
 pub extern "user32" fn GetMonitorInfoA(hMonitor: HMONITOR, lpmi: LPMONITORINFO) callconv(.Stdcall) BOOL;
 pub extern "user32" fn GetMonitorInfoW(hMonitor: HMONITOR, lpmi: LPMONITORINFO) callconv(.Stdcall) BOOL;
-pub const MONITORENUMPROC = ?extern fn (HMONITOR, HDC, LPRECT, LPARAM) BOOL;
+pub const MONITORENUMPROC = ?fn (HMONITOR, HDC, LPRECT, LPARAM) callconv(.C) BOOL;
 pub extern "user32" fn EnumDisplayMonitors(hdc: HDC, lprcClip: LPCRECT, lpfnEnum: MONITORENUMPROC, dwData: LPARAM) callconv(.Stdcall) BOOL;
 pub extern "user32" fn NotifyWinEvent(event: DWORD, hwnd: HWND, idObject: LONG, idChild: LONG) callconv(.Stdcall) void;
-pub const WINEVENTPROC = ?extern fn (HWINEVENTHOOK, DWORD, HWND, LONG, LONG, DWORD, DWORD) void;
+pub const WINEVENTPROC = ?fn (HWINEVENTHOOK, DWORD, HWND, LONG, LONG, DWORD, DWORD) callconv(.C) void;
 pub extern "user32" fn SetWinEventHook(eventMin: DWORD, eventMax: DWORD, hmodWinEventProc: HMODULE, pfnWinEventProc: WINEVENTPROC, idProcess: DWORD, idThread: DWORD, dwFlags: DWORD) callconv(.Stdcall) HWINEVENTHOOK;
 pub extern "user32" fn IsWinEventHookInstalled(event: DWORD) callconv(.Stdcall) BOOL;
 pub extern "user32" fn UnhookWinEvent(hWinEventHook: HWINEVENTHOOK) callconv(.Stdcall) BOOL;
@@ -15530,28 +15530,28 @@ pub const enum__NORM_FORM = extern enum {
     NormalizationKD = 6,
 };
 pub const NORM_FORM = enum__NORM_FORM;
-pub const LANGUAGEGROUP_ENUMPROCA = ?extern fn (LGRPID, LPSTR, LPSTR, DWORD, LONG_PTR) BOOL;
-pub const LANGGROUPLOCALE_ENUMPROCA = ?extern fn (LGRPID, LCID, LPSTR, LONG_PTR) BOOL;
-pub const UILANGUAGE_ENUMPROCA = ?extern fn (LPSTR, LONG_PTR) BOOL;
-pub const CODEPAGE_ENUMPROCA = ?extern fn (LPSTR) BOOL;
-pub const DATEFMT_ENUMPROCA = ?extern fn (LPSTR) BOOL;
-pub const DATEFMT_ENUMPROCEXA = ?extern fn (LPSTR, CALID) BOOL;
-pub const TIMEFMT_ENUMPROCA = ?extern fn (LPSTR) BOOL;
-pub const CALINFO_ENUMPROCA = ?extern fn (LPSTR) BOOL;
-pub const CALINFO_ENUMPROCEXA = ?extern fn (LPSTR, CALID) BOOL;
-pub const LOCALE_ENUMPROCA = ?extern fn (LPSTR) BOOL;
-pub const LOCALE_ENUMPROCW = ?extern fn (LPWSTR) BOOL;
-pub const LANGUAGEGROUP_ENUMPROCW = ?extern fn (LGRPID, LPWSTR, LPWSTR, DWORD, LONG_PTR) BOOL;
-pub const LANGGROUPLOCALE_ENUMPROCW = ?extern fn (LGRPID, LCID, LPWSTR, LONG_PTR) BOOL;
-pub const UILANGUAGE_ENUMPROCW = ?extern fn (LPWSTR, LONG_PTR) BOOL;
-pub const CODEPAGE_ENUMPROCW = ?extern fn (LPWSTR) BOOL;
-pub const DATEFMT_ENUMPROCW = ?extern fn (LPWSTR) BOOL;
-pub const DATEFMT_ENUMPROCEXW = ?extern fn (LPWSTR, CALID) BOOL;
-pub const TIMEFMT_ENUMPROCW = ?extern fn (LPWSTR) BOOL;
-pub const CALINFO_ENUMPROCW = ?extern fn (LPWSTR) BOOL;
-pub const CALINFO_ENUMPROCEXW = ?extern fn (LPWSTR, CALID) BOOL;
-pub const GEO_ENUMPROC = ?extern fn (GEOID) BOOL;
-pub const GEO_ENUMNAMEPROC = ?extern fn (PWSTR, LPARAM) BOOL;
+pub const LANGUAGEGROUP_ENUMPROCA = ?fn (LGRPID, LPSTR, LPSTR, DWORD, LONG_PTR) callconv(.C) BOOL;
+pub const LANGGROUPLOCALE_ENUMPROCA = ?fn (LGRPID, LCID, LPSTR, LONG_PTR) callconv(.C) BOOL;
+pub const UILANGUAGE_ENUMPROCA = ?fn (LPSTR, LONG_PTR) callconv(.C) BOOL;
+pub const CODEPAGE_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
+pub const DATEFMT_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
+pub const DATEFMT_ENUMPROCEXA = ?fn (LPSTR, CALID) callconv(.C) BOOL;
+pub const TIMEFMT_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
+pub const CALINFO_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
+pub const CALINFO_ENUMPROCEXA = ?fn (LPSTR, CALID) callconv(.C) BOOL;
+pub const LOCALE_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
+pub const LOCALE_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
+pub const LANGUAGEGROUP_ENUMPROCW = ?fn (LGRPID, LPWSTR, LPWSTR, DWORD, LONG_PTR) callconv(.C) BOOL;
+pub const LANGGROUPLOCALE_ENUMPROCW = ?fn (LGRPID, LCID, LPWSTR, LONG_PTR) callconv(.C) BOOL;
+pub const UILANGUAGE_ENUMPROCW = ?fn (LPWSTR, LONG_PTR) callconv(.C) BOOL;
+pub const CODEPAGE_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
+pub const DATEFMT_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
+pub const DATEFMT_ENUMPROCEXW = ?fn (LPWSTR, CALID) callconv(.C) BOOL;
+pub const TIMEFMT_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
+pub const CALINFO_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
+pub const CALINFO_ENUMPROCEXW = ?fn (LPWSTR, CALID) callconv(.C) BOOL;
+pub const GEO_ENUMPROC = ?fn (GEOID) callconv(.C) BOOL;
+pub const GEO_ENUMNAMEPROC = ?fn (PWSTR, LPARAM) callconv(.C) BOOL;
 pub const struct__FILEMUIINFO = extern struct {
     dwSize: DWORD,
     dwVersion: DWORD,
@@ -15680,13 +15680,13 @@ pub extern "kernel32" fn IsValidNLSVersion(function: NLS_FUNCTION, lpLocaleName:
 pub extern "kernel32" fn FindNLSStringEx(lpLocaleName: LPCWSTR, dwFindNLSStringFlags: DWORD, lpStringSource: LPCWSTR, cchSource: c_int, lpStringValue: LPCWSTR, cchValue: c_int, pcchFound: LPINT, lpVersionInformation: LPNLSVERSIONINFO, lpReserved: LPVOID, sortHandle: LPARAM) callconv(.Stdcall) c_int;
 pub extern "kernel32" fn LCMapStringEx(lpLocaleName: LPCWSTR, dwMapFlags: DWORD, lpSrcStr: LPCWSTR, cchSrc: c_int, lpDestStr: LPWSTR, cchDest: c_int, lpVersionInformation: LPNLSVERSIONINFO, lpReserved: LPVOID, sortHandle: LPARAM) callconv(.Stdcall) c_int;
 pub extern "kernel32" fn IsValidLocaleName(lpLocaleName: LPCWSTR) callconv(.Stdcall) BOOL;
-pub const CALINFO_ENUMPROCEXEX = ?extern fn (LPWSTR, CALID, LPWSTR, LPARAM) BOOL;
+pub const CALINFO_ENUMPROCEXEX = ?fn (LPWSTR, CALID, LPWSTR, LPARAM) callconv(.C) BOOL;
 pub extern "kernel32" fn EnumCalendarInfoExEx(pCalInfoEnumProcExEx: CALINFO_ENUMPROCEXEX, lpLocaleName: LPCWSTR, Calendar: CALID, lpReserved: LPCWSTR, CalType: CALTYPE, lParam: LPARAM) callconv(.Stdcall) BOOL;
-pub const DATEFMT_ENUMPROCEXEX = ?extern fn (LPWSTR, CALID, LPARAM) BOOL;
+pub const DATEFMT_ENUMPROCEXEX = ?fn (LPWSTR, CALID, LPARAM) callconv(.C) BOOL;
 pub extern "kernel32" fn EnumDateFormatsExEx(lpDateFmtEnumProcExEx: DATEFMT_ENUMPROCEXEX, lpLocaleName: LPCWSTR, dwFlags: DWORD, lParam: LPARAM) callconv(.Stdcall) BOOL;
-pub const TIMEFMT_ENUMPROCEX = ?extern fn (LPWSTR, LPARAM) BOOL;
+pub const TIMEFMT_ENUMPROCEX = ?fn (LPWSTR, LPARAM) callconv(.C) BOOL;
 pub extern "kernel32" fn EnumTimeFormatsEx(lpTimeFmtEnumProcEx: TIMEFMT_ENUMPROCEX, lpLocaleName: LPCWSTR, dwFlags: DWORD, lParam: LPARAM) callconv(.Stdcall) BOOL;
-pub const LOCALE_ENUMPROCEX = ?extern fn (LPWSTR, DWORD, LPARAM) BOOL;
+pub const LOCALE_ENUMPROCEX = ?fn (LPWSTR, DWORD, LPARAM) callconv(.C) BOOL;
 pub extern "kernel32" fn EnumSystemLocalesEx(lpLocaleEnumProcEx: LOCALE_ENUMPROCEX, dwFlags: DWORD, lParam: LPARAM, lpReserved: LPVOID) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn ResolveLocaleName(lpNameToResolve: LPCWSTR, lpLocaleName: LPWSTR, cchLocaleName: c_int) callconv(.Stdcall) c_int;
 pub const struct__COORD = extern struct {
@@ -15791,7 +15791,7 @@ pub extern "kernel32" fn ReadConsoleA(hConsoleInput: HANDLE, lpBuffer: LPVOID, n
 pub extern "kernel32" fn ReadConsoleW(hConsoleInput: HANDLE, lpBuffer: LPVOID, nNumberOfCharsToRead: DWORD, lpNumberOfCharsRead: LPDWORD, pInputControl: PCONSOLE_READCONSOLE_CONTROL) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn WriteConsoleA(hConsoleOutput: HANDLE, lpBuffer: ?*const c_void, nNumberOfCharsToWrite: DWORD, lpNumberOfCharsWritten: LPDWORD, lpReserved: LPVOID) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn WriteConsoleW(hConsoleOutput: HANDLE, lpBuffer: ?*const c_void, nNumberOfCharsToWrite: DWORD, lpNumberOfCharsWritten: LPDWORD, lpReserved: LPVOID) callconv(.Stdcall) BOOL;
-pub const PHANDLER_ROUTINE = ?extern fn (DWORD) BOOL;
+pub const PHANDLER_ROUTINE = ?fn (DWORD) callconv(.C) BOOL;
 pub extern "kernel32" fn SetConsoleCtrlHandler(HandlerRoutine: PHANDLER_ROUTINE, Add: BOOL) callconv(.Stdcall) BOOL;
 pub extern "kernel32" fn CreatePseudoConsole(size: COORD, hInput: HANDLE, hOutput: HANDLE, dwFlags: DWORD, phPC: [*c]HPCON) callconv(.Stdcall) HRESULT;
 pub extern "kernel32" fn ResizePseudoConsole(hPC: HPCON, size: COORD) callconv(.Stdcall) HRESULT;
@@ -15978,7 +15978,7 @@ pub const PVALUEW = struct_pvalueW;
 pub const PPVALUEW = [*c]struct_pvalueW;
 pub const PVALUE = PVALUEA;
 pub const PPVALUE = PPVALUEA;
-pub const QUERYHANDLER = extern fn (LPVOID, PVALCONTEXT, DWORD, LPVOID, [*c]DWORD, DWORD) DWORD;
+pub const QUERYHANDLER = fn (LPVOID, PVALCONTEXT, DWORD, LPVOID, [*c]DWORD, DWORD) callconv(.C) DWORD;
 pub const PQUERYHANDLER = [*c]QUERYHANDLER;
 pub const struct_provider_info = extern struct {
     pi_R0_1val: PQUERYHANDLER,
@@ -16321,8 +16321,8 @@ pub const struct_tagCONVINFO = extern struct {
 };
 pub const CONVINFO = struct_tagCONVINFO;
 pub const PCONVINFO = [*c]struct_tagCONVINFO;
-pub const FNCALLBACK = extern fn (UINT, UINT, HCONV, HSZ, HSZ, HDDEDATA, ULONG_PTR, ULONG_PTR) HDDEDATA;
-pub const PFNCALLBACK = ?extern fn (UINT, UINT, HCONV, HSZ, HSZ, HDDEDATA, ULONG_PTR, ULONG_PTR) HDDEDATA;
+pub const FNCALLBACK = fn (UINT, UINT, HCONV, HSZ, HSZ, HDDEDATA, ULONG_PTR, ULONG_PTR) callconv(.C) HDDEDATA;
+pub const PFNCALLBACK = ?fn (UINT, UINT, HCONV, HSZ, HSZ, HDDEDATA, ULONG_PTR, ULONG_PTR) callconv(.C) HDDEDATA;
 pub extern "user32" fn DdeInitializeA(pidInst: LPDWORD, pfnCallback: PFNCALLBACK, afCmd: DWORD, ulRes: DWORD) callconv(.Stdcall) UINT;
 pub extern "user32" fn DdeInitializeW(pidInst: LPDWORD, pfnCallback: PFNCALLBACK, afCmd: DWORD, ulRes: DWORD) callconv(.Stdcall) UINT;
 pub extern "user32" fn DdeUninitialize(idInst: DWORD) callconv(.Stdcall) BOOL;
@@ -16502,12 +16502,12 @@ pub const struct_HDRVR__ = extern struct {
     unused: c_int,
 };
 pub const HDRVR = [*c]struct_HDRVR__;
-pub const DRVCALLBACK = extern fn (HDRVR, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR) void;
+pub const DRVCALLBACK = fn (HDRVR, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR) callconv(.C) void;
 pub const LPDRVCALLBACK = [*c]DRVCALLBACK;
 pub const PDRVCALLBACK = [*c]DRVCALLBACK;
 pub const MCIERROR = DWORD;
 pub const MCIDEVICEID = UINT;
-pub const YIELDPROC = ?extern fn (MCIDEVICEID, DWORD) UINT;
+pub const YIELDPROC = ?fn (MCIDEVICEID, DWORD) callconv(.C) UINT;
 pub extern "winmm" fn mciSendCommandA(mciId: MCIDEVICEID, uMsg: UINT, dwParam1: DWORD_PTR, dwParam2: DWORD_PTR) callconv(.Stdcall) MCIERROR;
 pub extern "winmm" fn mciSendCommandW(mciId: MCIDEVICEID, uMsg: UINT, dwParam1: DWORD_PTR, dwParam2: DWORD_PTR) callconv(.Stdcall) MCIERROR;
 pub extern "winmm" fn mciSendStringA(lpstrCommand: LPCSTR, lpstrReturnString: LPSTR, uReturnLength: UINT, hwndCallback: HWND) callconv(.Stdcall) MCIERROR;
@@ -16974,7 +16974,7 @@ pub const DRVCONFIGINFO = struct_tagDRVCONFIGINFO;
 pub const PDRVCONFIGINFO = [*c]struct_tagDRVCONFIGINFO;
 pub const NPDRVCONFIGINFO = [*c]struct_tagDRVCONFIGINFO;
 pub const LPDRVCONFIGINFO = [*c]struct_tagDRVCONFIGINFO;
-pub const DRIVERPROC = ?extern fn (DWORD_PTR, HDRVR, UINT, LPARAM, LPARAM) LRESULT;
+pub const DRIVERPROC = ?fn (DWORD_PTR, HDRVR, UINT, LPARAM, LPARAM) callconv(.C) LRESULT;
 pub extern "winmm" fn CloseDriver(hDriver: HDRVR, lParam1: LPARAM, lParam2: LPARAM) callconv(.Stdcall) LRESULT;
 pub extern "winmm" fn OpenDriver(szDriverName: LPCWSTR, szSectionName: LPCWSTR, lParam2: LPARAM) callconv(.Stdcall) HDRVR;
 pub extern "winmm" fn SendDriverMessage(hDriver: HDRVR, message: UINT, lParam1: LPARAM, lParam2: LPARAM) callconv(.Stdcall) LRESULT;
@@ -16983,7 +16983,7 @@ pub extern "winmm" fn GetDriverModuleHandle(hDriver: HDRVR) callconv(.Stdcall) H
 pub extern "winmm" fn DefDriverProc(dwDriverIdentifier: DWORD_PTR, hdrvr: HDRVR, uMsg: UINT, lParam1: LPARAM, lParam2: LPARAM) callconv(.Stdcall) LRESULT;
 pub extern "winmm" fn DriverCallback(dwCallback: DWORD_PTR, dwFlags: DWORD, hDevice: HDRVR, dwMsg: DWORD, dwUser: DWORD_PTR, dwParam1: DWORD_PTR, dwParam2: DWORD_PTR) callconv(.Stdcall) BOOL;
 pub extern "winmmbse" fn sndOpenSound(EventName: LPCWSTR, AppName: LPCWSTR, Flags: INT32, FileHandle: PHANDLE) callconv(.Stdcall) LONG;
-pub const DRIVERMSGPROC = ?extern fn (DWORD, DWORD, DWORD_PTR, DWORD_PTR, DWORD_PTR) DWORD;
+pub const DRIVERMSGPROC = ?fn (DWORD, DWORD, DWORD_PTR, DWORD_PTR, DWORD_PTR) callconv(.C) DWORD;
 pub extern "winmm" fn mmDrvInstall(hDriver: HDRVR, wszDrvEntry: LPCWSTR, drvMessage: DRIVERMSGPROC, wFlags: UINT) UINT;
 pub const FOURCC = DWORD;
 pub const HPSTR = [*c]u8;
@@ -16991,7 +16991,7 @@ pub const struct_HMMIO__ = extern struct {
     unused: c_int,
 };
 pub const HMMIO = [*c]struct_HMMIO__;
-pub const MMIOPROC = extern fn (LPSTR, UINT, LPARAM, LPARAM) LRESULT;
+pub const MMIOPROC = fn (LPSTR, UINT, LPARAM, LPARAM) callconv(.C) LRESULT;
 pub const LPMMIOPROC = [*c]MMIOPROC;
 pub const struct__MMIOINFO = extern struct {
     dwFlags: DWORD,
@@ -17049,7 +17049,7 @@ pub extern "winmm" fn mmioSendMessage(hmmio: HMMIO, uMsg: UINT, lParam1: LPARAM,
 pub extern "winmm" fn mmioDescend(hmmio: HMMIO, pmmcki: LPMMCKINFO, pmmckiParent: [*c]const MMCKINFO, fuDescend: UINT) callconv(.Stdcall) MMRESULT;
 pub extern "winmm" fn mmioAscend(hmmio: HMMIO, pmmcki: LPMMCKINFO, fuAscend: UINT) callconv(.Stdcall) MMRESULT;
 pub extern "winmm" fn mmioCreateChunk(hmmio: HMMIO, pmmcki: LPMMCKINFO, fuCreate: UINT) callconv(.Stdcall) MMRESULT;
-pub const TIMECALLBACK = extern fn (UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR) void;
+pub const TIMECALLBACK = fn (UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR) callconv(.C) void;
 pub const LPTIMECALLBACK = [*c]TIMECALLBACK;
 pub extern "winmm" fn timeSetEvent(uDelay: UINT, uResolution: UINT, fptc: LPTIMECALLBACK, dwUser: DWORD_PTR, fuEvent: UINT) callconv(.Stdcall) MMRESULT;
 pub extern "winmm" fn timeKillEvent(uTimerID: UINT) callconv(.Stdcall) MMRESULT;
@@ -18079,7 +18079,7 @@ pub const struct__NCB = extern struct {
     ncb_name: [16]UCHAR,
     ncb_rto: UCHAR,
     ncb_sto: UCHAR,
-    ncb_post: ?extern fn ([*c]struct__NCB) void,
+    ncb_post: ?fn ([*c]struct__NCB) callconv(.C) void,
     ncb_lana_num: UCHAR,
     ncb_cmd_cplt: UCHAR,
     ncb_reserve: [18]UCHAR,
@@ -18216,9 +18216,9 @@ pub const struct__RPC_POLICY = extern struct {
 };
 pub const RPC_POLICY = struct__RPC_POLICY;
 pub const PRPC_POLICY = [*c]struct__RPC_POLICY;
-pub const RPC_OBJECT_INQ_FN = extern fn ([*c]UUID, [*c]UUID, [*c]RPC_STATUS) void;
-pub const RPC_IF_CALLBACK_FN = extern fn (RPC_IF_HANDLE, ?*c_void) RPC_STATUS;
-pub const RPC_SECURITY_CALLBACK_FN = extern fn (?*c_void) void;
+pub const RPC_OBJECT_INQ_FN = fn ([*c]UUID, [*c]UUID, [*c]RPC_STATUS) callconv(.C) void;
+pub const RPC_IF_CALLBACK_FN = fn (RPC_IF_HANDLE, ?*c_void) callconv(.C) RPC_STATUS;
+pub const RPC_SECURITY_CALLBACK_FN = fn (?*c_void) callconv(.C) void;
 pub const RPC_STATS_VECTOR = extern struct {
     Count: c_uint,
     Stats: [1]c_ulong,
@@ -18587,8 +18587,8 @@ pub const enum__RPC_HTTP_REDIRECTOR_STAGE = extern enum {
     RPCHTTP_RS_INTERFACE = 5,
 };
 pub const RPC_HTTP_REDIRECTOR_STAGE = enum__RPC_HTTP_REDIRECTOR_STAGE;
-pub const RPC_NEW_HTTP_PROXY_CHANNEL = ?extern fn (RPC_HTTP_REDIRECTOR_STAGE, RPC_WSTR, RPC_WSTR, RPC_WSTR, RPC_WSTR, ?*c_void, ?*c_void, ?*c_void, ?*c_void, c_ulong, [*c]RPC_WSTR, [*c]RPC_WSTR) RPC_STATUS;
-pub const RPC_HTTP_PROXY_FREE_STRING = ?extern fn (RPC_WSTR) void;
+pub const RPC_NEW_HTTP_PROXY_CHANNEL = ?fn (RPC_HTTP_REDIRECTOR_STAGE, RPC_WSTR, RPC_WSTR, RPC_WSTR, RPC_WSTR, ?*c_void, ?*c_void, ?*c_void, ?*c_void, c_ulong, [*c]RPC_WSTR, [*c]RPC_WSTR) callconv(.C) RPC_STATUS;
+pub const RPC_HTTP_PROXY_FREE_STRING = ?fn (RPC_WSTR) callconv(.C) void;
 pub extern "rpcrt4" fn RpcImpersonateClient(BindingHandle: RPC_BINDING_HANDLE) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcImpersonateClient2(BindingHandle: RPC_BINDING_HANDLE) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcRevertToSelfEx(BindingHandle: RPC_BINDING_HANDLE) callconv(.Stdcall) RPC_STATUS;
@@ -18607,7 +18607,7 @@ pub extern "rpcrt4" fn RpcBindingSetAuthInfoW(Binding: RPC_BINDING_HANDLE, Serve
 pub extern "rpcrt4" fn RpcBindingSetAuthInfoExW(Binding: RPC_BINDING_HANDLE, ServerPrincName: RPC_WSTR, AuthnLevel: c_ulong, AuthnSvc: c_ulong, AuthIdentity: RPC_AUTH_IDENTITY_HANDLE, AuthzSvc: c_ulong, SecurityQOS: [*c]RPC_SECURITY_QOS) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcBindingInqAuthInfoExA(Binding: RPC_BINDING_HANDLE, ServerPrincName: [*c]RPC_CSTR, AuthnLevel: [*c]c_ulong, AuthnSvc: [*c]c_ulong, AuthIdentity: [*c]RPC_AUTH_IDENTITY_HANDLE, AuthzSvc: [*c]c_ulong, RpcQosVersion: c_ulong, SecurityQOS: [*c]RPC_SECURITY_QOS) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcBindingInqAuthInfoExW(Binding: RPC_BINDING_HANDLE, ServerPrincName: [*c]RPC_WSTR, AuthnLevel: [*c]c_ulong, AuthnSvc: [*c]c_ulong, AuthIdentity: [*c]RPC_AUTH_IDENTITY_HANDLE, AuthzSvc: [*c]c_ulong, RpcQosVersion: c_ulong, SecurityQOS: [*c]RPC_SECURITY_QOS) callconv(.Stdcall) RPC_STATUS;
-pub const RPC_AUTH_KEY_RETRIEVAL_FN = ?extern fn (?*c_void, RPC_WSTR, c_ulong, [*c](?*c_void), [*c]RPC_STATUS) void;
+pub const RPC_AUTH_KEY_RETRIEVAL_FN = ?fn (?*c_void, RPC_WSTR, c_ulong, [*c](?*c_void), [*c]RPC_STATUS) callconv(.C) void;
 pub extern "rpcrt4" fn RpcServerCompleteSecurityCallback(BindingHandle: RPC_BINDING_HANDLE, Status: RPC_STATUS) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcServerRegisterAuthInfoA(ServerPrincName: RPC_CSTR, AuthnSvc: c_ulong, GetKeyFn: RPC_AUTH_KEY_RETRIEVAL_FN, Arg: ?*c_void) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcServerRegisterAuthInfoW(ServerPrincName: RPC_WSTR, AuthnSvc: c_ulong, GetKeyFn: RPC_AUTH_KEY_RETRIEVAL_FN, Arg: ?*c_void) callconv(.Stdcall) RPC_STATUS;
@@ -18653,7 +18653,7 @@ pub extern "rpcrt4" fn RpcMgmtEpEltInqDone(InquiryContext: [*c]RPC_EP_INQ_HANDLE
 pub extern "rpcrt4" fn RpcMgmtEpEltInqNextA(InquiryContext: RPC_EP_INQ_HANDLE, IfId: [*c]RPC_IF_ID, Binding: [*c]RPC_BINDING_HANDLE, ObjectUuid: [*c]UUID, Annotation: [*c]RPC_CSTR) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcMgmtEpEltInqNextW(InquiryContext: RPC_EP_INQ_HANDLE, IfId: [*c]RPC_IF_ID, Binding: [*c]RPC_BINDING_HANDLE, ObjectUuid: [*c]UUID, Annotation: [*c]RPC_WSTR) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcMgmtEpUnregister(EpBinding: RPC_BINDING_HANDLE, IfId: [*c]RPC_IF_ID, Binding: RPC_BINDING_HANDLE, ObjectUuid: [*c]UUID) callconv(.Stdcall) RPC_STATUS;
-pub const RPC_MGMT_AUTHORIZATION_FN = ?extern fn (RPC_BINDING_HANDLE, c_ulong, [*c]RPC_STATUS) c_int;
+pub const RPC_MGMT_AUTHORIZATION_FN = ?fn (RPC_BINDING_HANDLE, c_ulong, [*c]RPC_STATUS) callconv(.C) c_int;
 pub extern "rpcrt4" fn RpcMgmtSetAuthorizationFn(AuthorizationFn: RPC_MGMT_AUTHORIZATION_FN) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcExceptionFilter(ExceptionCode: c_ulong) callconv(.Stdcall) c_int;
 pub const RPC_INTERFACE_GROUP = ?*c_void;
@@ -18738,7 +18738,7 @@ pub const PRPC_INTERFACE_TEMPLATEW = [*c]extern struct {
     Annotation: RPC_WSTR,
     SecurityDescriptor: ?*c_void,
 };
-pub const RPC_INTERFACE_GROUP_IDLE_CALLBACK_FN = extern fn (RPC_INTERFACE_GROUP, ?*c_void, c_ulong) void;
+pub const RPC_INTERFACE_GROUP_IDLE_CALLBACK_FN = fn (RPC_INTERFACE_GROUP, ?*c_void, c_ulong) callconv(.C) void;
 pub extern "rpcrt4" fn RpcServerInterfaceGroupCreateW(Interfaces: [*c]RPC_INTERFACE_TEMPLATEW, NumIfs: c_ulong, Endpoints: [*c]RPC_ENDPOINT_TEMPLATEW, NumEndpoints: c_ulong, IdlePeriod: c_ulong, IdleCallbackFn: [*c]RPC_INTERFACE_GROUP_IDLE_CALLBACK_FN, IdleCallbackContext: ?*c_void, IfGroup: PRPC_INTERFACE_GROUP) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcServerInterfaceGroupCreateA(Interfaces: [*c]RPC_INTERFACE_TEMPLATEA, NumIfs: c_ulong, Endpoints: [*c]RPC_ENDPOINT_TEMPLATEA, NumEndpoints: c_ulong, IdlePeriod: c_ulong, IdleCallbackFn: [*c]RPC_INTERFACE_GROUP_IDLE_CALLBACK_FN, IdleCallbackContext: ?*c_void, IfGroup: PRPC_INTERFACE_GROUP) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn RpcServerInterfaceGroupClose(IfGroup: RPC_INTERFACE_GROUP) callconv(.Stdcall) RPC_STATUS;
@@ -18771,7 +18771,7 @@ pub const struct__RPC_MESSAGE = extern struct {
 };
 pub const RPC_MESSAGE = struct__RPC_MESSAGE;
 pub const PRPC_MESSAGE = [*c]struct__RPC_MESSAGE;
-pub const RPC_FORWARD_FUNCTION = extern fn ([*c]UUID, [*c]RPC_VERSION, [*c]UUID, [*c]u8, [*c](?*c_void)) RPC_STATUS;
+pub const RPC_FORWARD_FUNCTION = fn ([*c]UUID, [*c]RPC_VERSION, [*c]UUID, [*c]u8, [*c](?*c_void)) callconv(.C) RPC_STATUS;
 pub const PROTOCOL_NOT_LOADED = enum_RPC_ADDRESS_CHANGE_TYPE.PROTOCOL_NOT_LOADED;
 pub const PROTOCOL_LOADED = enum_RPC_ADDRESS_CHANGE_TYPE.PROTOCOL_LOADED;
 pub const PROTOCOL_ADDRESS_CHANGE = enum_RPC_ADDRESS_CHANGE_TYPE.PROTOCOL_ADDRESS_CHANGE;
@@ -18780,8 +18780,8 @@ pub const enum_RPC_ADDRESS_CHANGE_TYPE = extern enum {
     PROTOCOL_LOADED = 2,
     PROTOCOL_ADDRESS_CHANGE = 3,
 };
-pub const RPC_ADDRESS_CHANGE_FN = extern fn (?*c_void) void;
-pub const RPC_DISPATCH_FUNCTION = ?extern fn (PRPC_MESSAGE) void;
+pub const RPC_ADDRESS_CHANGE_FN = fn (?*c_void) callconv(.C) void;
+pub const RPC_DISPATCH_FUNCTION = ?fn (PRPC_MESSAGE) callconv(.C) void;
 pub const RPC_DISPATCH_TABLE = extern struct {
     DispatchTableCount: c_uint,
     DispatchTable: [*c]RPC_DISPATCH_FUNCTION,
@@ -18853,7 +18853,7 @@ pub const enum__LRPC_SYSTEM_HANDLE_MARSHAL_DIRECTION = extern enum {
 };
 pub const LRPC_SYSTEM_HANDLE_MARSHAL_DIRECTION = enum__LRPC_SYSTEM_HANDLE_MARSHAL_DIRECTION;
 pub extern "rpcrt4" fn I_RpcSystemHandleTypeSpecificWork(Handle: ?*c_void, ActualType: u8, IdlType: u8, MarshalDirection: LRPC_SYSTEM_HANDLE_MARSHAL_DIRECTION) callconv(.Stdcall) RPC_STATUS;
-pub const PRPC_RUNDOWN = ?extern fn (?*c_void) void;
+pub const PRPC_RUNDOWN = ?fn (?*c_void) callconv(.C) void;
 pub extern "rpcrt4" fn I_RpcMonitorAssociation(Handle: RPC_BINDING_HANDLE, RundownRoutine: PRPC_RUNDOWN, Context: ?*c_void) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn I_RpcStopMonitorAssociation(Handle: RPC_BINDING_HANDLE) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn I_RpcGetCurrentCallHandle() callconv(.Stdcall) RPC_BINDING_HANDLE;
@@ -18911,11 +18911,11 @@ pub extern "rpcrt4" fn I_RpcSessionStrictContextHandle() callconv(.Stdcall) void
 pub extern "rpcrt4" fn I_RpcTurnOnEEInfoPropagation() callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn I_RpcConnectionInqSockBuffSize(RecvBuffSize: [*c]c_ulong, SendBuffSize: [*c]c_ulong) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn I_RpcConnectionSetSockBuffSize(RecvBuffSize: c_ulong, SendBuffSize: c_ulong) callconv(.Stdcall) RPC_STATUS;
-pub const RPCLT_PDU_FILTER_FUNC = ?extern fn (?*c_void, c_uint, c_int) void;
-pub const RPC_SETFILTER_FUNC = ?extern fn (RPCLT_PDU_FILTER_FUNC) void;
+pub const RPCLT_PDU_FILTER_FUNC = ?fn (?*c_void, c_uint, c_int) callconv(.C) void;
+pub const RPC_SETFILTER_FUNC = ?fn (RPCLT_PDU_FILTER_FUNC) callconv(.C) void;
 pub extern "rpcrt4" fn I_RpcServerStartListening(hWnd: ?*c_void) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn I_RpcServerStopListening() callconv(.Stdcall) RPC_STATUS;
-pub const RPC_BLOCKING_FN = ?extern fn (?*c_void, ?*c_void, ?*c_void) RPC_STATUS;
+pub const RPC_BLOCKING_FN = ?fn (?*c_void, ?*c_void, ?*c_void) callconv(.C) RPC_STATUS;
 pub extern "rpcrt4" fn I_RpcBindingSetAsync(Binding: RPC_BINDING_HANDLE, BlockingFn: RPC_BLOCKING_FN, ServerTid: c_ulong) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn I_RpcSetThreadParams(fClientFree: c_int, Context: ?*c_void, hWndClient: ?*c_void) callconv(.Stdcall) RPC_STATUS;
 pub extern "rpcrt4" fn I_RpcWindowProc(hWnd: ?*c_void, Message: c_uint, wParam: c_uint, lParam: c_ulong) callconv(.Stdcall) c_uint;
@@ -18945,13 +18945,13 @@ pub const struct__RDR_CALLOUT_STATE = extern struct {
     CertContext: ?*c_void,
 };
 pub const RDR_CALLOUT_STATE = struct__RDR_CALLOUT_STATE;
-pub const I_RpcProxyIsValidMachineFn = ?extern fn (RPC_WSTR, RPC_WSTR, c_ulong) RPC_STATUS;
-pub const I_RpcProxyGetClientAddressFn = ?extern fn (?*c_void, [*c]u8, [*c]c_ulong) RPC_STATUS;
-pub const I_RpcProxyGetConnectionTimeoutFn = ?extern fn ([*c]c_ulong) RPC_STATUS;
-pub const I_RpcPerformCalloutFn = ?extern fn (?*c_void, [*c]RDR_CALLOUT_STATE, RPC_HTTP_REDIRECTOR_STAGE) RPC_STATUS;
-pub const I_RpcFreeCalloutStateFn = ?extern fn ([*c]RDR_CALLOUT_STATE) void;
-pub const I_RpcProxyGetClientSessionAndResourceUUID = ?extern fn (?*c_void, [*c]c_int, [*c]UUID, [*c]c_int, [*c]UUID) RPC_STATUS;
-pub const I_RpcProxyFilterIfFn = ?extern fn (?*c_void, [*c]UUID, c_ushort, [*c]c_int) RPC_STATUS;
+pub const I_RpcProxyIsValidMachineFn = ?fn (RPC_WSTR, RPC_WSTR, c_ulong) callconv(.C) RPC_STATUS;
+pub const I_RpcProxyGetClientAddressFn = ?fn (?*c_void, [*c]u8, [*c]c_ulong) callconv(.C) RPC_STATUS;
+pub const I_RpcProxyGetConnectionTimeoutFn = ?fn ([*c]c_ulong) callconv(.C) RPC_STATUS;
+pub const I_RpcPerformCalloutFn = ?fn (?*c_void, [*c]RDR_CALLOUT_STATE, RPC_HTTP_REDIRECTOR_STAGE) callconv(.C) RPC_STATUS;
+pub const I_RpcFreeCalloutStateFn = ?fn ([*c]RDR_CALLOUT_STATE) callconv(.C) void;
+pub const I_RpcProxyGetClientSessionAndResourceUUID = ?fn (?*c_void, [*c]c_int, [*c]UUID, [*c]c_int, [*c]UUID) callconv(.C) RPC_STATUS;
+pub const I_RpcProxyFilterIfFn = ?fn (?*c_void, [*c]UUID, c_ushort, [*c]c_int) callconv(.C) RPC_STATUS;
 pub const RpcCurrentUniqueUser = enum_RpcProxyPerfCounters.RpcCurrentUniqueUser;
 pub const RpcBackEndConnectionAttempts = enum_RpcProxyPerfCounters.RpcBackEndConnectionAttempts;
 pub const RpcBackEndConnectionFailed = enum_RpcProxyPerfCounters.RpcBackEndConnectionFailed;
@@ -18979,8 +18979,8 @@ pub const enum_RpcProxyPerfCounters = extern enum {
     RpcLastCounter = 12,
 };
 pub const RpcPerfCounters = enum_RpcProxyPerfCounters;
-pub const I_RpcProxyUpdatePerfCounterFn = ?extern fn (RpcPerfCounters, c_int, c_ulong) void;
-pub const I_RpcProxyUpdatePerfCounterBackendServerFn = ?extern fn ([*c]c_ushort, c_int) void;
+pub const I_RpcProxyUpdatePerfCounterFn = ?fn (RpcPerfCounters, c_int, c_ulong) callconv(.C) void;
+pub const I_RpcProxyUpdatePerfCounterBackendServerFn = ?fn ([*c]c_ushort, c_int) callconv(.C) void;
 pub const struct_tagI_RpcProxyCallbackInterface = extern struct {
     IsValidMachineFn: I_RpcProxyIsValidMachineFn,
     GetClientAddressFn: I_RpcProxyGetClientAddressFn,
@@ -19091,7 +19091,7 @@ pub const enum__RPC_ASYNC_EVENT = extern enum {
     RpcClientCancel,
 };
 pub const RPC_ASYNC_EVENT = enum__RPC_ASYNC_EVENT;
-pub const RPCNOTIFICATION_ROUTINE = extern fn ([*c]struct__RPC_ASYNC_STATE, ?*c_void, RPC_ASYNC_EVENT) void;
+pub const RPCNOTIFICATION_ROUTINE = fn ([*c]struct__RPC_ASYNC_STATE, ?*c_void, RPC_ASYNC_EVENT) callconv(.C) void;
 pub const PFN_RPCNOTIFICATION_ROUTINE = [*c]RPCNOTIFICATION_ROUTINE;
 pub const union__RPC_ASYNC_NOTIFICATION_INFO = extern union {
     APC: extern struct {
@@ -19931,8 +19931,8 @@ pub extern "shell32" fn SHSetUnreadMailCountA(pszMailAddress: LPCSTR, dwCount: D
 pub extern "shell32" fn SHSetUnreadMailCountW(pszMailAddress: LPCWSTR, dwCount: DWORD, pszShellExecuteCommand: LPCWSTR) callconv(.Stdcall) HRESULT;
 pub extern "shell32" fn SHTestTokenMembership(hToken: HANDLE, ulRID: ULONG) callconv(.Stdcall) BOOL;
 pub extern "shell32" fn SHGetImageList(iImageList: c_int, riid: [*c]const IID, ppvObj: [*c](?*c_void)) callconv(.Stdcall) HRESULT;
-pub const PFNCANSHAREFOLDERW = ?extern fn (PCWSTR) HRESULT;
-pub const PFNSHOWSHAREFOLDERUIW = ?extern fn (HWND, PCWSTR) HRESULT;
+pub const PFNCANSHAREFOLDERW = ?fn (PCWSTR) callconv(.C) HRESULT;
+pub const PFNSHOWSHAREFOLDERUIW = ?fn (HWND, PCWSTR) callconv(.C) HRESULT;
 pub extern "shell32" fn InitNetworkAddressControl() callconv(.Stdcall) BOOL;
 pub const struct_NET_ADDRESS_INFO_ = @OpaqueType();
 pub const struct_tagNC_ADDRESS = extern struct {
@@ -20008,10 +20008,10 @@ pub const struct__PERF_COUNTER_BLOCK = extern struct {
 };
 pub const PERF_COUNTER_BLOCK = struct__PERF_COUNTER_BLOCK;
 pub const PPERF_COUNTER_BLOCK = [*c]struct__PERF_COUNTER_BLOCK;
-pub const PM_OPEN_PROC = extern fn (LPWSTR) DWORD;
-pub const PM_COLLECT_PROC = extern fn (LPWSTR, [*c]LPVOID, LPDWORD, LPDWORD) DWORD;
-pub const PM_CLOSE_PROC = extern fn () DWORD;
-pub const PM_QUERY_PROC = extern fn (LPDWORD, [*c]LPVOID, LPDWORD, LPDWORD) DWORD;
+pub const PM_OPEN_PROC = fn (LPWSTR) callconv(.C) DWORD;
+pub const PM_COLLECT_PROC = fn (LPWSTR, [*c]LPVOID, LPDWORD, LPDWORD) callconv(.C) DWORD;
+pub const PM_CLOSE_PROC = fn () callconv(.C) DWORD;
+pub const PM_QUERY_PROC = fn (LPDWORD, [*c]LPVOID, LPDWORD, LPDWORD) callconv(.C) DWORD;
 pub const u_char = u8;
 pub const u_short = c_ushort;
 pub const u_int = c_uint;
@@ -20790,8 +20790,8 @@ pub extern "bcrypt" fn BCryptResolveProviders(pszContext: LPCWSTR, dwInterface: 
 pub extern "bcrypt" fn BCryptGetFipsAlgorithmMode(pfEnabled: [*c]BOOLEAN) callconv(.Stdcall) NTSTATUS;
 pub extern "bcrypt" fn CngGetFipsAlgorithmMode() callconv(.Stdcall) BOOLEAN;
 pub const SECURITY_STATUS = LONG;
-pub const PFN_NCRYPT_ALLOC = ?extern fn (SIZE_T) LPVOID;
-pub const PFN_NCRYPT_FREE = ?extern fn (LPVOID) void;
+pub const PFN_NCRYPT_ALLOC = ?fn (SIZE_T) callconv(.C) LPVOID;
+pub const PFN_NCRYPT_FREE = ?fn (LPVOID) callconv(.C) void;
 pub const struct_NCRYPT_ALLOC_PARA = extern struct {
     cbSize: DWORD,
     pfnAlloc: PFN_NCRYPT_ALLOC,
@@ -21089,9 +21089,9 @@ pub const struct__CRYPT_ENCRYPTED_PRIVATE_KEY_INFO = extern struct {
 };
 pub const CRYPT_ENCRYPTED_PRIVATE_KEY_INFO = struct__CRYPT_ENCRYPTED_PRIVATE_KEY_INFO;
 pub const PCRYPT_ENCRYPTED_PRIVATE_KEY_INFO = [*c]struct__CRYPT_ENCRYPTED_PRIVATE_KEY_INFO;
-pub const PCRYPT_DECRYPT_PRIVATE_KEY_FUNC = ?extern fn (CRYPT_ALGORITHM_IDENTIFIER, CRYPT_DATA_BLOB, [*c]BYTE, [*c]DWORD, LPVOID) BOOL;
-pub const PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC = ?extern fn ([*c]CRYPT_ALGORITHM_IDENTIFIER, [*c]CRYPT_DATA_BLOB, [*c]BYTE, [*c]DWORD, LPVOID) BOOL;
-pub const PCRYPT_RESOLVE_HCRYPTPROV_FUNC = ?extern fn ([*c]CRYPT_PRIVATE_KEY_INFO, [*c]HCRYPTPROV, LPVOID) BOOL;
+pub const PCRYPT_DECRYPT_PRIVATE_KEY_FUNC = ?fn (CRYPT_ALGORITHM_IDENTIFIER, CRYPT_DATA_BLOB, [*c]BYTE, [*c]DWORD, LPVOID) callconv(.C) BOOL;
+pub const PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC = ?fn ([*c]CRYPT_ALGORITHM_IDENTIFIER, [*c]CRYPT_DATA_BLOB, [*c]BYTE, [*c]DWORD, LPVOID) callconv(.C) BOOL;
+pub const PCRYPT_RESOLVE_HCRYPTPROV_FUNC = ?fn ([*c]CRYPT_PRIVATE_KEY_INFO, [*c]HCRYPTPROV, LPVOID) callconv(.C) BOOL;
 pub const struct__CRYPT_PKCS8_IMPORT_PARAMS = extern struct {
     PrivateKey: CRYPT_DIGEST_BLOB,
     pResolvehCryptProvFunc: PCRYPT_RESOLVE_HCRYPTPROV_FUNC,
@@ -21240,8 +21240,8 @@ pub const struct__CRYPT_CSP_PROVIDER = extern struct {
 pub const CRYPT_CSP_PROVIDER = struct__CRYPT_CSP_PROVIDER;
 pub const PCRYPT_CSP_PROVIDER = [*c]struct__CRYPT_CSP_PROVIDER;
 pub extern "crypt32" fn CryptFormatObject(dwCertEncodingType: DWORD, dwFormatType: DWORD, dwFormatStrType: DWORD, pFormatStruct: ?*c_void, lpszStructType: LPCSTR, pbEncoded: [*c]const BYTE, cbEncoded: DWORD, pbFormat: ?*c_void, pcbFormat: [*c]DWORD) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_ALLOC = ?extern fn (usize) LPVOID;
-pub const PFN_CRYPT_FREE = ?extern fn (LPVOID) void;
+pub const PFN_CRYPT_ALLOC = ?fn (usize) callconv(.C) LPVOID;
+pub const PFN_CRYPT_FREE = ?fn (LPVOID) callconv(.C) void;
 pub const struct__CRYPT_ENCODE_PARA = extern struct {
     cbSize: DWORD,
     pfnAlloc: PFN_CRYPT_ALLOC,
@@ -21939,7 +21939,7 @@ pub extern "crypt32" fn CryptRegisterDefaultOIDFunction(dwEncodingType: DWORD, p
 pub extern "crypt32" fn CryptUnregisterDefaultOIDFunction(dwEncodingType: DWORD, pszFuncName: LPCSTR, pwszDll: LPCWSTR) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptSetOIDFunctionValue(dwEncodingType: DWORD, pszFuncName: LPCSTR, pszOID: LPCSTR, pwszValueName: LPCWSTR, dwValueType: DWORD, pbValueData: [*c]const BYTE, cbValueData: DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptGetOIDFunctionValue(dwEncodingType: DWORD, pszFuncName: LPCSTR, pszOID: LPCSTR, pwszValueName: LPCWSTR, pdwValueType: [*c]DWORD, pbValueData: [*c]BYTE, pcbValueData: [*c]DWORD) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_ENUM_OID_FUNC = ?extern fn (DWORD, LPCSTR, LPCSTR, DWORD, [*c]const DWORD, [*c]const LPCWSTR, [*c]const ([*c]const BYTE), [*c]const DWORD, ?*c_void) BOOL;
+pub const PFN_CRYPT_ENUM_OID_FUNC = ?fn (DWORD, LPCSTR, LPCSTR, DWORD, [*c]const DWORD, [*c]const LPCWSTR, [*c]const ([*c]const BYTE), [*c]const DWORD, ?*c_void) callconv(.C) BOOL;
 pub extern "crypt32" fn CryptEnumOIDFunction(dwEncodingType: DWORD, pszFuncName: LPCSTR, pszOID: LPCSTR, dwFlags: DWORD, pvArg: ?*c_void, pfnEnumOIDFunc: PFN_CRYPT_ENUM_OID_FUNC) callconv(.Stdcall) BOOL;
 pub const struct__CRYPT_OID_INFO = extern struct {
     cbSize: DWORD,
@@ -21960,7 +21960,7 @@ pub const PCCRYPT_OID_INFO = [*c]const CRYPT_OID_INFO;
 pub extern "crypt32" fn CryptFindOIDInfo(dwKeyType: DWORD, pvKey: ?*c_void, dwGroupId: DWORD) callconv(.Stdcall) PCCRYPT_OID_INFO;
 pub extern "crypt32" fn CryptRegisterOIDInfo(pInfo: PCCRYPT_OID_INFO, dwFlags: DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptUnregisterOIDInfo(pInfo: PCCRYPT_OID_INFO) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_ENUM_OID_INFO = ?extern fn (PCCRYPT_OID_INFO, ?*c_void) BOOL;
+pub const PFN_CRYPT_ENUM_OID_INFO = ?fn (PCCRYPT_OID_INFO, ?*c_void) callconv(.C) BOOL;
 pub extern "crypt32" fn CryptEnumOIDInfo(dwGroupId: DWORD, dwFlags: DWORD, pvArg: ?*c_void, pfnEnumOIDInfo: PFN_CRYPT_ENUM_OID_INFO) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptFindLocalizedName(pwszCryptName: LPCWSTR) callconv(.Stdcall) LPCWSTR;
 pub const struct__CERT_STRONG_SIGN_SERIALIZED_INFO = extern struct {
@@ -22141,7 +22141,7 @@ pub const struct__CMSG_ENCRYPTED_ENCODE_INFO = extern struct {
 };
 pub const CMSG_ENCRYPTED_ENCODE_INFO = struct__CMSG_ENCRYPTED_ENCODE_INFO;
 pub const PCMSG_ENCRYPTED_ENCODE_INFO = [*c]struct__CMSG_ENCRYPTED_ENCODE_INFO;
-pub const PFN_CMSG_STREAM_OUTPUT = ?extern fn (?*const c_void, [*c]BYTE, DWORD, BOOL) BOOL;
+pub const PFN_CMSG_STREAM_OUTPUT = ?fn (?*const c_void, [*c]BYTE, DWORD, BOOL) callconv(.C) BOOL;
 pub const struct__CMSG_STREAM_INFO = extern struct {
     cbContent: DWORD,
     pfnStreamOutput: PFN_CMSG_STREAM_OUTPUT,
@@ -22309,11 +22309,11 @@ pub extern "crypt32" fn CryptMsgVerifyCountersignatureEncoded(hCryptProv: HCRYPT
 pub extern "crypt32" fn CryptMsgVerifyCountersignatureEncodedEx(hCryptProv: HCRYPTPROV_LEGACY, dwEncodingType: DWORD, pbSignerInfo: PBYTE, cbSignerInfo: DWORD, pbSignerInfoCountersignature: PBYTE, cbSignerInfoCountersignature: DWORD, dwSignerType: DWORD, pvSigner: ?*c_void, dwFlags: DWORD, pvExtra: ?*c_void) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptMsgCountersign(hCryptMsg: HCRYPTMSG, dwIndex: DWORD, cCountersigners: DWORD, rgCountersigners: PCMSG_SIGNER_ENCODE_INFO) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptMsgCountersignEncoded(dwEncodingType: DWORD, pbSignerInfo: PBYTE, cbSignerInfo: DWORD, cCountersigners: DWORD, rgCountersigners: PCMSG_SIGNER_ENCODE_INFO, pbCountersignature: PBYTE, pcbCountersignature: PDWORD) callconv(.Stdcall) BOOL;
-pub const PFN_CMSG_ALLOC = ?extern fn (usize) ?*c_void;
-pub const PFN_CMSG_FREE = ?extern fn (?*c_void) void;
-pub const PFN_CMSG_GEN_ENCRYPT_KEY = ?extern fn ([*c]HCRYPTPROV, PCRYPT_ALGORITHM_IDENTIFIER, PVOID, PCERT_PUBLIC_KEY_INFO, PFN_CMSG_ALLOC, [*c]HCRYPTKEY, [*c]PBYTE, PDWORD) BOOL;
-pub const PFN_CMSG_EXPORT_ENCRYPT_KEY = ?extern fn (HCRYPTPROV, HCRYPTKEY, PCERT_PUBLIC_KEY_INFO, PBYTE, PDWORD) BOOL;
-pub const PFN_CMSG_IMPORT_ENCRYPT_KEY = ?extern fn (HCRYPTPROV, DWORD, PCRYPT_ALGORITHM_IDENTIFIER, PCRYPT_ALGORITHM_IDENTIFIER, PBYTE, DWORD, [*c]HCRYPTKEY) BOOL;
+pub const PFN_CMSG_ALLOC = ?fn (usize) callconv(.C) ?*c_void;
+pub const PFN_CMSG_FREE = ?fn (?*c_void) callconv(.C) void;
+pub const PFN_CMSG_GEN_ENCRYPT_KEY = ?fn ([*c]HCRYPTPROV, PCRYPT_ALGORITHM_IDENTIFIER, PVOID, PCERT_PUBLIC_KEY_INFO, PFN_CMSG_ALLOC, [*c]HCRYPTKEY, [*c]PBYTE, PDWORD) callconv(.C) BOOL;
+pub const PFN_CMSG_EXPORT_ENCRYPT_KEY = ?fn (HCRYPTPROV, HCRYPTKEY, PCERT_PUBLIC_KEY_INFO, PBYTE, PDWORD) callconv(.C) BOOL;
+pub const PFN_CMSG_IMPORT_ENCRYPT_KEY = ?fn (HCRYPTPROV, DWORD, PCRYPT_ALGORITHM_IDENTIFIER, PCRYPT_ALGORITHM_IDENTIFIER, PBYTE, DWORD, [*c]HCRYPTKEY) callconv(.C) BOOL;
 pub const struct__CMSG_CONTENT_ENCRYPT_INFO = extern struct {
     cbSize: DWORD,
     hCryptProv: HCRYPTPROV_LEGACY,
@@ -22336,7 +22336,7 @@ pub const struct__CMSG_CONTENT_ENCRYPT_INFO = extern struct {
 };
 pub const CMSG_CONTENT_ENCRYPT_INFO = struct__CMSG_CONTENT_ENCRYPT_INFO;
 pub const PCMSG_CONTENT_ENCRYPT_INFO = [*c]struct__CMSG_CONTENT_ENCRYPT_INFO;
-pub const PFN_CMSG_GEN_CONTENT_ENCRYPT_KEY = ?extern fn (PCMSG_CONTENT_ENCRYPT_INFO, DWORD, ?*c_void) BOOL;
+pub const PFN_CMSG_GEN_CONTENT_ENCRYPT_KEY = ?fn (PCMSG_CONTENT_ENCRYPT_INFO, DWORD, ?*c_void) callconv(.C) BOOL;
 pub const struct__CMSG_KEY_TRANS_ENCRYPT_INFO = extern struct {
     cbSize: DWORD,
     dwRecipientIndex: DWORD,
@@ -22346,7 +22346,7 @@ pub const struct__CMSG_KEY_TRANS_ENCRYPT_INFO = extern struct {
 };
 pub const CMSG_KEY_TRANS_ENCRYPT_INFO = struct__CMSG_KEY_TRANS_ENCRYPT_INFO;
 pub const PCMSG_KEY_TRANS_ENCRYPT_INFO = [*c]struct__CMSG_KEY_TRANS_ENCRYPT_INFO;
-pub const PFN_CMSG_EXPORT_KEY_TRANS = ?extern fn (PCMSG_CONTENT_ENCRYPT_INFO, PCMSG_KEY_TRANS_RECIPIENT_ENCODE_INFO, PCMSG_KEY_TRANS_ENCRYPT_INFO, DWORD, ?*c_void) BOOL;
+pub const PFN_CMSG_EXPORT_KEY_TRANS = ?fn (PCMSG_CONTENT_ENCRYPT_INFO, PCMSG_KEY_TRANS_RECIPIENT_ENCODE_INFO, PCMSG_KEY_TRANS_ENCRYPT_INFO, DWORD, ?*c_void) callconv(.C) BOOL;
 pub const struct__CMSG_KEY_AGREE_KEY_ENCRYPT_INFO = extern struct {
     cbSize: DWORD,
     EncryptedKey: CRYPT_DATA_BLOB,
@@ -22369,7 +22369,7 @@ pub const struct__CMSG_KEY_AGREE_ENCRYPT_INFO = extern struct {
 };
 pub const CMSG_KEY_AGREE_ENCRYPT_INFO = struct__CMSG_KEY_AGREE_ENCRYPT_INFO;
 pub const PCMSG_KEY_AGREE_ENCRYPT_INFO = [*c]struct__CMSG_KEY_AGREE_ENCRYPT_INFO;
-pub const PFN_CMSG_EXPORT_KEY_AGREE = ?extern fn (PCMSG_CONTENT_ENCRYPT_INFO, PCMSG_KEY_AGREE_RECIPIENT_ENCODE_INFO, PCMSG_KEY_AGREE_ENCRYPT_INFO, DWORD, ?*c_void) BOOL;
+pub const PFN_CMSG_EXPORT_KEY_AGREE = ?fn (PCMSG_CONTENT_ENCRYPT_INFO, PCMSG_KEY_AGREE_RECIPIENT_ENCODE_INFO, PCMSG_KEY_AGREE_ENCRYPT_INFO, DWORD, ?*c_void) callconv(.C) BOOL;
 pub const struct__CMSG_MAIL_LIST_ENCRYPT_INFO = extern struct {
     cbSize: DWORD,
     dwRecipientIndex: DWORD,
@@ -22379,10 +22379,10 @@ pub const struct__CMSG_MAIL_LIST_ENCRYPT_INFO = extern struct {
 };
 pub const CMSG_MAIL_LIST_ENCRYPT_INFO = struct__CMSG_MAIL_LIST_ENCRYPT_INFO;
 pub const PCMSG_MAIL_LIST_ENCRYPT_INFO = [*c]struct__CMSG_MAIL_LIST_ENCRYPT_INFO;
-pub const PFN_CMSG_EXPORT_MAIL_LIST = ?extern fn (PCMSG_CONTENT_ENCRYPT_INFO, PCMSG_MAIL_LIST_RECIPIENT_ENCODE_INFO, PCMSG_MAIL_LIST_ENCRYPT_INFO, DWORD, ?*c_void) BOOL;
-pub const PFN_CMSG_IMPORT_KEY_TRANS = ?extern fn (PCRYPT_ALGORITHM_IDENTIFIER, PCMSG_CTRL_KEY_TRANS_DECRYPT_PARA, DWORD, ?*c_void, [*c]HCRYPTKEY) BOOL;
-pub const PFN_CMSG_IMPORT_KEY_AGREE = ?extern fn (PCRYPT_ALGORITHM_IDENTIFIER, PCMSG_CTRL_KEY_AGREE_DECRYPT_PARA, DWORD, ?*c_void, [*c]HCRYPTKEY) BOOL;
-pub const PFN_CMSG_IMPORT_MAIL_LIST = ?extern fn (PCRYPT_ALGORITHM_IDENTIFIER, PCMSG_CTRL_MAIL_LIST_DECRYPT_PARA, DWORD, ?*c_void, [*c]HCRYPTKEY) BOOL;
+pub const PFN_CMSG_EXPORT_MAIL_LIST = ?fn (PCMSG_CONTENT_ENCRYPT_INFO, PCMSG_MAIL_LIST_RECIPIENT_ENCODE_INFO, PCMSG_MAIL_LIST_ENCRYPT_INFO, DWORD, ?*c_void) callconv(.C) BOOL;
+pub const PFN_CMSG_IMPORT_KEY_TRANS = ?fn (PCRYPT_ALGORITHM_IDENTIFIER, PCMSG_CTRL_KEY_TRANS_DECRYPT_PARA, DWORD, ?*c_void, [*c]HCRYPTKEY) callconv(.C) BOOL;
+pub const PFN_CMSG_IMPORT_KEY_AGREE = ?fn (PCRYPT_ALGORITHM_IDENTIFIER, PCMSG_CTRL_KEY_AGREE_DECRYPT_PARA, DWORD, ?*c_void, [*c]HCRYPTKEY) callconv(.C) BOOL;
+pub const PFN_CMSG_IMPORT_MAIL_LIST = ?fn (PCRYPT_ALGORITHM_IDENTIFIER, PCMSG_CTRL_MAIL_LIST_DECRYPT_PARA, DWORD, ?*c_void, [*c]HCRYPTKEY) callconv(.C) BOOL;
 pub const struct__CMSG_CNG_CONTENT_DECRYPT_INFO = extern struct {
     cbSize: DWORD,
     ContentEncryptionAlgorithm: CRYPT_ALGORITHM_IDENTIFIER,
@@ -22396,9 +22396,9 @@ pub const struct__CMSG_CNG_CONTENT_DECRYPT_INFO = extern struct {
 };
 pub const CMSG_CNG_CONTENT_DECRYPT_INFO = struct__CMSG_CNG_CONTENT_DECRYPT_INFO;
 pub const PCMSG_CNG_CONTENT_DECRYPT_INFO = [*c]struct__CMSG_CNG_CONTENT_DECRYPT_INFO;
-pub const PFN_CMSG_CNG_IMPORT_KEY_TRANS = ?extern fn (PCMSG_CNG_CONTENT_DECRYPT_INFO, PCMSG_CTRL_KEY_TRANS_DECRYPT_PARA, DWORD, ?*c_void) BOOL;
-pub const PFN_CMSG_CNG_IMPORT_KEY_AGREE = ?extern fn (PCMSG_CNG_CONTENT_DECRYPT_INFO, PCMSG_CTRL_KEY_AGREE_DECRYPT_PARA, DWORD, ?*c_void) BOOL;
-pub const PFN_CMSG_CNG_IMPORT_CONTENT_ENCRYPT_KEY = ?extern fn (PCMSG_CNG_CONTENT_DECRYPT_INFO, DWORD, ?*c_void) BOOL;
+pub const PFN_CMSG_CNG_IMPORT_KEY_TRANS = ?fn (PCMSG_CNG_CONTENT_DECRYPT_INFO, PCMSG_CTRL_KEY_TRANS_DECRYPT_PARA, DWORD, ?*c_void) callconv(.C) BOOL;
+pub const PFN_CMSG_CNG_IMPORT_KEY_AGREE = ?fn (PCMSG_CNG_CONTENT_DECRYPT_INFO, PCMSG_CTRL_KEY_AGREE_DECRYPT_PARA, DWORD, ?*c_void) callconv(.C) BOOL;
+pub const PFN_CMSG_CNG_IMPORT_CONTENT_ENCRYPT_KEY = ?fn (PCMSG_CNG_CONTENT_DECRYPT_INFO, DWORD, ?*c_void) callconv(.C) BOOL;
 pub const HCERTSTORE = ?*c_void;
 pub const struct__CERT_CONTEXT = extern struct {
     dwCertEncodingType: DWORD,
@@ -22538,21 +22538,21 @@ pub const struct__CERT_STORE_PROV_INFO = extern struct {
 };
 pub const CERT_STORE_PROV_INFO = struct__CERT_STORE_PROV_INFO;
 pub const PCERT_STORE_PROV_INFO = [*c]struct__CERT_STORE_PROV_INFO;
-pub const PFN_CERT_DLL_OPEN_STORE_PROV_FUNC = ?extern fn (LPCSTR, DWORD, HCRYPTPROV_LEGACY, DWORD, ?*const c_void, HCERTSTORE, PCERT_STORE_PROV_INFO) BOOL;
-pub const PFN_CERT_STORE_PROV_CLOSE = ?extern fn (HCERTSTOREPROV, DWORD) void;
-pub const PFN_CERT_STORE_PROV_READ_CERT = ?extern fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD, [*c]PCCERT_CONTEXT) BOOL;
-pub const PFN_CERT_STORE_PROV_WRITE_CERT = ?extern fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_DELETE_CERT = ?extern fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_SET_CERT_PROPERTY = ?extern fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD, DWORD, ?*const c_void) BOOL;
-pub const PFN_CERT_STORE_PROV_READ_CRL = ?extern fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD, [*c]PCCRL_CONTEXT) BOOL;
-pub const PFN_CERT_STORE_PROV_WRITE_CRL = ?extern fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_DELETE_CRL = ?extern fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_SET_CRL_PROPERTY = ?extern fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD, DWORD, ?*const c_void) BOOL;
-pub const PFN_CERT_STORE_PROV_READ_CTL = ?extern fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD, [*c]PCCTL_CONTEXT) BOOL;
-pub const PFN_CERT_STORE_PROV_WRITE_CTL = ?extern fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_DELETE_CTL = ?extern fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_SET_CTL_PROPERTY = ?extern fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD, DWORD, ?*const c_void) BOOL;
-pub const PFN_CERT_STORE_PROV_CONTROL = ?extern fn (HCERTSTOREPROV, DWORD, DWORD, ?*const c_void) BOOL;
+pub const PFN_CERT_DLL_OPEN_STORE_PROV_FUNC = ?fn (LPCSTR, DWORD, HCRYPTPROV_LEGACY, DWORD, ?*const c_void, HCERTSTORE, PCERT_STORE_PROV_INFO) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_CLOSE = ?fn (HCERTSTOREPROV, DWORD) callconv(.C) void;
+pub const PFN_CERT_STORE_PROV_READ_CERT = ?fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD, [*c]PCCERT_CONTEXT) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_WRITE_CERT = ?fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_DELETE_CERT = ?fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_SET_CERT_PROPERTY = ?fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD, DWORD, ?*const c_void) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_READ_CRL = ?fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD, [*c]PCCRL_CONTEXT) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_WRITE_CRL = ?fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_DELETE_CRL = ?fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_SET_CRL_PROPERTY = ?fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD, DWORD, ?*const c_void) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_READ_CTL = ?fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD, [*c]PCCTL_CONTEXT) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_WRITE_CTL = ?fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_DELETE_CTL = ?fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_SET_CTL_PROPERTY = ?fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD, DWORD, ?*const c_void) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_CONTROL = ?fn (HCERTSTOREPROV, DWORD, DWORD, ?*const c_void) callconv(.C) BOOL;
 pub const struct__CERT_STORE_PROV_FIND_INFO = extern struct {
     cbSize: DWORD,
     dwMsgAndCertEncodingType: DWORD,
@@ -22564,15 +22564,15 @@ pub const CERT_STORE_PROV_FIND_INFO = struct__CERT_STORE_PROV_FIND_INFO;
 pub const PCERT_STORE_PROV_FIND_INFO = [*c]struct__CERT_STORE_PROV_FIND_INFO;
 pub const CCERT_STORE_PROV_FIND_INFO = CERT_STORE_PROV_FIND_INFO;
 pub const PCCERT_STORE_PROV_FIND_INFO = [*c]const CERT_STORE_PROV_FIND_INFO;
-pub const PFN_CERT_STORE_PROV_FIND_CERT = ?extern fn (HCERTSTOREPROV, PCCERT_STORE_PROV_FIND_INFO, PCCERT_CONTEXT, DWORD, [*c](?*c_void), [*c]PCCERT_CONTEXT) BOOL;
-pub const PFN_CERT_STORE_PROV_FREE_FIND_CERT = ?extern fn (HCERTSTOREPROV, PCCERT_CONTEXT, ?*c_void, DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_GET_CERT_PROPERTY = ?extern fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD, DWORD, ?*c_void, [*c]DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_FIND_CRL = ?extern fn (HCERTSTOREPROV, PCCERT_STORE_PROV_FIND_INFO, PCCRL_CONTEXT, DWORD, [*c](?*c_void), [*c]PCCRL_CONTEXT) BOOL;
-pub const PFN_CERT_STORE_PROV_FREE_FIND_CRL = ?extern fn (HCERTSTOREPROV, PCCRL_CONTEXT, ?*c_void, DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_GET_CRL_PROPERTY = ?extern fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD, DWORD, ?*c_void, [*c]DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_FIND_CTL = ?extern fn (HCERTSTOREPROV, PCCERT_STORE_PROV_FIND_INFO, PCCTL_CONTEXT, DWORD, [*c](?*c_void), [*c]PCCTL_CONTEXT) BOOL;
-pub const PFN_CERT_STORE_PROV_FREE_FIND_CTL = ?extern fn (HCERTSTOREPROV, PCCTL_CONTEXT, ?*c_void, DWORD) BOOL;
-pub const PFN_CERT_STORE_PROV_GET_CTL_PROPERTY = ?extern fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD, DWORD, ?*c_void, [*c]DWORD) BOOL;
+pub const PFN_CERT_STORE_PROV_FIND_CERT = ?fn (HCERTSTOREPROV, PCCERT_STORE_PROV_FIND_INFO, PCCERT_CONTEXT, DWORD, [*c](?*c_void), [*c]PCCERT_CONTEXT) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_FREE_FIND_CERT = ?fn (HCERTSTOREPROV, PCCERT_CONTEXT, ?*c_void, DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_GET_CERT_PROPERTY = ?fn (HCERTSTOREPROV, PCCERT_CONTEXT, DWORD, DWORD, ?*c_void, [*c]DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_FIND_CRL = ?fn (HCERTSTOREPROV, PCCERT_STORE_PROV_FIND_INFO, PCCRL_CONTEXT, DWORD, [*c](?*c_void), [*c]PCCRL_CONTEXT) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_FREE_FIND_CRL = ?fn (HCERTSTOREPROV, PCCRL_CONTEXT, ?*c_void, DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_GET_CRL_PROPERTY = ?fn (HCERTSTOREPROV, PCCRL_CONTEXT, DWORD, DWORD, ?*c_void, [*c]DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_FIND_CTL = ?fn (HCERTSTOREPROV, PCCERT_STORE_PROV_FIND_INFO, PCCTL_CONTEXT, DWORD, [*c](?*c_void), [*c]PCCTL_CONTEXT) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_FREE_FIND_CTL = ?fn (HCERTSTOREPROV, PCCTL_CONTEXT, ?*c_void, DWORD) callconv(.C) BOOL;
+pub const PFN_CERT_STORE_PROV_GET_CTL_PROPERTY = ?fn (HCERTSTOREPROV, PCCTL_CONTEXT, DWORD, DWORD, ?*c_void, [*c]DWORD) callconv(.C) BOOL;
 pub extern "crypt32" fn CertDuplicateStore(hCertStore: HCERTSTORE) callconv(.Stdcall) HCERTSTORE;
 pub extern "crypt32" fn CertSaveStore(hCertStore: HCERTSTORE, dwEncodingType: DWORD, dwSaveAs: DWORD, dwSaveTo: DWORD, pvSaveToPara: ?*c_void, dwFlags: DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CertCloseStore(hCertStore: HCERTSTORE, dwFlags: DWORD) callconv(.Stdcall) BOOL;
@@ -22658,7 +22658,7 @@ pub extern "crypt32" fn CertRemoveStoreFromCollection(hCollectionStore: HCERTSTO
 pub extern "crypt32" fn CertControlStore(hCertStore: HCERTSTORE, dwFlags: DWORD, dwCtrlType: DWORD, pvCtrlPara: ?*const c_void) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CertSetStoreProperty(hCertStore: HCERTSTORE, dwPropId: DWORD, dwFlags: DWORD, pvData: ?*const c_void) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CertGetStoreProperty(hCertStore: HCERTSTORE, dwPropId: DWORD, pvData: ?*c_void, pcbData: [*c]DWORD) callconv(.Stdcall) BOOL;
-pub const PFN_CERT_CREATE_CONTEXT_SORT_FUNC = ?extern fn (DWORD, DWORD, DWORD, ?*c_void) BOOL;
+pub const PFN_CERT_CREATE_CONTEXT_SORT_FUNC = ?fn (DWORD, DWORD, DWORD, ?*c_void) callconv(.C) BOOL;
 pub const struct__CERT_CREATE_CONTEXT_PARA = extern struct {
     cbSize: DWORD,
     pfnFree: PFN_CRYPT_FREE,
@@ -22689,9 +22689,9 @@ pub extern "crypt32" fn CertRegisterSystemStore(pvSystemStore: ?*const c_void, d
 pub extern "crypt32" fn CertRegisterPhysicalStore(pvSystemStore: ?*const c_void, dwFlags: DWORD, pwszStoreName: LPCWSTR, pStoreInfo: PCERT_PHYSICAL_STORE_INFO, pvReserved: ?*c_void) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CertUnregisterSystemStore(pvSystemStore: ?*const c_void, dwFlags: DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CertUnregisterPhysicalStore(pvSystemStore: ?*const c_void, dwFlags: DWORD, pwszStoreName: LPCWSTR) callconv(.Stdcall) BOOL;
-pub const PFN_CERT_ENUM_SYSTEM_STORE_LOCATION = ?extern fn (LPCWSTR, DWORD, ?*c_void, ?*c_void) BOOL;
-pub const PFN_CERT_ENUM_SYSTEM_STORE = ?extern fn (?*const c_void, DWORD, PCERT_SYSTEM_STORE_INFO, ?*c_void, ?*c_void) BOOL;
-pub const PFN_CERT_ENUM_PHYSICAL_STORE = ?extern fn (?*const c_void, DWORD, LPCWSTR, PCERT_PHYSICAL_STORE_INFO, ?*c_void, ?*c_void) BOOL;
+pub const PFN_CERT_ENUM_SYSTEM_STORE_LOCATION = ?fn (LPCWSTR, DWORD, ?*c_void, ?*c_void) callconv(.C) BOOL;
+pub const PFN_CERT_ENUM_SYSTEM_STORE = ?fn (?*const c_void, DWORD, PCERT_SYSTEM_STORE_INFO, ?*c_void, ?*c_void) callconv(.C) BOOL;
+pub const PFN_CERT_ENUM_PHYSICAL_STORE = ?fn (?*const c_void, DWORD, LPCWSTR, PCERT_PHYSICAL_STORE_INFO, ?*c_void, ?*c_void) callconv(.C) BOOL;
 pub extern "crypt32" fn CertEnumSystemStoreLocation(dwFlags: DWORD, pvArg: ?*c_void, pfnEnum: PFN_CERT_ENUM_SYSTEM_STORE_LOCATION) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CertEnumSystemStore(dwFlags: DWORD, pvSystemStoreLocationPara: ?*c_void, pvArg: ?*c_void, pfnEnum: PFN_CERT_ENUM_SYSTEM_STORE) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CertEnumPhysicalStore(pvSystemStore: ?*const c_void, dwFlags: DWORD, pvArg: ?*c_void, pfnEnum: PFN_CERT_ENUM_PHYSICAL_STORE) callconv(.Stdcall) BOOL;
@@ -22797,9 +22797,9 @@ pub extern "crypt32" fn CryptHashCertificate(hCryptProv: HCRYPTPROV_LEGACY, Algi
 pub extern "crypt32" fn CryptHashCertificate2(pwszCNGHashAlgid: LPCWSTR, dwFlags: DWORD, pvReserved: ?*c_void, pbEncoded: [*c]const BYTE, cbEncoded: DWORD, pbComputedHash: [*c]BYTE, pcbComputedHash: [*c]DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptSignCertificate(hCryptProvOrNCryptKey: HCRYPTPROV_OR_NCRYPT_KEY_HANDLE, dwKeySpec: DWORD, dwCertEncodingType: DWORD, pbEncodedToBeSigned: [*c]const BYTE, cbEncodedToBeSigned: DWORD, pSignatureAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER, pvHashAuxInfo: ?*const c_void, pbSignature: [*c]BYTE, pcbSignature: [*c]DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptSignAndEncodeCertificate(hCryptProvOrNCryptKey: HCRYPTPROV_OR_NCRYPT_KEY_HANDLE, dwKeySpec: DWORD, dwCertEncodingType: DWORD, lpszStructType: LPCSTR, pvStructInfo: ?*const c_void, pSignatureAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER, pvHashAuxInfo: ?*const c_void, pbEncoded: [*c]BYTE, pcbEncoded: [*c]DWORD) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_EXTRACT_ENCODED_SIGNATURE_PARAMETERS_FUNC = ?extern fn (DWORD, PCRYPT_ALGORITHM_IDENTIFIER, [*c](?*c_void), [*c]LPWSTR) BOOL;
-pub const PFN_CRYPT_SIGN_AND_ENCODE_HASH_FUNC = ?extern fn (NCRYPT_KEY_HANDLE, DWORD, PCRYPT_ALGORITHM_IDENTIFIER, ?*c_void, LPCWSTR, LPCWSTR, [*c]BYTE, DWORD, [*c]BYTE, [*c]DWORD) BOOL;
-pub const PFN_CRYPT_VERIFY_ENCODED_SIGNATURE_FUNC = ?extern fn (DWORD, PCERT_PUBLIC_KEY_INFO, PCRYPT_ALGORITHM_IDENTIFIER, ?*c_void, LPCWSTR, LPCWSTR, [*c]BYTE, DWORD, [*c]BYTE, DWORD) BOOL;
+pub const PFN_CRYPT_EXTRACT_ENCODED_SIGNATURE_PARAMETERS_FUNC = ?fn (DWORD, PCRYPT_ALGORITHM_IDENTIFIER, [*c](?*c_void), [*c]LPWSTR) callconv(.C) BOOL;
+pub const PFN_CRYPT_SIGN_AND_ENCODE_HASH_FUNC = ?fn (NCRYPT_KEY_HANDLE, DWORD, PCRYPT_ALGORITHM_IDENTIFIER, ?*c_void, LPCWSTR, LPCWSTR, [*c]BYTE, DWORD, [*c]BYTE, [*c]DWORD) callconv(.C) BOOL;
+pub const PFN_CRYPT_VERIFY_ENCODED_SIGNATURE_FUNC = ?fn (DWORD, PCERT_PUBLIC_KEY_INFO, PCRYPT_ALGORITHM_IDENTIFIER, ?*c_void, LPCWSTR, LPCWSTR, [*c]BYTE, DWORD, [*c]BYTE, DWORD) callconv(.C) BOOL;
 pub extern "crypt32" fn CertVerifyTimeValidity(pTimeToVerify: LPFILETIME, pCertInfo: PCERT_INFO) callconv(.Stdcall) LONG;
 pub extern "crypt32" fn CertVerifyCRLTimeValidity(pTimeToVerify: LPFILETIME, pCrlInfo: PCRL_INFO) callconv(.Stdcall) LONG;
 pub extern "crypt32" fn CertVerifyValidityNesting(pSubjectInfo: PCERT_INFO, pIssuerInfo: PCERT_INFO) callconv(.Stdcall) BOOL;
@@ -22821,18 +22821,18 @@ pub const PCRYPT_DEFAULT_CONTEXT_MULTI_OID_PARA = [*c]struct__CRYPT_DEFAULT_CONT
 pub extern "crypt32" fn CryptUninstallDefaultContext(hDefaultContext: HCRYPTDEFAULTCONTEXT, dwFlags: DWORD, pvReserved: ?*c_void) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptExportPublicKeyInfo(hCryptProvOrNCryptKey: HCRYPTPROV_OR_NCRYPT_KEY_HANDLE, dwKeySpec: DWORD, dwCertEncodingType: DWORD, pInfo: PCERT_PUBLIC_KEY_INFO, pcbInfo: [*c]DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptExportPublicKeyInfoEx(hCryptProvOrNCryptKey: HCRYPTPROV_OR_NCRYPT_KEY_HANDLE, dwKeySpec: DWORD, dwCertEncodingType: DWORD, pszPublicKeyObjId: LPSTR, dwFlags: DWORD, pvAuxInfo: ?*c_void, pInfo: PCERT_PUBLIC_KEY_INFO, pcbInfo: [*c]DWORD) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_EXPORT_PUBLIC_KEY_INFO_EX2_FUNC = ?extern fn (NCRYPT_KEY_HANDLE, DWORD, LPSTR, DWORD, ?*c_void, PCERT_PUBLIC_KEY_INFO, [*c]DWORD) BOOL;
+pub const PFN_CRYPT_EXPORT_PUBLIC_KEY_INFO_EX2_FUNC = ?fn (NCRYPT_KEY_HANDLE, DWORD, LPSTR, DWORD, ?*c_void, PCERT_PUBLIC_KEY_INFO, [*c]DWORD) callconv(.C) BOOL;
 pub extern "crypt32" fn CryptExportPublicKeyInfoFromBCryptKeyHandle(hBCryptKey: BCRYPT_KEY_HANDLE, dwCertEncodingType: DWORD, pszPublicKeyObjId: LPSTR, dwFlags: DWORD, pvAuxInfo: ?*c_void, pInfo: PCERT_PUBLIC_KEY_INFO, pcbInfo: [*c]DWORD) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_EXPORT_PUBLIC_KEY_INFO_FROM_BCRYPT_HANDLE_FUNC = ?extern fn (BCRYPT_KEY_HANDLE, DWORD, LPSTR, DWORD, ?*c_void, PCERT_PUBLIC_KEY_INFO, [*c]DWORD) BOOL;
+pub const PFN_CRYPT_EXPORT_PUBLIC_KEY_INFO_FROM_BCRYPT_HANDLE_FUNC = ?fn (BCRYPT_KEY_HANDLE, DWORD, LPSTR, DWORD, ?*c_void, PCERT_PUBLIC_KEY_INFO, [*c]DWORD) callconv(.C) BOOL;
 pub extern "crypt32" fn CryptImportPublicKeyInfo(hCryptProv: HCRYPTPROV, dwCertEncodingType: DWORD, pInfo: PCERT_PUBLIC_KEY_INFO, phKey: [*c]HCRYPTKEY) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptImportPublicKeyInfoEx(hCryptProv: HCRYPTPROV, dwCertEncodingType: DWORD, pInfo: PCERT_PUBLIC_KEY_INFO, aiKeyAlg: ALG_ID, dwFlags: DWORD, pvAuxInfo: ?*c_void, phKey: [*c]HCRYPTKEY) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptImportPublicKeyInfoEx2(dwCertEncodingType: DWORD, pInfo: PCERT_PUBLIC_KEY_INFO, dwFlags: DWORD, pvAuxInfo: ?*c_void, phKey: [*c]BCRYPT_KEY_HANDLE) callconv(.Stdcall) BOOL;
-pub const PFN_IMPORT_PUBLIC_KEY_INFO_EX2_FUNC = ?extern fn (DWORD, PCERT_PUBLIC_KEY_INFO, DWORD, ?*c_void, [*c]BCRYPT_KEY_HANDLE) BOOL;
+pub const PFN_IMPORT_PUBLIC_KEY_INFO_EX2_FUNC = ?fn (DWORD, PCERT_PUBLIC_KEY_INFO, DWORD, ?*c_void, [*c]BCRYPT_KEY_HANDLE) callconv(.C) BOOL;
 pub extern "crypt32" fn CryptAcquireCertificatePrivateKey(pCert: PCCERT_CONTEXT, dwFlags: DWORD, pvParameters: ?*c_void, phCryptProvOrNCryptKey: [*c]HCRYPTPROV_OR_NCRYPT_KEY_HANDLE, pdwKeySpec: [*c]DWORD, pfCallerFreeProvOrNCryptKey: [*c]BOOL) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptFindCertificateKeyProvInfo(pCert: PCCERT_CONTEXT, dwFlags: DWORD, pvReserved: ?*c_void) callconv(.Stdcall) BOOL;
-pub const PFN_IMPORT_PRIV_KEY_FUNC = ?extern fn (HCRYPTPROV, [*c]CRYPT_PRIVATE_KEY_INFO, DWORD, ?*c_void) BOOL;
+pub const PFN_IMPORT_PRIV_KEY_FUNC = ?fn (HCRYPTPROV, [*c]CRYPT_PRIVATE_KEY_INFO, DWORD, ?*c_void) callconv(.C) BOOL;
 pub extern "crypt32" fn CryptImportPKCS8(sPrivateKeyAndParams: CRYPT_PKCS8_IMPORT_PARAMS, dwFlags: DWORD, phCryptProv: [*c]HCRYPTPROV, pvAuxInfo: ?*c_void) callconv(.Stdcall) BOOL;
-pub const PFN_EXPORT_PRIV_KEY_FUNC = ?extern fn (HCRYPTPROV, DWORD, LPSTR, DWORD, ?*c_void, [*c]CRYPT_PRIVATE_KEY_INFO, [*c]DWORD) BOOL;
+pub const PFN_EXPORT_PRIV_KEY_FUNC = ?fn (HCRYPTPROV, DWORD, LPSTR, DWORD, ?*c_void, [*c]CRYPT_PRIVATE_KEY_INFO, [*c]DWORD) callconv(.C) BOOL;
 pub extern "crypt32" fn CryptExportPKCS8(hCryptProv: HCRYPTPROV, dwKeySpec: DWORD, pszPrivateKeyObjId: LPSTR, dwFlags: DWORD, pvAuxInfo: ?*c_void, pbPrivateKeyBlob: [*c]BYTE, pcbPrivateKeyBlob: [*c]DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptExportPKCS8Ex(psExportParams: [*c]CRYPT_PKCS8_EXPORT_PARAMS, dwFlags: DWORD, pvAuxInfo: ?*c_void, pbPrivateKeyBlob: [*c]BYTE, pcbPrivateKeyBlob: [*c]DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptHashPublicKeyInfo(hCryptProv: HCRYPTPROV_LEGACY, Algid: ALG_ID, dwFlags: DWORD, dwCertEncodingType: DWORD, pInfo: PCERT_PUBLIC_KEY_INFO, pbComputedHash: [*c]BYTE, pcbComputedHash: [*c]DWORD) callconv(.Stdcall) BOOL;
@@ -22844,7 +22844,7 @@ pub extern "crypt32" fn CertStrToNameA(dwCertEncodingType: DWORD, pszX500: LPCST
 pub extern "crypt32" fn CertStrToNameW(dwCertEncodingType: DWORD, pszX500: LPCWSTR, dwStrType: DWORD, pvReserved: ?*c_void, pbEncoded: [*c]BYTE, pcbEncoded: [*c]DWORD, ppszError: [*c]LPCWSTR) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CertGetNameStringA(pCertContext: PCCERT_CONTEXT, dwType: DWORD, dwFlags: DWORD, pvTypePara: ?*c_void, pszNameString: LPSTR, cchNameString: DWORD) callconv(.Stdcall) DWORD;
 pub extern "crypt32" fn CertGetNameStringW(pCertContext: PCCERT_CONTEXT, dwType: DWORD, dwFlags: DWORD, pvTypePara: ?*c_void, pszNameString: LPWSTR, cchNameString: DWORD) callconv(.Stdcall) DWORD;
-pub const PFN_CRYPT_GET_SIGNER_CERTIFICATE = ?extern fn (?*c_void, DWORD, PCERT_INFO, HCERTSTORE) PCCERT_CONTEXT;
+pub const PFN_CRYPT_GET_SIGNER_CERTIFICATE = ?fn (?*c_void, DWORD, PCERT_INFO, HCERTSTORE) callconv(.C) PCCERT_CONTEXT;
 pub const struct__CRYPT_SIGN_MESSAGE_PARA = extern struct {
     cbSize: DWORD,
     dwMsgEncodingType: DWORD,
@@ -22955,7 +22955,7 @@ pub extern "crypt32" fn CryptMemRealloc(pv: LPVOID, cbSize: ULONG) callconv(.Std
 pub extern "crypt32" fn CryptMemFree(pv: LPVOID) callconv(.Stdcall) void;
 pub const HCRYPTASYNC = HANDLE;
 pub const PHCRYPTASYNC = [*c]HANDLE;
-pub const PFN_CRYPT_ASYNC_PARAM_FREE_FUNC = ?extern fn (LPSTR, LPVOID) void;
+pub const PFN_CRYPT_ASYNC_PARAM_FREE_FUNC = ?fn (LPSTR, LPVOID) callconv(.C) void;
 pub extern "crypt32" fn CryptCreateAsyncHandle(dwFlags: DWORD, phAsync: PHCRYPTASYNC) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptSetAsyncParam(hAsync: HCRYPTASYNC, pszParamOid: LPSTR, pvParam: LPVOID, pfnFree: PFN_CRYPT_ASYNC_PARAM_FREE_FUNC) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptGetAsyncParam(hAsync: HCRYPTASYNC, pszParamOid: LPSTR, ppvParam: [*c]LPVOID, ppfnFree: [*c]PFN_CRYPT_ASYNC_PARAM_FREE_FUNC) callconv(.Stdcall) BOOL;
@@ -22989,7 +22989,7 @@ pub const CRYPT_PASSWORD_CREDENTIALSW = struct__CRYPT_PASSWORD_CREDENTIALSW;
 pub const PCRYPT_PASSWORD_CREDENTIALSW = [*c]struct__CRYPT_PASSWORD_CREDENTIALSW;
 pub const CRYPT_PASSWORD_CREDENTIALS = CRYPT_PASSWORD_CREDENTIALSA;
 pub const PCRYPT_PASSWORD_CREDENTIALS = PCRYPT_PASSWORD_CREDENTIALSA;
-pub const PFN_FREE_ENCODED_OBJECT_FUNC = ?extern fn (LPCSTR, PCRYPT_BLOB_ARRAY, LPVOID) void;
+pub const PFN_FREE_ENCODED_OBJECT_FUNC = ?fn (LPCSTR, PCRYPT_BLOB_ARRAY, LPVOID) callconv(.C) void;
 pub const struct__CRYPTNET_URL_CACHE_PRE_FETCH_INFO = extern struct {
     cbSize: DWORD,
     dwObjectType: DWORD,
@@ -23037,18 +23037,18 @@ pub const CRYPT_RETRIEVE_AUX_INFO = struct__CRYPT_RETRIEVE_AUX_INFO;
 pub const PCRYPT_RETRIEVE_AUX_INFO = [*c]struct__CRYPT_RETRIEVE_AUX_INFO;
 pub extern "crypt32" fn CryptRetrieveObjectByUrlA(pszUrl: LPCSTR, pszObjectOid: LPCSTR, dwRetrievalFlags: DWORD, dwTimeout: DWORD, ppvObject: [*c]LPVOID, hAsyncRetrieve: HCRYPTASYNC, pCredentials: PCRYPT_CREDENTIALS, pvVerify: LPVOID, pAuxInfo: PCRYPT_RETRIEVE_AUX_INFO) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptRetrieveObjectByUrlW(pszUrl: LPCWSTR, pszObjectOid: LPCSTR, dwRetrievalFlags: DWORD, dwTimeout: DWORD, ppvObject: [*c]LPVOID, hAsyncRetrieve: HCRYPTASYNC, pCredentials: PCRYPT_CREDENTIALS, pvVerify: LPVOID, pAuxInfo: PCRYPT_RETRIEVE_AUX_INFO) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_CANCEL_RETRIEVAL = ?extern fn (DWORD, ?*c_void) BOOL;
+pub const PFN_CRYPT_CANCEL_RETRIEVAL = ?fn (DWORD, ?*c_void) callconv(.C) BOOL;
 pub extern "crypt32" fn CryptInstallCancelRetrieval(pfnCancel: PFN_CRYPT_CANCEL_RETRIEVAL, pvArg: ?*const c_void, dwFlags: DWORD, pvReserved: ?*c_void) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptUninstallCancelRetrieval(dwFlags: DWORD, pvReserved: ?*c_void) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptCancelAsyncRetrieval(hAsyncRetrieval: HCRYPTASYNC) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_ASYNC_RETRIEVAL_COMPLETION_FUNC = ?extern fn (LPVOID, DWORD, LPCSTR, LPSTR, LPVOID) void;
+pub const PFN_CRYPT_ASYNC_RETRIEVAL_COMPLETION_FUNC = ?fn (LPVOID, DWORD, LPCSTR, LPSTR, LPVOID) callconv(.C) void;
 pub const struct__CRYPT_ASYNC_RETRIEVAL_COMPLETION = extern struct {
     pfnCompletion: PFN_CRYPT_ASYNC_RETRIEVAL_COMPLETION_FUNC,
     pvCompletion: LPVOID,
 };
 pub const CRYPT_ASYNC_RETRIEVAL_COMPLETION = struct__CRYPT_ASYNC_RETRIEVAL_COMPLETION;
 pub const PCRYPT_ASYNC_RETRIEVAL_COMPLETION = [*c]struct__CRYPT_ASYNC_RETRIEVAL_COMPLETION;
-pub const PFN_CANCEL_ASYNC_RETRIEVAL_FUNC = ?extern fn (HCRYPTASYNC) BOOL;
+pub const PFN_CANCEL_ASYNC_RETRIEVAL_FUNC = ?fn (HCRYPTASYNC) callconv(.C) BOOL;
 pub const struct__CRYPT_URL_ARRAY = extern struct {
     cUrl: DWORD,
     rgwszUrl: [*c]LPWSTR,
@@ -23087,7 +23087,7 @@ pub extern "crypt32" fn CryptFlushTimeValidObject(pszFlushTimeValidOid: LPCSTR, 
 pub extern "crypt32" fn CertCreateSelfSignCertificate(hCryptProvOrNCryptKey: HCRYPTPROV_OR_NCRYPT_KEY_HANDLE, pSubjectIssuerBlob: PCERT_NAME_BLOB, dwFlags: DWORD, pKeyProvInfo: PCRYPT_KEY_PROV_INFO, pSignatureAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER, pStartTime: PSYSTEMTIME, pEndTime: PSYSTEMTIME, pExtensions: PCERT_EXTENSIONS) callconv(.Stdcall) PCCERT_CONTEXT;
 pub extern "crypt32" fn CryptGetKeyIdentifierProperty(pKeyIdentifier: [*c]const CRYPT_HASH_BLOB, dwPropId: DWORD, dwFlags: DWORD, pwszComputerName: LPCWSTR, pvReserved: ?*c_void, pvData: ?*c_void, pcbData: [*c]DWORD) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptSetKeyIdentifierProperty(pKeyIdentifier: [*c]const CRYPT_HASH_BLOB, dwPropId: DWORD, dwFlags: DWORD, pwszComputerName: LPCWSTR, pvReserved: ?*c_void, pvData: ?*const c_void) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_ENUM_KEYID_PROP = ?extern fn ([*c]const CRYPT_HASH_BLOB, DWORD, ?*c_void, ?*c_void, DWORD, [*c]DWORD, [*c](?*c_void), [*c]DWORD) BOOL;
+pub const PFN_CRYPT_ENUM_KEYID_PROP = ?fn ([*c]const CRYPT_HASH_BLOB, DWORD, ?*c_void, ?*c_void, DWORD, [*c]DWORD, [*c](?*c_void), [*c]DWORD) callconv(.C) BOOL;
 pub extern "crypt32" fn CryptEnumKeyIdentifierProperties(pKeyIdentifier: [*c]const CRYPT_HASH_BLOB, dwPropId: DWORD, dwFlags: DWORD, pwszComputerName: LPCWSTR, pvReserved: ?*c_void, pvArg: ?*c_void, pfnEnum: PFN_CRYPT_ENUM_KEYID_PROP) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptCreateKeyIdentifierFromCSP(dwCertEncodingType: DWORD, pszPubKeyOID: LPCSTR, pPubKeyStruc: [*c]const PUBLICKEYSTRUC, cbPubKeyStruc: DWORD, dwFlags: DWORD, pvReserved: ?*c_void, pbHash: [*c]BYTE, pcbHash: [*c]DWORD) callconv(.Stdcall) BOOL;
 pub const struct__CERT_CHAIN_ENGINE_CONFIG = extern struct {
@@ -23202,7 +23202,7 @@ pub const struct__CRL_REVOCATION_INFO = extern struct {
 pub const CRL_REVOCATION_INFO = struct__CRL_REVOCATION_INFO;
 pub const PCRL_REVOCATION_INFO = [*c]struct__CRL_REVOCATION_INFO;
 pub extern "crypt32" fn CertFindChainInStore(hCertStore: HCERTSTORE, dwCertEncodingType: DWORD, dwFindFlags: DWORD, dwFindType: DWORD, pvFindPara: ?*const c_void, pPrevChainContext: PCCERT_CHAIN_CONTEXT) callconv(.Stdcall) PCCERT_CHAIN_CONTEXT;
-pub const PFN_CERT_CHAIN_FIND_BY_ISSUER_CALLBACK = ?extern fn (PCCERT_CONTEXT, ?*c_void) BOOL;
+pub const PFN_CERT_CHAIN_FIND_BY_ISSUER_CALLBACK = ?fn (PCCERT_CONTEXT, ?*c_void) callconv(.C) BOOL;
 pub const struct__CERT_CHAIN_FIND_BY_ISSUER_PARA = extern struct {
     cbSize: DWORD,
     pszUsageIdentifier: LPCSTR,
@@ -23341,7 +23341,7 @@ pub const struct__CERT_SERVER_OCSP_RESPONSE_CONTEXT = extern struct {
 pub const CERT_SERVER_OCSP_RESPONSE_CONTEXT = struct__CERT_SERVER_OCSP_RESPONSE_CONTEXT;
 pub const PCERT_SERVER_OCSP_RESPONSE_CONTEXT = [*c]struct__CERT_SERVER_OCSP_RESPONSE_CONTEXT;
 pub const PCCERT_SERVER_OCSP_RESPONSE_CONTEXT = [*c]const CERT_SERVER_OCSP_RESPONSE_CONTEXT;
-pub const PFN_CERT_SERVER_OCSP_RESPONSE_UPDATE_CALLBACK = ?extern fn (PCCERT_CHAIN_CONTEXT, PCCERT_SERVER_OCSP_RESPONSE_CONTEXT, PCCRL_CONTEXT, PCCRL_CONTEXT, PVOID, DWORD) void;
+pub const PFN_CERT_SERVER_OCSP_RESPONSE_UPDATE_CALLBACK = ?fn (PCCERT_CHAIN_CONTEXT, PCCERT_SERVER_OCSP_RESPONSE_CONTEXT, PCCRL_CONTEXT, PCCRL_CONTEXT, PVOID, DWORD) callconv(.C) void;
 pub const struct__CERT_SERVER_OCSP_RESPONSE_OPEN_PARA = extern struct {
     cbSize: DWORD,
     dwFlags: DWORD,
@@ -23441,12 +23441,12 @@ pub const CRYPT_TIMESTAMP_PARA = struct__CRYPT_TIMESTAMP_PARA;
 pub const PCRYPT_TIMESTAMP_PARA = [*c]struct__CRYPT_TIMESTAMP_PARA;
 pub extern "crypt32" fn CryptRetrieveTimeStamp(wszUrl: LPCWSTR, dwRetrievalFlags: DWORD, dwTimeout: DWORD, pszHashId: LPCSTR, pPara: [*c]const CRYPT_TIMESTAMP_PARA, pbData: [*c]const BYTE, cbData: DWORD, ppTsContext: [*c]PCRYPT_TIMESTAMP_CONTEXT, ppTsSigner: [*c]PCCERT_CONTEXT, phStore: [*c]HCERTSTORE) callconv(.Stdcall) BOOL;
 pub extern "crypt32" fn CryptVerifyTimeStampSignature(pbTSContentInfo: [*c]const BYTE, cbTSContentInfo: DWORD, pbData: [*c]const BYTE, cbData: DWORD, hAdditionalStore: HCERTSTORE, ppTsContext: [*c]PCRYPT_TIMESTAMP_CONTEXT, ppTsSigner: [*c]PCCERT_CONTEXT, phStore: [*c]HCERTSTORE) callconv(.Stdcall) BOOL;
-pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FLUSH = ?extern fn (LPVOID, [*c]PCERT_NAME_BLOB, DWORD) BOOL;
-pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_GET = ?extern fn (LPVOID, PCRYPT_DATA_BLOB, DWORD, PCERT_NAME_BLOB, [*c]PBYTE, [*c]DWORD, [*c]PCWSTR, [*c]PCRYPT_DATA_BLOB) BOOL;
-pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_RELEASE = ?extern fn (DWORD, LPVOID) void;
-pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FREE_PASSWORD = ?extern fn (LPVOID, PCWSTR) void;
-pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FREE = ?extern fn (LPVOID, PBYTE) void;
-pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FREE_IDENTIFIER = ?extern fn (LPVOID, PCRYPT_DATA_BLOB) void;
+pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FLUSH = ?fn (LPVOID, [*c]PCERT_NAME_BLOB, DWORD) callconv(.C) BOOL;
+pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_GET = ?fn (LPVOID, PCRYPT_DATA_BLOB, DWORD, PCERT_NAME_BLOB, [*c]PBYTE, [*c]DWORD, [*c]PCWSTR, [*c]PCRYPT_DATA_BLOB) callconv(.C) BOOL;
+pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_RELEASE = ?fn (DWORD, LPVOID) callconv(.C) void;
+pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FREE_PASSWORD = ?fn (LPVOID, PCWSTR) callconv(.C) void;
+pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FREE = ?fn (LPVOID, PBYTE) callconv(.C) void;
+pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FREE_IDENTIFIER = ?fn (LPVOID, PCRYPT_DATA_BLOB) callconv(.C) void;
 pub const struct__CRYPT_OBJECT_LOCATOR_PROVIDER_TABLE = extern struct {
     cbSize: DWORD,
     pfnGet: PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_GET,
@@ -23457,9 +23457,9 @@ pub const struct__CRYPT_OBJECT_LOCATOR_PROVIDER_TABLE = extern struct {
 };
 pub const CRYPT_OBJECT_LOCATOR_PROVIDER_TABLE = struct__CRYPT_OBJECT_LOCATOR_PROVIDER_TABLE;
 pub const PCRYPT_OBJECT_LOCATOR_PROVIDER_TABLE = [*c]struct__CRYPT_OBJECT_LOCATOR_PROVIDER_TABLE;
-pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_INITIALIZE = ?extern fn (PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FLUSH, LPVOID, [*c]DWORD, [*c]PCRYPT_OBJECT_LOCATOR_PROVIDER_TABLE, [*c](?*c_void)) BOOL;
+pub const PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_INITIALIZE = ?fn (PFN_CRYPT_OBJECT_LOCATOR_PROVIDER_FLUSH, LPVOID, [*c]DWORD, [*c]PCRYPT_OBJECT_LOCATOR_PROVIDER_TABLE, [*c](?*c_void)) callconv(.C) BOOL;
 pub extern "crypt32" fn CertIsWeakHash(dwHashUseType: DWORD, pwszCNGHashAlgid: LPCWSTR, dwChainFlags: DWORD, pSignerChainContext: PCCERT_CHAIN_CONTEXT, pTimeStamp: LPFILETIME, pwszFileName: LPCWSTR) callconv(.Stdcall) BOOL;
-pub const PFN_CERT_IS_WEAK_HASH = ?extern fn (DWORD, LPCWSTR, DWORD, PCCERT_CHAIN_CONTEXT, LPFILETIME, LPCWSTR) BOOL;
+pub const PFN_CERT_IS_WEAK_HASH = ?fn (DWORD, LPCWSTR, DWORD, PCCERT_CHAIN_CONTEXT, LPFILETIME, LPCWSTR) callconv(.C) BOOL;
 pub const struct__CRYPTPROTECT_PROMPTSTRUCT = extern struct {
     cbSize: DWORD,
     dwPromptFlags: DWORD,
@@ -23615,16 +23615,16 @@ pub const cs_byte = byte;
 pub const boolean = u8;
 pub extern fn MIDL_user_allocate(size: usize) ?*c_void;
 pub extern fn MIDL_user_free(arg0: ?*c_void) void;
-pub extern "rpc4rt" fn I_RpcDefaultAllocate(bh: handle_t, size: usize, RealAlloc: ?extern fn (usize) ?*c_void) callconv(.Stdcall) ?*c_void;
-pub extern "rpc4rt" fn I_RpcDefaultFree(bh: handle_t, arg1: ?*c_void, RealFree: ?extern fn (?*c_void) void) callconv(.Stdcall) void;
+pub extern "rpc4rt" fn I_RpcDefaultAllocate(bh: handle_t, size: usize, RealAlloc: ?fn (usize) callconv(.C) ?*c_void) callconv(.Stdcall) ?*c_void;
+pub extern "rpc4rt" fn I_RpcDefaultFree(bh: handle_t, arg1: ?*c_void, RealFree: ?fn (?*c_void) callconv(.C) void) callconv(.Stdcall) void;
 pub const NDR_CCONTEXT = ?*c_void;
 pub const NDR_SCONTEXT = [*c]extern struct {
     pad: [2](?*c_void),
     userContext: ?*c_void,
 };
-pub const NDR_RUNDOWN = ?extern fn (?*c_void) void;
-pub const NDR_NOTIFY_ROUTINE = ?extern fn () void;
-pub const NDR_NOTIFY2_ROUTINE = ?extern fn (boolean) void;
+pub const NDR_RUNDOWN = ?fn (?*c_void) callconv(.C) void;
+pub const NDR_NOTIFY_ROUTINE = ?fn () callconv(.C) void;
+pub const NDR_NOTIFY2_ROUTINE = ?fn (boolean) callconv(.C) void;
 pub const struct__SCONTEXT_QUEUE = extern struct {
     NumberOfObjects: c_ulong,
     ArrayOfObjects: [*c]NDR_SCONTEXT,
@@ -23644,8 +23644,8 @@ pub extern "onecore" fn NDRSContextUnmarshall2(BindingHandle: RPC_BINDING_HANDLE
 pub extern "rpc4rt" fn RpcSsDestroyClientContext(ContextHandle: [*c](?*c_void)) callconv(.Stdcall) void;
 pub const error_status_t = c_ulong;
 pub const struct__MIDL_STUB_MESSAGE = @OpaqueType();
-pub const GENERIC_BINDING_ROUTINE = ?extern fn (?*c_void) ?*c_void;
-pub const GENERIC_UNBIND_ROUTINE = ?extern fn (?*c_void, [*c]u8) void;
+pub const GENERIC_BINDING_ROUTINE = ?fn (?*c_void) callconv(.C) ?*c_void;
+pub const GENERIC_UNBIND_ROUTINE = ?fn (?*c_void, [*c]u8) callconv(.C) void;
 pub const struct___GENERIC_BINDING_INFO = extern struct {
     pObj: ?*c_void,
     Size: c_uint,
@@ -23658,9 +23658,9 @@ pub const struct__GENERIC_BINDING_ROUTINE_PAIR = extern struct {
     pfnUnbind: GENERIC_UNBIND_ROUTINE,
 };
 pub const GENERIC_BINDING_ROUTINE_PAIR = struct__GENERIC_BINDING_ROUTINE_PAIR;
-pub const EXPR_EVAL = ?extern fn (?*struct__MIDL_STUB_MESSAGE) void;
+pub const EXPR_EVAL = ?fn (?*struct__MIDL_STUB_MESSAGE) callconv(.C) void;
 pub const PMIDL_STUB_MESSAGE = ?*struct__MIDL_STUB_MESSAGE;
-pub const XMIT_HELPER_ROUTINE = ?extern fn (PMIDL_STUB_MESSAGE) void;
+pub const XMIT_HELPER_ROUTINE = ?fn (PMIDL_STUB_MESSAGE) callconv(.C) void;
 pub const struct__XMIT_ROUTINE_QUINTUPLE = extern struct {
     pfnTranslateToXmit: XMIT_HELPER_ROUTINE,
     pfnTranslateFromXmit: XMIT_HELPER_ROUTINE,
@@ -23669,8 +23669,8 @@ pub const struct__XMIT_ROUTINE_QUINTUPLE = extern struct {
 };
 pub const XMIT_ROUTINE_QUINTUPLE = struct__XMIT_ROUTINE_QUINTUPLE;
 pub const struct__MALLOC_FREE_STRUCT = extern struct {
-    pfnAllocate: ?extern fn (usize) ?*c_void,
-    pfnFree: ?extern fn (?*c_void) void,
+    pfnAllocate: ?fn (usize) callconv(.C) ?*c_void,
+    pfnFree: ?fn (?*c_void) callconv(.C) void,
 };
 pub const MALLOC_FREE_STRUCT = struct__MALLOC_FREE_STRUCT;
 pub const struct__COMM_FAULT_OFFSETS = extern struct {
@@ -23678,10 +23678,10 @@ pub const struct__COMM_FAULT_OFFSETS = extern struct {
     FaultOffset: c_short,
 };
 pub const COMM_FAULT_OFFSETS = struct__COMM_FAULT_OFFSETS;
-pub const USER_MARSHAL_SIZING_ROUTINE = ?extern fn ([*c]c_ulong, c_ulong, ?*c_void) c_ulong;
-pub const USER_MARSHAL_MARSHALLING_ROUTINE = ?extern fn ([*c]c_ulong, [*c]u8, ?*c_void) [*c]u8;
-pub const USER_MARSHAL_UNMARSHALLING_ROUTINE = ?extern fn ([*c]c_ulong, [*c]u8, ?*c_void) [*c]u8;
-pub const USER_MARSHAL_FREEING_ROUTINE = ?extern fn ([*c]c_ulong, ?*c_void) void;
+pub const USER_MARSHAL_SIZING_ROUTINE = ?fn ([*c]c_ulong, c_ulong, ?*c_void) callconv(.C) c_ulong;
+pub const USER_MARSHAL_MARSHALLING_ROUTINE = ?fn ([*c]c_ulong, [*c]u8, ?*c_void) callconv(.C) [*c]u8;
+pub const USER_MARSHAL_UNMARSHALLING_ROUTINE = ?fn ([*c]c_ulong, [*c]u8, ?*c_void) callconv(.C) [*c]u8;
+pub const USER_MARSHAL_FREEING_ROUTINE = ?fn ([*c]c_ulong, ?*c_void) callconv(.C) void;
 pub const struct__USER_MARSHAL_ROUTINE_QUADRUPLE = extern struct {
     pfnBufferSize: USER_MARSHAL_SIZING_ROUTINE,
     pfnMarshall: USER_MARSHAL_MARSHALLING_ROUTINE,
@@ -23702,10 +23702,10 @@ pub const IDL_CS_CONVERT = extern enum {
     IDL_CS_IN_PLACE_CONVERT,
     IDL_CS_NEW_BUFFER_CONVERT,
 };
-pub const CS_TYPE_NET_SIZE_ROUTINE = ?extern fn (RPC_BINDING_HANDLE, c_ulong, c_ulong, [*c]IDL_CS_CONVERT, [*c]c_ulong, [*c]error_status_t) void;
-pub const CS_TYPE_TO_NETCS_ROUTINE = ?extern fn (RPC_BINDING_HANDLE, c_ulong, ?*c_void, c_ulong, [*c]byte, [*c]c_ulong, [*c]error_status_t) void;
-pub const CS_TYPE_LOCAL_SIZE_ROUTINE = ?extern fn (RPC_BINDING_HANDLE, c_ulong, c_ulong, [*c]IDL_CS_CONVERT, [*c]c_ulong, [*c]error_status_t) void;
-pub const CS_TYPE_FROM_NETCS_ROUTINE = ?extern fn (RPC_BINDING_HANDLE, c_ulong, [*c]byte, c_ulong, c_ulong, ?*c_void, [*c]c_ulong, [*c]error_status_t) void;
+pub const CS_TYPE_NET_SIZE_ROUTINE = ?fn (RPC_BINDING_HANDLE, c_ulong, c_ulong, [*c]IDL_CS_CONVERT, [*c]c_ulong, [*c]error_status_t) callconv(.C) void;
+pub const CS_TYPE_TO_NETCS_ROUTINE = ?fn (RPC_BINDING_HANDLE, c_ulong, ?*c_void, c_ulong, [*c]byte, [*c]c_ulong, [*c]error_status_t) callconv(.C) void;
+pub const CS_TYPE_LOCAL_SIZE_ROUTINE = ?fn (RPC_BINDING_HANDLE, c_ulong, c_ulong, [*c]IDL_CS_CONVERT, [*c]c_ulong, [*c]error_status_t) callconv(.C) void;
+pub const CS_TYPE_FROM_NETCS_ROUTINE = ?fn (RPC_BINDING_HANDLE, c_ulong, [*c]byte, c_ulong, c_ulong, ?*c_void, [*c]c_ulong, [*c]error_status_t) callconv(.C) void;
 pub const struct__NDR_CS_SIZE_CONVERT_ROUTINES = extern struct {
     pfnNetSize: CS_TYPE_NET_SIZE_ROUTINE,
     pfnToNetCs: CS_TYPE_TO_NETCS_ROUTINE,
@@ -23713,7 +23713,7 @@ pub const struct__NDR_CS_SIZE_CONVERT_ROUTINES = extern struct {
     pfnFromNetCs: CS_TYPE_FROM_NETCS_ROUTINE,
 };
 pub const NDR_CS_SIZE_CONVERT_ROUTINES = struct__NDR_CS_SIZE_CONVERT_ROUTINES;
-pub const CS_TAG_GETTING_ROUTINE = ?extern fn (RPC_BINDING_HANDLE, c_int, [*c]c_ulong, [*c]c_ulong, [*c]c_ulong, [*c]error_status_t) void;
+pub const CS_TAG_GETTING_ROUTINE = ?fn (RPC_BINDING_HANDLE, c_int, [*c]c_ulong, [*c]c_ulong, [*c]c_ulong, [*c]error_status_t) callconv(.C) void;
 pub const struct__NDR_CS_ROUTINES = extern struct {
     pSizeConvertRoutines: [*c]NDR_CS_SIZE_CONVERT_ROUTINES,
     pTagGettingRoutines: [*c]CS_TAG_GETTING_ROUTINE,
@@ -23727,8 +23727,8 @@ pub const struct__NDR_EXPR_DESC = extern struct {
 pub const NDR_EXPR_DESC = struct__NDR_EXPR_DESC;
 pub const struct__MIDL_STUB_DESC = extern struct {
     RpcInterfaceInformation: ?*c_void,
-    pfnAllocate: ?extern fn (usize) ?*c_void,
-    pfnFree: ?extern fn (?*c_void) void,
+    pfnAllocate: ?fn (usize) callconv(.C) ?*c_void,
+    pfnFree: ?fn (?*c_void) callconv(.C) void,
     IMPLICIT_HANDLE_INFO: extern union {
         pAutoHandle: [*c]handle_t,
         pPrimitiveHandle: [*c]handle_t,
@@ -23849,8 +23849,8 @@ pub const struct__MIDL_FORMAT_STRING = extern struct {
     Format: [*c]u8,
 };
 pub const MIDL_FORMAT_STRING = struct__MIDL_FORMAT_STRING;
-pub const STUB_THUNK = ?extern fn (PMIDL_STUB_MESSAGE) void;
-pub const SERVER_ROUTINE = [*c]extern fn () c_long;
+pub const STUB_THUNK = ?fn (PMIDL_STUB_MESSAGE) callconv(.C) void;
+pub const SERVER_ROUTINE = [*c]fn () callconv(.C) c_long;
 pub const PMIDL_METHOD_PROPERTY = [*c]struct__MIDL_METHOD_PROPERTY;
 pub const PMIDL_METHOD_PROPERTY_MAP = [*c]struct__MIDL_METHOD_PROPERTY_MAP;
 pub const struct__MIDL_SERVER_INFO_ = extern struct {
@@ -24094,9 +24094,9 @@ pub const PROXY_PHASE = extern enum {
 };
 pub const IRpcStubBuffer = struct_IRpcStubBuffer;
 pub const struct_IUnknownVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IUnknown, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IUnknown) ULONG,
-    Release: ?extern fn ([*c]IUnknown) ULONG,
+    QueryInterface: ?fn ([*c]IUnknown, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IUnknown) callconv(.C) ULONG,
+    Release: ?fn ([*c]IUnknown) callconv(.C) ULONG,
 };
 pub const struct_IUnknown = extern struct {
     lpVtbl: [*c]struct_IUnknownVtbl,
@@ -24114,30 +24114,30 @@ pub const struct_tagRPCOLEMESSAGE = extern struct {
 };
 pub const RPCOLEMESSAGE = struct_tagRPCOLEMESSAGE;
 pub const struct_IRpcChannelBufferVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRpcChannelBuffer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRpcChannelBuffer) ULONG,
-    Release: ?extern fn ([*c]IRpcChannelBuffer) ULONG,
-    GetBuffer: ?extern fn ([*c]IRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]const IID) HRESULT,
-    SendReceive: ?extern fn ([*c]IRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]ULONG) HRESULT,
-    FreeBuffer: ?extern fn ([*c]IRpcChannelBuffer, [*c]RPCOLEMESSAGE) HRESULT,
-    GetDestCtx: ?extern fn ([*c]IRpcChannelBuffer, [*c]DWORD, [*c](?*c_void)) HRESULT,
-    IsConnected: ?extern fn ([*c]IRpcChannelBuffer) HRESULT,
+    QueryInterface: ?fn ([*c]IRpcChannelBuffer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRpcChannelBuffer) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRpcChannelBuffer) callconv(.C) ULONG,
+    GetBuffer: ?fn ([*c]IRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]const IID) callconv(.C) HRESULT,
+    SendReceive: ?fn ([*c]IRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]ULONG) callconv(.C) HRESULT,
+    FreeBuffer: ?fn ([*c]IRpcChannelBuffer, [*c]RPCOLEMESSAGE) callconv(.C) HRESULT,
+    GetDestCtx: ?fn ([*c]IRpcChannelBuffer, [*c]DWORD, [*c](?*c_void)) callconv(.C) HRESULT,
+    IsConnected: ?fn ([*c]IRpcChannelBuffer) callconv(.C) HRESULT,
 };
 pub const struct_IRpcChannelBuffer = extern struct {
     lpVtbl: [*c]struct_IRpcChannelBufferVtbl,
 };
 pub const IRpcChannelBuffer = struct_IRpcChannelBuffer;
 pub const struct_IRpcStubBufferVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRpcStubBuffer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRpcStubBuffer) ULONG,
-    Release: ?extern fn ([*c]IRpcStubBuffer) ULONG,
-    Connect: ?extern fn ([*c]IRpcStubBuffer, [*c]IUnknown) HRESULT,
-    Disconnect: ?extern fn ([*c]IRpcStubBuffer) void,
-    Invoke: ?extern fn ([*c]IRpcStubBuffer, [*c]RPCOLEMESSAGE, [*c]IRpcChannelBuffer) HRESULT,
-    IsIIDSupported: ?extern fn ([*c]IRpcStubBuffer, [*c]const IID) [*c]IRpcStubBuffer,
-    CountRefs: ?extern fn ([*c]IRpcStubBuffer) ULONG,
-    DebugServerQueryInterface: ?extern fn ([*c]IRpcStubBuffer, [*c](?*c_void)) HRESULT,
-    DebugServerRelease: ?extern fn ([*c]IRpcStubBuffer, ?*c_void) void,
+    QueryInterface: ?fn ([*c]IRpcStubBuffer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRpcStubBuffer) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRpcStubBuffer) callconv(.C) ULONG,
+    Connect: ?fn ([*c]IRpcStubBuffer, [*c]IUnknown) callconv(.C) HRESULT,
+    Disconnect: ?fn ([*c]IRpcStubBuffer) callconv(.C) void,
+    Invoke: ?fn ([*c]IRpcStubBuffer, [*c]RPCOLEMESSAGE, [*c]IRpcChannelBuffer) callconv(.C) HRESULT,
+    IsIIDSupported: ?fn ([*c]IRpcStubBuffer, [*c]const IID) callconv(.C) [*c]IRpcStubBuffer,
+    CountRefs: ?fn ([*c]IRpcStubBuffer) callconv(.C) ULONG,
+    DebugServerQueryInterface: ?fn ([*c]IRpcStubBuffer, [*c](?*c_void)) callconv(.C) HRESULT,
+    DebugServerRelease: ?fn ([*c]IRpcStubBuffer, ?*c_void) callconv(.C) void,
 };
 pub const struct_IRpcStubBuffer = extern struct {
     lpVtbl: [*c]struct_IRpcStubBufferVtbl,
@@ -24153,8 +24153,8 @@ pub extern "rpcrt4" fn NdrServerUnmarshall(pChannel: ?*c_void, pRpcMsg: PRPC_MES
 pub extern "rpcrt4" fn NdrServerMarshall(pThis: ?*c_void, pChannel: ?*c_void, pStubMsg: PMIDL_STUB_MESSAGE, pFormat: PFORMAT_STRING) callconv(.Stdcall) void;
 pub extern "rpcrt4" fn NdrMapCommAndFaultStatus(pStubMsg: PMIDL_STUB_MESSAGE, pCommStatus: [*c]c_ulong, pFaultStatus: [*c]c_ulong, Status: RPC_STATUS) callconv(.Stdcall) RPC_STATUS;
 pub const RPC_SS_THREAD_HANDLE = ?*c_void;
-pub const RPC_CLIENT_ALLOC = extern fn (usize) ?*c_void;
-pub const RPC_CLIENT_FREE = extern fn (?*c_void) void;
+pub const RPC_CLIENT_ALLOC = fn (usize) callconv(.C) ?*c_void;
+pub const RPC_CLIENT_FREE = fn (?*c_void) callconv(.C) void;
 pub extern "rpcrt4" fn RpcSsAllocate(Size: usize) callconv(.Stdcall) ?*c_void;
 pub extern "rpcrt4" fn RpcSsDisableAllocate() callconv(.Stdcall) void;
 pub extern "rpcrt4" fn RpcSsEnableAllocate() callconv(.Stdcall) void;
@@ -24189,8 +24189,8 @@ pub extern "rpcrt4" fn NdrOleFree(NodeToFree: ?*c_void) callconv(.Stdcall) void;
 pub const struct__NDR_USER_MARSHAL_INFO_LEVEL1 = extern struct {
     Buffer: ?*c_void,
     BufferSize: c_ulong,
-    pfnAllocate: ?extern fn (usize) ?*c_void,
-    pfnFree: ?extern fn (?*c_void) void,
+    pfnAllocate: ?fn (usize) callconv(.C) ?*c_void,
+    pfnFree: ?fn (?*c_void) callconv(.C) void,
     pRpcChannelBuffer: [*c]struct_IRpcChannelBuffer,
     Reserved: [5]ULONG_PTR,
 };
@@ -30201,7 +30201,7 @@ pub const struct__VOLUME_GET_GPT_ATTRIBUTES_INFORMATION = extern struct {
 };
 pub const VOLUME_GET_GPT_ATTRIBUTES_INFORMATION = struct__VOLUME_GET_GPT_ATTRIBUTES_INFORMATION;
 pub const PVOLUME_GET_GPT_ATTRIBUTES_INFORMATION = [*c]struct__VOLUME_GET_GPT_ATTRIBUTES_INFORMATION;
-pub const PIO_IRP_EXT_PROCESS_TRACKED_OFFSET_CALLBACK = ?extern fn ([*c]struct__IO_IRP_EXT_TRACK_OFFSET_HEADER, [*c]struct__IO_IRP_EXT_TRACK_OFFSET_HEADER, LONGLONG) void;
+pub const PIO_IRP_EXT_PROCESS_TRACKED_OFFSET_CALLBACK = ?fn ([*c]struct__IO_IRP_EXT_TRACK_OFFSET_HEADER, [*c]struct__IO_IRP_EXT_TRACK_OFFSET_HEADER, LONGLONG) callconv(.C) void;
 pub const struct__IO_IRP_EXT_TRACK_OFFSET_HEADER = extern struct {
     Validation: WORD,
     Flags: WORD,
@@ -30373,10 +30373,10 @@ pub extern "winscard" fn SCardGetTransmitCount(hCard: SCARDHANDLE, pcTransmitCou
 pub extern "winscard" fn SCardControl(hCard: SCARDHANDLE, dwControlCode: DWORD, lpInBuffer: LPCVOID, cbInBufferSize: DWORD, lpOutBuffer: LPVOID, cbOutBufferSize: DWORD, lpBytesReturned: LPDWORD) callconv(.Stdcall) LONG;
 pub extern "winscard" fn SCardGetAttrib(hCard: SCARDHANDLE, dwAttrId: DWORD, pbAttr: LPBYTE, pcbAttrLen: LPDWORD) callconv(.Stdcall) LONG;
 pub extern "winscard" fn SCardSetAttrib(hCard: SCARDHANDLE, dwAttrId: DWORD, pbAttr: LPCBYTE, cbAttrLen: DWORD) callconv(.Stdcall) LONG;
-pub const LPOCNCONNPROCA = ?extern fn (SCARDCONTEXT, LPSTR, LPSTR, PVOID) SCARDHANDLE;
-pub const LPOCNCONNPROCW = ?extern fn (SCARDCONTEXT, LPWSTR, LPWSTR, PVOID) SCARDHANDLE;
-pub const LPOCNCHKPROC = ?extern fn (SCARDCONTEXT, SCARDHANDLE, PVOID) BOOL;
-pub const LPOCNDSCPROC = ?extern fn (SCARDCONTEXT, SCARDHANDLE, PVOID) void;
+pub const LPOCNCONNPROCA = ?fn (SCARDCONTEXT, LPSTR, LPSTR, PVOID) callconv(.C) SCARDHANDLE;
+pub const LPOCNCONNPROCW = ?fn (SCARDCONTEXT, LPWSTR, LPWSTR, PVOID) callconv(.C) SCARDHANDLE;
+pub const LPOCNCHKPROC = ?fn (SCARDCONTEXT, SCARDHANDLE, PVOID) callconv(.C) BOOL;
+pub const LPOCNDSCPROC = ?fn (SCARDCONTEXT, SCARDHANDLE, PVOID) callconv(.C) void;
 pub const OPENCARD_SEARCH_CRITERIAA = extern struct {
     dwStructSize: DWORD,
     lpstrGroupNames: LPSTR,
@@ -30827,7 +30827,7 @@ pub extern "winscard" fn SCardAudit(hContext: SCARDCONTEXT, dwEvent: DWORD) call
 pub const struct__PSP = @OpaqueType();
 pub const HPROPSHEETPAGE = ?*struct__PSP;
 pub const PROPSHEETPAGE_RESOURCE = LPCDLGTEMPLATE;
-pub const LPFNPSPCALLBACKA = ?extern fn (HWND, UINT, [*c]struct__PROPSHEETPAGEA) UINT;
+pub const LPFNPSPCALLBACKA = ?fn (HWND, UINT, [*c]struct__PROPSHEETPAGEA) callconv(.C) UINT;
 pub const struct__PROPSHEETPAGEA = extern struct {
     dwSize: DWORD,
     dwFlags: DWORD,
@@ -30853,7 +30853,7 @@ pub const struct__PROPSHEETPAGEA = extern struct {
         pszbmHeader: LPCSTR,
     },
 };
-pub const LPFNPSPCALLBACKW = ?extern fn (HWND, UINT, [*c]struct__PROPSHEETPAGEW) UINT;
+pub const LPFNPSPCALLBACKW = ?fn (HWND, UINT, [*c]struct__PROPSHEETPAGEW) callconv(.C) UINT;
 pub const struct__PROPSHEETPAGEW = extern struct {
     dwSize: DWORD,
     dwFlags: DWORD,
@@ -31033,7 +31033,7 @@ pub const LPPROPSHEETPAGEA = LPPROPSHEETPAGEA_V4;
 pub const LPPROPSHEETPAGEW = LPPROPSHEETPAGEW_V4;
 pub const LPCPROPSHEETPAGEA = LPCPROPSHEETPAGEA_V4;
 pub const LPCPROPSHEETPAGEW = LPCPROPSHEETPAGEW_V4;
-pub const PFNPROPSHEETCALLBACK = ?extern fn (HWND, UINT, LPARAM) c_int;
+pub const PFNPROPSHEETCALLBACK = ?fn (HWND, UINT, LPARAM) callconv(.C) c_int;
 pub const struct__PROPSHEETHEADERA_V1 = extern struct {
     dwSize: DWORD,
     dwFlags: DWORD,
@@ -31159,8 +31159,8 @@ pub extern "comctl32" fn CreatePropertySheetPageW(constPropSheetPagePointer: LPC
 pub extern "comctl32" fn DestroyPropertySheetPage(arg0: HPROPSHEETPAGE) callconv(.Stdcall) BOOL;
 pub extern "comctl32" fn PropertySheetA(arg0: LPCPROPSHEETHEADERA) callconv(.Stdcall) INT_PTR;
 pub extern "comctl32" fn PropertySheetW(arg0: LPCPROPSHEETHEADERW) callconv(.Stdcall) INT_PTR;
-pub const LPFNADDPROPSHEETPAGE = ?extern fn (HPROPSHEETPAGE, LPARAM) BOOL;
-pub const LPFNADDPROPSHEETPAGES = ?extern fn (LPVOID, LPFNADDPROPSHEETPAGE, LPARAM) BOOL;
+pub const LPFNADDPROPSHEETPAGE = ?fn (HPROPSHEETPAGE, LPARAM) callconv(.C) BOOL;
+pub const LPFNADDPROPSHEETPAGES = ?fn (LPVOID, LPFNADDPROPSHEETPAGE, LPARAM) callconv(.C) BOOL;
 pub const struct__PSHNOTIFY = extern struct {
     hdr: NMHDR,
     lParam: LPARAM,
@@ -32560,8 +32560,8 @@ pub extern fn _aligned_offset_recalloc(_Block: ?*c_void, _Count: usize, _Size: u
 pub extern fn _aligned_realloc(_Block: ?*c_void, _Size: usize, _Alignment: usize) ?*c_void;
 pub extern fn _aligned_recalloc(_Block: ?*c_void, _Count: usize, _Size: usize, _Alignment: usize) ?*c_void;
 pub const max_align_t = f64;
-pub const _CoreCrtSecureSearchSortCompareFunction = ?extern fn (?*c_void, ?*const c_void, ?*const c_void) c_int;
-pub const _CoreCrtNonSecureSearchSortCompareFunction = ?extern fn (?*const c_void, ?*const c_void) c_int;
+pub const _CoreCrtSecureSearchSortCompareFunction = ?fn (?*c_void, ?*const c_void, ?*const c_void) callconv(.C) c_int;
+pub const _CoreCrtNonSecureSearchSortCompareFunction = ?fn (?*const c_void, ?*const c_void) callconv(.C) c_int;
 pub extern fn bsearch_s(_Key: ?*const c_void, _Base: ?*const c_void, _NumOfElements: rsize_t, _SizeOfElements: rsize_t, _CompareFunction: _CoreCrtSecureSearchSortCompareFunction, _Context: ?*c_void) ?*c_void;
 pub extern fn qsort_s(_Base: ?*c_void, _NumOfElements: rsize_t, _SizeOfElements: rsize_t, _CompareFunction: _CoreCrtSecureSearchSortCompareFunction, _Context: ?*c_void) void;
 pub extern fn bsearch(_Key: ?*const c_void, _Base: ?*const c_void, _NumOfElements: usize, _SizeOfElements: usize, _CompareFunction: _CoreCrtNonSecureSearchSortCompareFunction) ?*c_void;
@@ -32631,12 +32631,12 @@ pub extern fn _Exit(_Code: c_int) noreturn;
 pub extern fn quick_exit(_Code: c_int) noreturn;
 pub extern fn abort() noreturn;
 pub extern fn _set_abort_behavior(_Flags: c_uint, _Mask: c_uint) c_uint;
-pub const _onexit_t = ?extern fn () c_int;
-pub extern fn atexit(arg0: ?extern fn () void) c_int;
+pub const _onexit_t = ?fn () callconv(.C) c_int;
+pub extern fn atexit(arg0: ?fn () callconv(.C) void) c_int;
 pub extern fn _onexit(_Func: _onexit_t) _onexit_t;
-pub extern fn at_quick_exit(arg0: ?extern fn () void) c_int;
-pub const _purecall_handler = ?extern fn () void;
-pub const _invalid_parameter_handler = ?extern fn ([*c]const wchar_t, [*c]const wchar_t, [*c]const wchar_t, c_uint, usize) void;
+pub extern fn at_quick_exit(arg0: ?fn () callconv(.C) void) c_int;
+pub const _purecall_handler = ?fn () callconv(.C) void;
+pub const _invalid_parameter_handler = ?fn ([*c]const wchar_t, [*c]const wchar_t, [*c]const wchar_t, c_uint, usize) callconv(.C) void;
 pub extern fn _set_purecall_handler(_Handler: _purecall_handler) _purecall_handler;
 pub extern fn _get_purecall_handler() _purecall_handler;
 pub extern fn _set_invalid_parameter_handler(_Handler: _invalid_parameter_handler) _invalid_parameter_handler;
@@ -32820,26 +32820,26 @@ pub const enum_tagCOINITBASE = extern enum {
 pub const COINITBASE = enum_tagCOINITBASE;
 pub const AsyncIUnknown = struct_AsyncIUnknown;
 pub const struct_AsyncIUnknownVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]AsyncIUnknown, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]AsyncIUnknown) ULONG,
-    Release: ?extern fn ([*c]AsyncIUnknown) ULONG,
-    Begin_QueryInterface: ?extern fn ([*c]AsyncIUnknown, [*c]const IID) HRESULT,
-    Finish_QueryInterface: ?extern fn ([*c]AsyncIUnknown, [*c](?*c_void)) HRESULT,
-    Begin_AddRef: ?extern fn ([*c]AsyncIUnknown) HRESULT,
-    Finish_AddRef: ?extern fn ([*c]AsyncIUnknown) ULONG,
-    Begin_Release: ?extern fn ([*c]AsyncIUnknown) HRESULT,
-    Finish_Release: ?extern fn ([*c]AsyncIUnknown) ULONG,
+    QueryInterface: ?fn ([*c]AsyncIUnknown, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]AsyncIUnknown) callconv(.C) ULONG,
+    Release: ?fn ([*c]AsyncIUnknown) callconv(.C) ULONG,
+    Begin_QueryInterface: ?fn ([*c]AsyncIUnknown, [*c]const IID) callconv(.C) HRESULT,
+    Finish_QueryInterface: ?fn ([*c]AsyncIUnknown, [*c](?*c_void)) callconv(.C) HRESULT,
+    Begin_AddRef: ?fn ([*c]AsyncIUnknown) callconv(.C) HRESULT,
+    Finish_AddRef: ?fn ([*c]AsyncIUnknown) callconv(.C) ULONG,
+    Begin_Release: ?fn ([*c]AsyncIUnknown) callconv(.C) HRESULT,
+    Finish_Release: ?fn ([*c]AsyncIUnknown) callconv(.C) ULONG,
 };
 pub const struct_AsyncIUnknown = extern struct {
     lpVtbl: [*c]struct_AsyncIUnknownVtbl,
 };
 pub const IClassFactory = struct_IClassFactory;
 pub const struct_IClassFactoryVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IClassFactory, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IClassFactory) ULONG,
-    Release: ?extern fn ([*c]IClassFactory) ULONG,
-    CreateInstance: ?extern fn ([*c]IClassFactory, [*c]IUnknown, [*c]const IID, [*c](?*c_void)) HRESULT,
-    LockServer: ?extern fn ([*c]IClassFactory, BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IClassFactory, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IClassFactory) callconv(.C) ULONG,
+    Release: ?fn ([*c]IClassFactory) callconv(.C) ULONG,
+    CreateInstance: ?fn ([*c]IClassFactory, [*c]IUnknown, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    LockServer: ?fn ([*c]IClassFactory, BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IClassFactory = extern struct {
     lpVtbl: [*c]struct_IClassFactoryVtbl,
@@ -32890,114 +32890,114 @@ pub const struct_tagSTATSTG = extern struct {
 };
 pub const STATSTG = struct_tagSTATSTG;
 pub const struct_IStreamVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IStream, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IStream) ULONG,
-    Release: ?extern fn ([*c]IStream) ULONG,
-    Read: ?extern fn ([*c]IStream, ?*c_void, ULONG, [*c]ULONG) HRESULT,
-    Write: ?extern fn ([*c]IStream, ?*const c_void, ULONG, [*c]ULONG) HRESULT,
-    Seek: ?extern fn ([*c]IStream, LARGE_INTEGER, DWORD, [*c]ULARGE_INTEGER) HRESULT,
-    SetSize: ?extern fn ([*c]IStream, ULARGE_INTEGER) HRESULT,
-    CopyTo: ?extern fn ([*c]IStream, [*c]IStream, ULARGE_INTEGER, [*c]ULARGE_INTEGER, [*c]ULARGE_INTEGER) HRESULT,
-    Commit: ?extern fn ([*c]IStream, DWORD) HRESULT,
-    Revert: ?extern fn ([*c]IStream) HRESULT,
-    LockRegion: ?extern fn ([*c]IStream, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) HRESULT,
-    UnlockRegion: ?extern fn ([*c]IStream, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) HRESULT,
-    Stat: ?extern fn ([*c]IStream, [*c]STATSTG, DWORD) HRESULT,
-    Clone: ?extern fn ([*c]IStream, [*c]([*c]IStream)) HRESULT,
+    QueryInterface: ?fn ([*c]IStream, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IStream) callconv(.C) ULONG,
+    Release: ?fn ([*c]IStream) callconv(.C) ULONG,
+    Read: ?fn ([*c]IStream, ?*c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Write: ?fn ([*c]IStream, ?*const c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Seek: ?fn ([*c]IStream, LARGE_INTEGER, DWORD, [*c]ULARGE_INTEGER) callconv(.C) HRESULT,
+    SetSize: ?fn ([*c]IStream, ULARGE_INTEGER) callconv(.C) HRESULT,
+    CopyTo: ?fn ([*c]IStream, [*c]IStream, ULARGE_INTEGER, [*c]ULARGE_INTEGER, [*c]ULARGE_INTEGER) callconv(.C) HRESULT,
+    Commit: ?fn ([*c]IStream, DWORD) callconv(.C) HRESULT,
+    Revert: ?fn ([*c]IStream) callconv(.C) HRESULT,
+    LockRegion: ?fn ([*c]IStream, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) callconv(.C) HRESULT,
+    UnlockRegion: ?fn ([*c]IStream, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) callconv(.C) HRESULT,
+    Stat: ?fn ([*c]IStream, [*c]STATSTG, DWORD) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IStream, [*c]([*c]IStream)) callconv(.C) HRESULT,
 };
 pub const struct_IStream = extern struct {
     lpVtbl: [*c]struct_IStreamVtbl,
 };
 pub const IStream = struct_IStream;
 pub const struct_IMarshalVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IMarshal, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IMarshal) ULONG,
-    Release: ?extern fn ([*c]IMarshal) ULONG,
-    GetUnmarshalClass: ?extern fn ([*c]IMarshal, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD, [*c]CLSID) HRESULT,
-    GetMarshalSizeMax: ?extern fn ([*c]IMarshal, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD, [*c]DWORD) HRESULT,
-    MarshalInterface: ?extern fn ([*c]IMarshal, [*c]IStream, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD) HRESULT,
-    UnmarshalInterface: ?extern fn ([*c]IMarshal, [*c]IStream, [*c]const IID, [*c](?*c_void)) HRESULT,
-    ReleaseMarshalData: ?extern fn ([*c]IMarshal, [*c]IStream) HRESULT,
-    DisconnectObject: ?extern fn ([*c]IMarshal, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IMarshal, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IMarshal) callconv(.C) ULONG,
+    Release: ?fn ([*c]IMarshal) callconv(.C) ULONG,
+    GetUnmarshalClass: ?fn ([*c]IMarshal, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD, [*c]CLSID) callconv(.C) HRESULT,
+    GetMarshalSizeMax: ?fn ([*c]IMarshal, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    MarshalInterface: ?fn ([*c]IMarshal, [*c]IStream, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD) callconv(.C) HRESULT,
+    UnmarshalInterface: ?fn ([*c]IMarshal, [*c]IStream, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    ReleaseMarshalData: ?fn ([*c]IMarshal, [*c]IStream) callconv(.C) HRESULT,
+    DisconnectObject: ?fn ([*c]IMarshal, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IMarshal = extern struct {
     lpVtbl: [*c]struct_IMarshalVtbl,
 };
 pub const INoMarshal = struct_INoMarshal;
 pub const struct_INoMarshalVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]INoMarshal, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]INoMarshal) ULONG,
-    Release: ?extern fn ([*c]INoMarshal) ULONG,
+    QueryInterface: ?fn ([*c]INoMarshal, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]INoMarshal) callconv(.C) ULONG,
+    Release: ?fn ([*c]INoMarshal) callconv(.C) ULONG,
 };
 pub const struct_INoMarshal = extern struct {
     lpVtbl: [*c]struct_INoMarshalVtbl,
 };
 pub const IAgileObject = struct_IAgileObject;
 pub const struct_IAgileObjectVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAgileObject, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAgileObject) ULONG,
-    Release: ?extern fn ([*c]IAgileObject) ULONG,
+    QueryInterface: ?fn ([*c]IAgileObject, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAgileObject) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAgileObject) callconv(.C) ULONG,
 };
 pub const struct_IAgileObject = extern struct {
     lpVtbl: [*c]struct_IAgileObjectVtbl,
 };
 pub const IActivationFilter = struct_IActivationFilter;
 pub const struct_IActivationFilterVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IActivationFilter, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IActivationFilter) ULONG,
-    Release: ?extern fn ([*c]IActivationFilter) ULONG,
-    HandleActivation: ?extern fn ([*c]IActivationFilter, DWORD, [*c]const IID, [*c]CLSID) HRESULT,
+    QueryInterface: ?fn ([*c]IActivationFilter, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IActivationFilter) callconv(.C) ULONG,
+    Release: ?fn ([*c]IActivationFilter) callconv(.C) ULONG,
+    HandleActivation: ?fn ([*c]IActivationFilter, DWORD, [*c]const IID, [*c]CLSID) callconv(.C) HRESULT,
 };
 pub const struct_IActivationFilter = extern struct {
     lpVtbl: [*c]struct_IActivationFilterVtbl,
 };
 pub const IMarshal2 = struct_IMarshal2;
 pub const struct_IMarshal2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IMarshal2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IMarshal2) ULONG,
-    Release: ?extern fn ([*c]IMarshal2) ULONG,
-    GetUnmarshalClass: ?extern fn ([*c]IMarshal2, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD, [*c]CLSID) HRESULT,
-    GetMarshalSizeMax: ?extern fn ([*c]IMarshal2, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD, [*c]DWORD) HRESULT,
-    MarshalInterface: ?extern fn ([*c]IMarshal2, [*c]IStream, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD) HRESULT,
-    UnmarshalInterface: ?extern fn ([*c]IMarshal2, [*c]IStream, [*c]const IID, [*c](?*c_void)) HRESULT,
-    ReleaseMarshalData: ?extern fn ([*c]IMarshal2, [*c]IStream) HRESULT,
-    DisconnectObject: ?extern fn ([*c]IMarshal2, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IMarshal2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IMarshal2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IMarshal2) callconv(.C) ULONG,
+    GetUnmarshalClass: ?fn ([*c]IMarshal2, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD, [*c]CLSID) callconv(.C) HRESULT,
+    GetMarshalSizeMax: ?fn ([*c]IMarshal2, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    MarshalInterface: ?fn ([*c]IMarshal2, [*c]IStream, [*c]const IID, ?*c_void, DWORD, ?*c_void, DWORD) callconv(.C) HRESULT,
+    UnmarshalInterface: ?fn ([*c]IMarshal2, [*c]IStream, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    ReleaseMarshalData: ?fn ([*c]IMarshal2, [*c]IStream) callconv(.C) HRESULT,
+    DisconnectObject: ?fn ([*c]IMarshal2, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IMarshal2 = extern struct {
     lpVtbl: [*c]struct_IMarshal2Vtbl,
 };
 pub const IMalloc = struct_IMalloc;
 pub const struct_IMallocVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IMalloc, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IMalloc) ULONG,
-    Release: ?extern fn ([*c]IMalloc) ULONG,
-    Alloc: ?extern fn ([*c]IMalloc, SIZE_T) ?*c_void,
-    Realloc: ?extern fn ([*c]IMalloc, ?*c_void, SIZE_T) ?*c_void,
-    Free: ?extern fn ([*c]IMalloc, ?*c_void) void,
-    GetSize: ?extern fn ([*c]IMalloc, ?*c_void) SIZE_T,
-    DidAlloc: ?extern fn ([*c]IMalloc, ?*c_void) c_int,
-    HeapMinimize: ?extern fn ([*c]IMalloc) void,
+    QueryInterface: ?fn ([*c]IMalloc, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IMalloc) callconv(.C) ULONG,
+    Release: ?fn ([*c]IMalloc) callconv(.C) ULONG,
+    Alloc: ?fn ([*c]IMalloc, SIZE_T) callconv(.C) ?*c_void,
+    Realloc: ?fn ([*c]IMalloc, ?*c_void, SIZE_T) callconv(.C) ?*c_void,
+    Free: ?fn ([*c]IMalloc, ?*c_void) callconv(.C) void,
+    GetSize: ?fn ([*c]IMalloc, ?*c_void) callconv(.C) SIZE_T,
+    DidAlloc: ?fn ([*c]IMalloc, ?*c_void) callconv(.C) c_int,
+    HeapMinimize: ?fn ([*c]IMalloc) callconv(.C) void,
 };
 pub const struct_IMalloc = extern struct {
     lpVtbl: [*c]struct_IMallocVtbl,
 };
 pub const IStdMarshalInfo = struct_IStdMarshalInfo;
 pub const struct_IStdMarshalInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IStdMarshalInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IStdMarshalInfo) ULONG,
-    Release: ?extern fn ([*c]IStdMarshalInfo) ULONG,
-    GetClassForHandler: ?extern fn ([*c]IStdMarshalInfo, DWORD, ?*c_void, [*c]CLSID) HRESULT,
+    QueryInterface: ?fn ([*c]IStdMarshalInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IStdMarshalInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]IStdMarshalInfo) callconv(.C) ULONG,
+    GetClassForHandler: ?fn ([*c]IStdMarshalInfo, DWORD, ?*c_void, [*c]CLSID) callconv(.C) HRESULT,
 };
 pub const struct_IStdMarshalInfo = extern struct {
     lpVtbl: [*c]struct_IStdMarshalInfoVtbl,
 };
 pub const IExternalConnection = struct_IExternalConnection;
 pub const struct_IExternalConnectionVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IExternalConnection, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IExternalConnection) ULONG,
-    Release: ?extern fn ([*c]IExternalConnection) ULONG,
-    AddConnection: ?extern fn ([*c]IExternalConnection, DWORD, DWORD) DWORD,
-    ReleaseConnection: ?extern fn ([*c]IExternalConnection, DWORD, DWORD, BOOL) DWORD,
+    QueryInterface: ?fn ([*c]IExternalConnection, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IExternalConnection) callconv(.C) ULONG,
+    Release: ?fn ([*c]IExternalConnection) callconv(.C) ULONG,
+    AddConnection: ?fn ([*c]IExternalConnection, DWORD, DWORD) callconv(.C) DWORD,
+    ReleaseConnection: ?fn ([*c]IExternalConnection, DWORD, DWORD, BOOL) callconv(.C) DWORD,
 };
 pub const struct_IExternalConnection = extern struct {
     lpVtbl: [*c]struct_IExternalConnectionVtbl,
@@ -33010,219 +33010,219 @@ pub const struct_tagMULTI_QI = extern struct {
 };
 pub const MULTI_QI = struct_tagMULTI_QI;
 pub const struct_IMultiQIVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IMultiQI, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IMultiQI) ULONG,
-    Release: ?extern fn ([*c]IMultiQI) ULONG,
-    QueryMultipleInterfaces: ?extern fn ([*c]IMultiQI, ULONG, [*c]MULTI_QI) HRESULT,
+    QueryInterface: ?fn ([*c]IMultiQI, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IMultiQI) callconv(.C) ULONG,
+    Release: ?fn ([*c]IMultiQI) callconv(.C) ULONG,
+    QueryMultipleInterfaces: ?fn ([*c]IMultiQI, ULONG, [*c]MULTI_QI) callconv(.C) HRESULT,
 };
 pub const struct_IMultiQI = extern struct {
     lpVtbl: [*c]struct_IMultiQIVtbl,
 };
 pub const AsyncIMultiQI = struct_AsyncIMultiQI;
 pub const struct_AsyncIMultiQIVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]AsyncIMultiQI, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]AsyncIMultiQI) ULONG,
-    Release: ?extern fn ([*c]AsyncIMultiQI) ULONG,
-    Begin_QueryMultipleInterfaces: ?extern fn ([*c]AsyncIMultiQI, ULONG, [*c]MULTI_QI) HRESULT,
-    Finish_QueryMultipleInterfaces: ?extern fn ([*c]AsyncIMultiQI, [*c]MULTI_QI) HRESULT,
+    QueryInterface: ?fn ([*c]AsyncIMultiQI, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]AsyncIMultiQI) callconv(.C) ULONG,
+    Release: ?fn ([*c]AsyncIMultiQI) callconv(.C) ULONG,
+    Begin_QueryMultipleInterfaces: ?fn ([*c]AsyncIMultiQI, ULONG, [*c]MULTI_QI) callconv(.C) HRESULT,
+    Finish_QueryMultipleInterfaces: ?fn ([*c]AsyncIMultiQI, [*c]MULTI_QI) callconv(.C) HRESULT,
 };
 pub const struct_AsyncIMultiQI = extern struct {
     lpVtbl: [*c]struct_AsyncIMultiQIVtbl,
 };
 pub const IInternalUnknown = struct_IInternalUnknown;
 pub const struct_IInternalUnknownVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternalUnknown, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternalUnknown) ULONG,
-    Release: ?extern fn ([*c]IInternalUnknown) ULONG,
-    QueryInternalInterface: ?extern fn ([*c]IInternalUnknown, [*c]const IID, [*c](?*c_void)) HRESULT,
+    QueryInterface: ?fn ([*c]IInternalUnknown, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternalUnknown) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternalUnknown) callconv(.C) ULONG,
+    QueryInternalInterface: ?fn ([*c]IInternalUnknown, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
 };
 pub const struct_IInternalUnknown = extern struct {
     lpVtbl: [*c]struct_IInternalUnknownVtbl,
 };
 pub const IEnumUnknown = struct_IEnumUnknown;
 pub const struct_IEnumUnknownVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumUnknown, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumUnknown) ULONG,
-    Release: ?extern fn ([*c]IEnumUnknown) ULONG,
-    Next: ?extern fn ([*c]IEnumUnknown, ULONG, [*c]([*c]IUnknown), [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumUnknown, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumUnknown) HRESULT,
-    Clone: ?extern fn ([*c]IEnumUnknown, [*c]([*c]IEnumUnknown)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumUnknown, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumUnknown) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumUnknown) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumUnknown, ULONG, [*c]([*c]IUnknown), [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumUnknown, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumUnknown) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumUnknown, [*c]([*c]IEnumUnknown)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumUnknown = extern struct {
     lpVtbl: [*c]struct_IEnumUnknownVtbl,
 };
 pub const IEnumString = struct_IEnumString;
 pub const struct_IEnumStringVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumString, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumString) ULONG,
-    Release: ?extern fn ([*c]IEnumString) ULONG,
-    Next: ?extern fn ([*c]IEnumString, ULONG, [*c]LPOLESTR, [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumString, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumString) HRESULT,
-    Clone: ?extern fn ([*c]IEnumString, [*c]([*c]IEnumString)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumString, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumString) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumString) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumString, ULONG, [*c]LPOLESTR, [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumString, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumString) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumString, [*c]([*c]IEnumString)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumString = extern struct {
     lpVtbl: [*c]struct_IEnumStringVtbl,
 };
 pub const ISequentialStream = struct_ISequentialStream;
 pub const struct_ISequentialStreamVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISequentialStream, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISequentialStream) ULONG,
-    Release: ?extern fn ([*c]ISequentialStream) ULONG,
-    Read: ?extern fn ([*c]ISequentialStream, ?*c_void, ULONG, [*c]ULONG) HRESULT,
-    Write: ?extern fn ([*c]ISequentialStream, ?*const c_void, ULONG, [*c]ULONG) HRESULT,
+    QueryInterface: ?fn ([*c]ISequentialStream, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISequentialStream) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISequentialStream) callconv(.C) ULONG,
+    Read: ?fn ([*c]ISequentialStream, ?*c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Write: ?fn ([*c]ISequentialStream, ?*const c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
 };
 pub const struct_ISequentialStream = extern struct {
     lpVtbl: [*c]struct_ISequentialStreamVtbl,
 };
 pub const IRpcChannelBuffer2 = struct_IRpcChannelBuffer2;
 pub const struct_IRpcChannelBuffer2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRpcChannelBuffer2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRpcChannelBuffer2) ULONG,
-    Release: ?extern fn ([*c]IRpcChannelBuffer2) ULONG,
-    GetBuffer: ?extern fn ([*c]IRpcChannelBuffer2, [*c]RPCOLEMESSAGE, [*c]const IID) HRESULT,
-    SendReceive: ?extern fn ([*c]IRpcChannelBuffer2, [*c]RPCOLEMESSAGE, [*c]ULONG) HRESULT,
-    FreeBuffer: ?extern fn ([*c]IRpcChannelBuffer2, [*c]RPCOLEMESSAGE) HRESULT,
-    GetDestCtx: ?extern fn ([*c]IRpcChannelBuffer2, [*c]DWORD, [*c](?*c_void)) HRESULT,
-    IsConnected: ?extern fn ([*c]IRpcChannelBuffer2) HRESULT,
-    GetProtocolVersion: ?extern fn ([*c]IRpcChannelBuffer2, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IRpcChannelBuffer2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRpcChannelBuffer2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRpcChannelBuffer2) callconv(.C) ULONG,
+    GetBuffer: ?fn ([*c]IRpcChannelBuffer2, [*c]RPCOLEMESSAGE, [*c]const IID) callconv(.C) HRESULT,
+    SendReceive: ?fn ([*c]IRpcChannelBuffer2, [*c]RPCOLEMESSAGE, [*c]ULONG) callconv(.C) HRESULT,
+    FreeBuffer: ?fn ([*c]IRpcChannelBuffer2, [*c]RPCOLEMESSAGE) callconv(.C) HRESULT,
+    GetDestCtx: ?fn ([*c]IRpcChannelBuffer2, [*c]DWORD, [*c](?*c_void)) callconv(.C) HRESULT,
+    IsConnected: ?fn ([*c]IRpcChannelBuffer2) callconv(.C) HRESULT,
+    GetProtocolVersion: ?fn ([*c]IRpcChannelBuffer2, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IRpcChannelBuffer2 = extern struct {
     lpVtbl: [*c]struct_IRpcChannelBuffer2Vtbl,
 };
 pub const IAsyncRpcChannelBuffer = struct_IAsyncRpcChannelBuffer;
 pub const struct_ISynchronizeVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISynchronize, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISynchronize) ULONG,
-    Release: ?extern fn ([*c]ISynchronize) ULONG,
-    Wait: ?extern fn ([*c]ISynchronize, DWORD, DWORD) HRESULT,
-    Signal: ?extern fn ([*c]ISynchronize) HRESULT,
-    Reset: ?extern fn ([*c]ISynchronize) HRESULT,
+    QueryInterface: ?fn ([*c]ISynchronize, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISynchronize) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISynchronize) callconv(.C) ULONG,
+    Wait: ?fn ([*c]ISynchronize, DWORD, DWORD) callconv(.C) HRESULT,
+    Signal: ?fn ([*c]ISynchronize) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]ISynchronize) callconv(.C) HRESULT,
 };
 pub const struct_ISynchronize = extern struct {
     lpVtbl: [*c]struct_ISynchronizeVtbl,
 };
 pub const ISynchronize = struct_ISynchronize;
 pub const struct_IAsyncRpcChannelBufferVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAsyncRpcChannelBuffer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAsyncRpcChannelBuffer) ULONG,
-    Release: ?extern fn ([*c]IAsyncRpcChannelBuffer) ULONG,
-    GetBuffer: ?extern fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]const IID) HRESULT,
-    SendReceive: ?extern fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]ULONG) HRESULT,
-    FreeBuffer: ?extern fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE) HRESULT,
-    GetDestCtx: ?extern fn ([*c]IAsyncRpcChannelBuffer, [*c]DWORD, [*c](?*c_void)) HRESULT,
-    IsConnected: ?extern fn ([*c]IAsyncRpcChannelBuffer) HRESULT,
-    GetProtocolVersion: ?extern fn ([*c]IAsyncRpcChannelBuffer, [*c]DWORD) HRESULT,
-    Send: ?extern fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]ISynchronize, [*c]ULONG) HRESULT,
-    Receive: ?extern fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]ULONG) HRESULT,
-    GetDestCtxEx: ?extern fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]DWORD, [*c](?*c_void)) HRESULT,
+    QueryInterface: ?fn ([*c]IAsyncRpcChannelBuffer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAsyncRpcChannelBuffer) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAsyncRpcChannelBuffer) callconv(.C) ULONG,
+    GetBuffer: ?fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]const IID) callconv(.C) HRESULT,
+    SendReceive: ?fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]ULONG) callconv(.C) HRESULT,
+    FreeBuffer: ?fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE) callconv(.C) HRESULT,
+    GetDestCtx: ?fn ([*c]IAsyncRpcChannelBuffer, [*c]DWORD, [*c](?*c_void)) callconv(.C) HRESULT,
+    IsConnected: ?fn ([*c]IAsyncRpcChannelBuffer) callconv(.C) HRESULT,
+    GetProtocolVersion: ?fn ([*c]IAsyncRpcChannelBuffer, [*c]DWORD) callconv(.C) HRESULT,
+    Send: ?fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]ISynchronize, [*c]ULONG) callconv(.C) HRESULT,
+    Receive: ?fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]ULONG) callconv(.C) HRESULT,
+    GetDestCtxEx: ?fn ([*c]IAsyncRpcChannelBuffer, [*c]RPCOLEMESSAGE, [*c]DWORD, [*c](?*c_void)) callconv(.C) HRESULT,
 };
 pub const struct_IAsyncRpcChannelBuffer = extern struct {
     lpVtbl: [*c]struct_IAsyncRpcChannelBufferVtbl,
 };
 pub const IRpcChannelBuffer3 = struct_IRpcChannelBuffer3;
 pub const struct_IAsyncManagerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAsyncManager, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAsyncManager) ULONG,
-    Release: ?extern fn ([*c]IAsyncManager) ULONG,
-    CompleteCall: ?extern fn ([*c]IAsyncManager, HRESULT) HRESULT,
-    GetCallContext: ?extern fn ([*c]IAsyncManager, [*c]const IID, [*c](?*c_void)) HRESULT,
-    GetState: ?extern fn ([*c]IAsyncManager, [*c]ULONG) HRESULT,
+    QueryInterface: ?fn ([*c]IAsyncManager, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAsyncManager) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAsyncManager) callconv(.C) ULONG,
+    CompleteCall: ?fn ([*c]IAsyncManager, HRESULT) callconv(.C) HRESULT,
+    GetCallContext: ?fn ([*c]IAsyncManager, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    GetState: ?fn ([*c]IAsyncManager, [*c]ULONG) callconv(.C) HRESULT,
 };
 pub const struct_IAsyncManager = extern struct {
     lpVtbl: [*c]struct_IAsyncManagerVtbl,
 };
 pub const IAsyncManager = struct_IAsyncManager;
 pub const struct_IRpcChannelBuffer3Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRpcChannelBuffer3, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRpcChannelBuffer3) ULONG,
-    Release: ?extern fn ([*c]IRpcChannelBuffer3) ULONG,
-    GetBuffer: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]const IID) HRESULT,
-    SendReceive: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]ULONG) HRESULT,
-    FreeBuffer: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE) HRESULT,
-    GetDestCtx: ?extern fn ([*c]IRpcChannelBuffer3, [*c]DWORD, [*c](?*c_void)) HRESULT,
-    IsConnected: ?extern fn ([*c]IRpcChannelBuffer3) HRESULT,
-    GetProtocolVersion: ?extern fn ([*c]IRpcChannelBuffer3, [*c]DWORD) HRESULT,
-    Send: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]ULONG) HRESULT,
-    Receive: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, ULONG, [*c]ULONG) HRESULT,
-    Cancel: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE) HRESULT,
-    GetCallContext: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]const IID, [*c](?*c_void)) HRESULT,
-    GetDestCtxEx: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]DWORD, [*c](?*c_void)) HRESULT,
-    GetState: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]DWORD) HRESULT,
-    RegisterAsync: ?extern fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]IAsyncManager) HRESULT,
+    QueryInterface: ?fn ([*c]IRpcChannelBuffer3, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRpcChannelBuffer3) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRpcChannelBuffer3) callconv(.C) ULONG,
+    GetBuffer: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]const IID) callconv(.C) HRESULT,
+    SendReceive: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]ULONG) callconv(.C) HRESULT,
+    FreeBuffer: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE) callconv(.C) HRESULT,
+    GetDestCtx: ?fn ([*c]IRpcChannelBuffer3, [*c]DWORD, [*c](?*c_void)) callconv(.C) HRESULT,
+    IsConnected: ?fn ([*c]IRpcChannelBuffer3) callconv(.C) HRESULT,
+    GetProtocolVersion: ?fn ([*c]IRpcChannelBuffer3, [*c]DWORD) callconv(.C) HRESULT,
+    Send: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]ULONG) callconv(.C) HRESULT,
+    Receive: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Cancel: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE) callconv(.C) HRESULT,
+    GetCallContext: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    GetDestCtxEx: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]DWORD, [*c](?*c_void)) callconv(.C) HRESULT,
+    GetState: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]DWORD) callconv(.C) HRESULT,
+    RegisterAsync: ?fn ([*c]IRpcChannelBuffer3, [*c]RPCOLEMESSAGE, [*c]IAsyncManager) callconv(.C) HRESULT,
 };
 pub const struct_IRpcChannelBuffer3 = extern struct {
     lpVtbl: [*c]struct_IRpcChannelBuffer3Vtbl,
 };
 pub const IRpcSyntaxNegotiate = struct_IRpcSyntaxNegotiate;
 pub const struct_IRpcSyntaxNegotiateVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRpcSyntaxNegotiate, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRpcSyntaxNegotiate) ULONG,
-    Release: ?extern fn ([*c]IRpcSyntaxNegotiate) ULONG,
-    NegotiateSyntax: ?extern fn ([*c]IRpcSyntaxNegotiate, [*c]RPCOLEMESSAGE) HRESULT,
+    QueryInterface: ?fn ([*c]IRpcSyntaxNegotiate, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRpcSyntaxNegotiate) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRpcSyntaxNegotiate) callconv(.C) ULONG,
+    NegotiateSyntax: ?fn ([*c]IRpcSyntaxNegotiate, [*c]RPCOLEMESSAGE) callconv(.C) HRESULT,
 };
 pub const struct_IRpcSyntaxNegotiate = extern struct {
     lpVtbl: [*c]struct_IRpcSyntaxNegotiateVtbl,
 };
 pub const IRpcProxyBuffer = struct_IRpcProxyBuffer;
 pub const struct_IRpcProxyBufferVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRpcProxyBuffer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRpcProxyBuffer) ULONG,
-    Release: ?extern fn ([*c]IRpcProxyBuffer) ULONG,
-    Connect: ?extern fn ([*c]IRpcProxyBuffer, [*c]IRpcChannelBuffer) HRESULT,
-    Disconnect: ?extern fn ([*c]IRpcProxyBuffer) void,
+    QueryInterface: ?fn ([*c]IRpcProxyBuffer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRpcProxyBuffer) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRpcProxyBuffer) callconv(.C) ULONG,
+    Connect: ?fn ([*c]IRpcProxyBuffer, [*c]IRpcChannelBuffer) callconv(.C) HRESULT,
+    Disconnect: ?fn ([*c]IRpcProxyBuffer) callconv(.C) void,
 };
 pub const struct_IRpcProxyBuffer = extern struct {
     lpVtbl: [*c]struct_IRpcProxyBufferVtbl,
 };
 pub const IPSFactoryBuffer = struct_IPSFactoryBuffer;
 pub const struct_IPSFactoryBufferVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPSFactoryBuffer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPSFactoryBuffer) ULONG,
-    Release: ?extern fn ([*c]IPSFactoryBuffer) ULONG,
-    CreateProxy: ?extern fn ([*c]IPSFactoryBuffer, [*c]IUnknown, [*c]const IID, [*c]([*c]IRpcProxyBuffer), [*c](?*c_void)) HRESULT,
-    CreateStub: ?extern fn ([*c]IPSFactoryBuffer, [*c]const IID, [*c]IUnknown, [*c]([*c]IRpcStubBuffer)) HRESULT,
+    QueryInterface: ?fn ([*c]IPSFactoryBuffer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPSFactoryBuffer) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPSFactoryBuffer) callconv(.C) ULONG,
+    CreateProxy: ?fn ([*c]IPSFactoryBuffer, [*c]IUnknown, [*c]const IID, [*c]([*c]IRpcProxyBuffer), [*c](?*c_void)) callconv(.C) HRESULT,
+    CreateStub: ?fn ([*c]IPSFactoryBuffer, [*c]const IID, [*c]IUnknown, [*c]([*c]IRpcStubBuffer)) callconv(.C) HRESULT,
 };
 pub const struct_IPSFactoryBuffer = extern struct {
     lpVtbl: [*c]struct_IPSFactoryBufferVtbl,
 };
 pub const IChannelHook = struct_IChannelHook;
 pub const struct_IChannelHookVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IChannelHook, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IChannelHook) ULONG,
-    Release: ?extern fn ([*c]IChannelHook) ULONG,
-    ClientGetSize: ?extern fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, [*c]ULONG) void,
-    ClientFillBuffer: ?extern fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, [*c]ULONG, ?*c_void) void,
-    ClientNotify: ?extern fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, ULONG, ?*c_void, DWORD, HRESULT) void,
-    ServerNotify: ?extern fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, ULONG, ?*c_void, DWORD) void,
-    ServerGetSize: ?extern fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, HRESULT, [*c]ULONG) void,
-    ServerFillBuffer: ?extern fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, [*c]ULONG, ?*c_void, HRESULT) void,
+    QueryInterface: ?fn ([*c]IChannelHook, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IChannelHook) callconv(.C) ULONG,
+    Release: ?fn ([*c]IChannelHook) callconv(.C) ULONG,
+    ClientGetSize: ?fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, [*c]ULONG) callconv(.C) void,
+    ClientFillBuffer: ?fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, [*c]ULONG, ?*c_void) callconv(.C) void,
+    ClientNotify: ?fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, ULONG, ?*c_void, DWORD, HRESULT) callconv(.C) void,
+    ServerNotify: ?fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, ULONG, ?*c_void, DWORD) callconv(.C) void,
+    ServerGetSize: ?fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, HRESULT, [*c]ULONG) callconv(.C) void,
+    ServerFillBuffer: ?fn ([*c]IChannelHook, [*c]const GUID, [*c]const IID, [*c]ULONG, ?*c_void, HRESULT) callconv(.C) void,
 };
 pub const struct_IChannelHook = extern struct {
     lpVtbl: [*c]struct_IChannelHookVtbl,
 };
 pub const IClientSecurity = struct_IClientSecurity;
 pub const struct_IClientSecurityVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IClientSecurity, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IClientSecurity) ULONG,
-    Release: ?extern fn ([*c]IClientSecurity) ULONG,
-    QueryBlanket: ?extern fn ([*c]IClientSecurity, [*c]IUnknown, [*c]DWORD, [*c]DWORD, [*c]([*c]OLECHAR), [*c]DWORD, [*c]DWORD, [*c](?*c_void), [*c]DWORD) HRESULT,
-    SetBlanket: ?extern fn ([*c]IClientSecurity, [*c]IUnknown, DWORD, DWORD, [*c]OLECHAR, DWORD, DWORD, ?*c_void, DWORD) HRESULT,
-    CopyProxy: ?extern fn ([*c]IClientSecurity, [*c]IUnknown, [*c]([*c]IUnknown)) HRESULT,
+    QueryInterface: ?fn ([*c]IClientSecurity, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IClientSecurity) callconv(.C) ULONG,
+    Release: ?fn ([*c]IClientSecurity) callconv(.C) ULONG,
+    QueryBlanket: ?fn ([*c]IClientSecurity, [*c]IUnknown, [*c]DWORD, [*c]DWORD, [*c]([*c]OLECHAR), [*c]DWORD, [*c]DWORD, [*c](?*c_void), [*c]DWORD) callconv(.C) HRESULT,
+    SetBlanket: ?fn ([*c]IClientSecurity, [*c]IUnknown, DWORD, DWORD, [*c]OLECHAR, DWORD, DWORD, ?*c_void, DWORD) callconv(.C) HRESULT,
+    CopyProxy: ?fn ([*c]IClientSecurity, [*c]IUnknown, [*c]([*c]IUnknown)) callconv(.C) HRESULT,
 };
 pub const struct_IClientSecurity = extern struct {
     lpVtbl: [*c]struct_IClientSecurityVtbl,
 };
 pub const IServerSecurity = struct_IServerSecurity;
 pub const struct_IServerSecurityVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IServerSecurity, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IServerSecurity) ULONG,
-    Release: ?extern fn ([*c]IServerSecurity) ULONG,
-    QueryBlanket: ?extern fn ([*c]IServerSecurity, [*c]DWORD, [*c]DWORD, [*c]([*c]OLECHAR), [*c]DWORD, [*c]DWORD, [*c](?*c_void), [*c]DWORD) HRESULT,
-    ImpersonateClient: ?extern fn ([*c]IServerSecurity) HRESULT,
-    RevertToSelf: ?extern fn ([*c]IServerSecurity) HRESULT,
-    IsImpersonating: ?extern fn ([*c]IServerSecurity) BOOL,
+    QueryInterface: ?fn ([*c]IServerSecurity, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IServerSecurity) callconv(.C) ULONG,
+    Release: ?fn ([*c]IServerSecurity) callconv(.C) ULONG,
+    QueryBlanket: ?fn ([*c]IServerSecurity, [*c]DWORD, [*c]DWORD, [*c]([*c]OLECHAR), [*c]DWORD, [*c]DWORD, [*c](?*c_void), [*c]DWORD) callconv(.C) HRESULT,
+    ImpersonateClient: ?fn ([*c]IServerSecurity) callconv(.C) HRESULT,
+    RevertToSelf: ?fn ([*c]IServerSecurity) callconv(.C) HRESULT,
+    IsImpersonating: ?fn ([*c]IServerSecurity) callconv(.C) BOOL,
 };
 pub const struct_IServerSecurity = extern struct {
     lpVtbl: [*c]struct_IServerSecurityVtbl,
@@ -33251,11 +33251,11 @@ pub const RPCOPT_PROPERTIES = extern enum {
     COMBND_RESERVED4 = 16,
 };
 pub const struct_IRpcOptionsVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRpcOptions, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRpcOptions) ULONG,
-    Release: ?extern fn ([*c]IRpcOptions) ULONG,
-    Set: ?extern fn ([*c]IRpcOptions, [*c]IUnknown, RPCOPT_PROPERTIES, ULONG_PTR) HRESULT,
-    Query: ?extern fn ([*c]IRpcOptions, [*c]IUnknown, RPCOPT_PROPERTIES, [*c]ULONG_PTR) HRESULT,
+    QueryInterface: ?fn ([*c]IRpcOptions, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRpcOptions) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRpcOptions) callconv(.C) ULONG,
+    Set: ?fn ([*c]IRpcOptions, [*c]IUnknown, RPCOPT_PROPERTIES, ULONG_PTR) callconv(.C) HRESULT,
+    Query: ?fn ([*c]IRpcOptions, [*c]IUnknown, RPCOPT_PROPERTIES, [*c]ULONG_PTR) callconv(.C) HRESULT,
 };
 pub const struct_IRpcOptions = extern struct {
     lpVtbl: [*c]struct_IRpcOptionsVtbl,
@@ -33290,226 +33290,226 @@ pub const GLOBALOPT_PROPERTIES = extern enum {
     COMGLB_PROPERTIES_RESERVED3 = 8,
 };
 pub const struct_IGlobalOptionsVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IGlobalOptions, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IGlobalOptions) ULONG,
-    Release: ?extern fn ([*c]IGlobalOptions) ULONG,
-    Set: ?extern fn ([*c]IGlobalOptions, GLOBALOPT_PROPERTIES, ULONG_PTR) HRESULT,
-    Query: ?extern fn ([*c]IGlobalOptions, GLOBALOPT_PROPERTIES, [*c]ULONG_PTR) HRESULT,
+    QueryInterface: ?fn ([*c]IGlobalOptions, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IGlobalOptions) callconv(.C) ULONG,
+    Release: ?fn ([*c]IGlobalOptions) callconv(.C) ULONG,
+    Set: ?fn ([*c]IGlobalOptions, GLOBALOPT_PROPERTIES, ULONG_PTR) callconv(.C) HRESULT,
+    Query: ?fn ([*c]IGlobalOptions, GLOBALOPT_PROPERTIES, [*c]ULONG_PTR) callconv(.C) HRESULT,
 };
 pub const struct_IGlobalOptions = extern struct {
     lpVtbl: [*c]struct_IGlobalOptionsVtbl,
 };
 pub const ISurrogate = struct_ISurrogate;
 pub const struct_ISurrogateVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISurrogate, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISurrogate) ULONG,
-    Release: ?extern fn ([*c]ISurrogate) ULONG,
-    LoadDllServer: ?extern fn ([*c]ISurrogate, [*c]const IID) HRESULT,
-    FreeSurrogate: ?extern fn ([*c]ISurrogate) HRESULT,
+    QueryInterface: ?fn ([*c]ISurrogate, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISurrogate) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISurrogate) callconv(.C) ULONG,
+    LoadDllServer: ?fn ([*c]ISurrogate, [*c]const IID) callconv(.C) HRESULT,
+    FreeSurrogate: ?fn ([*c]ISurrogate) callconv(.C) HRESULT,
 };
 pub const struct_ISurrogate = extern struct {
     lpVtbl: [*c]struct_ISurrogateVtbl,
 };
 pub const IGlobalInterfaceTable = struct_IGlobalInterfaceTable;
 pub const struct_IGlobalInterfaceTableVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IGlobalInterfaceTable, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IGlobalInterfaceTable) ULONG,
-    Release: ?extern fn ([*c]IGlobalInterfaceTable) ULONG,
-    RegisterInterfaceInGlobal: ?extern fn ([*c]IGlobalInterfaceTable, [*c]IUnknown, [*c]const IID, [*c]DWORD) HRESULT,
-    RevokeInterfaceFromGlobal: ?extern fn ([*c]IGlobalInterfaceTable, DWORD) HRESULT,
-    GetInterfaceFromGlobal: ?extern fn ([*c]IGlobalInterfaceTable, DWORD, [*c]const IID, [*c](?*c_void)) HRESULT,
+    QueryInterface: ?fn ([*c]IGlobalInterfaceTable, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IGlobalInterfaceTable) callconv(.C) ULONG,
+    Release: ?fn ([*c]IGlobalInterfaceTable) callconv(.C) ULONG,
+    RegisterInterfaceInGlobal: ?fn ([*c]IGlobalInterfaceTable, [*c]IUnknown, [*c]const IID, [*c]DWORD) callconv(.C) HRESULT,
+    RevokeInterfaceFromGlobal: ?fn ([*c]IGlobalInterfaceTable, DWORD) callconv(.C) HRESULT,
+    GetInterfaceFromGlobal: ?fn ([*c]IGlobalInterfaceTable, DWORD, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
 };
 pub const struct_IGlobalInterfaceTable = extern struct {
     lpVtbl: [*c]struct_IGlobalInterfaceTableVtbl,
 };
 pub const ISynchronizeHandle = struct_ISynchronizeHandle;
 pub const struct_ISynchronizeHandleVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISynchronizeHandle, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISynchronizeHandle) ULONG,
-    Release: ?extern fn ([*c]ISynchronizeHandle) ULONG,
-    GetHandle: ?extern fn ([*c]ISynchronizeHandle, [*c]HANDLE) HRESULT,
+    QueryInterface: ?fn ([*c]ISynchronizeHandle, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISynchronizeHandle) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISynchronizeHandle) callconv(.C) ULONG,
+    GetHandle: ?fn ([*c]ISynchronizeHandle, [*c]HANDLE) callconv(.C) HRESULT,
 };
 pub const struct_ISynchronizeHandle = extern struct {
     lpVtbl: [*c]struct_ISynchronizeHandleVtbl,
 };
 pub const ISynchronizeEvent = struct_ISynchronizeEvent;
 pub const struct_ISynchronizeEventVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISynchronizeEvent, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISynchronizeEvent) ULONG,
-    Release: ?extern fn ([*c]ISynchronizeEvent) ULONG,
-    GetHandle: ?extern fn ([*c]ISynchronizeEvent, [*c]HANDLE) HRESULT,
-    SetEventHandle: ?extern fn ([*c]ISynchronizeEvent, [*c]HANDLE) HRESULT,
+    QueryInterface: ?fn ([*c]ISynchronizeEvent, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISynchronizeEvent) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISynchronizeEvent) callconv(.C) ULONG,
+    GetHandle: ?fn ([*c]ISynchronizeEvent, [*c]HANDLE) callconv(.C) HRESULT,
+    SetEventHandle: ?fn ([*c]ISynchronizeEvent, [*c]HANDLE) callconv(.C) HRESULT,
 };
 pub const struct_ISynchronizeEvent = extern struct {
     lpVtbl: [*c]struct_ISynchronizeEventVtbl,
 };
 pub const ISynchronizeContainer = struct_ISynchronizeContainer;
 pub const struct_ISynchronizeContainerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISynchronizeContainer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISynchronizeContainer) ULONG,
-    Release: ?extern fn ([*c]ISynchronizeContainer) ULONG,
-    AddSynchronize: ?extern fn ([*c]ISynchronizeContainer, [*c]ISynchronize) HRESULT,
-    WaitMultiple: ?extern fn ([*c]ISynchronizeContainer, DWORD, DWORD, [*c]([*c]ISynchronize)) HRESULT,
+    QueryInterface: ?fn ([*c]ISynchronizeContainer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISynchronizeContainer) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISynchronizeContainer) callconv(.C) ULONG,
+    AddSynchronize: ?fn ([*c]ISynchronizeContainer, [*c]ISynchronize) callconv(.C) HRESULT,
+    WaitMultiple: ?fn ([*c]ISynchronizeContainer, DWORD, DWORD, [*c]([*c]ISynchronize)) callconv(.C) HRESULT,
 };
 pub const struct_ISynchronizeContainer = extern struct {
     lpVtbl: [*c]struct_ISynchronizeContainerVtbl,
 };
 pub const ISynchronizeMutex = struct_ISynchronizeMutex;
 pub const struct_ISynchronizeMutexVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISynchronizeMutex, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISynchronizeMutex) ULONG,
-    Release: ?extern fn ([*c]ISynchronizeMutex) ULONG,
-    Wait: ?extern fn ([*c]ISynchronizeMutex, DWORD, DWORD) HRESULT,
-    Signal: ?extern fn ([*c]ISynchronizeMutex) HRESULT,
-    Reset: ?extern fn ([*c]ISynchronizeMutex) HRESULT,
-    ReleaseMutex: ?extern fn ([*c]ISynchronizeMutex) HRESULT,
+    QueryInterface: ?fn ([*c]ISynchronizeMutex, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISynchronizeMutex) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISynchronizeMutex) callconv(.C) ULONG,
+    Wait: ?fn ([*c]ISynchronizeMutex, DWORD, DWORD) callconv(.C) HRESULT,
+    Signal: ?fn ([*c]ISynchronizeMutex) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]ISynchronizeMutex) callconv(.C) HRESULT,
+    ReleaseMutex: ?fn ([*c]ISynchronizeMutex) callconv(.C) HRESULT,
 };
 pub const struct_ISynchronizeMutex = extern struct {
     lpVtbl: [*c]struct_ISynchronizeMutexVtbl,
 };
 pub const ICancelMethodCalls = struct_ICancelMethodCalls;
 pub const struct_ICancelMethodCallsVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ICancelMethodCalls, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ICancelMethodCalls) ULONG,
-    Release: ?extern fn ([*c]ICancelMethodCalls) ULONG,
-    Cancel: ?extern fn ([*c]ICancelMethodCalls, ULONG) HRESULT,
-    TestCancel: ?extern fn ([*c]ICancelMethodCalls) HRESULT,
+    QueryInterface: ?fn ([*c]ICancelMethodCalls, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ICancelMethodCalls) callconv(.C) ULONG,
+    Release: ?fn ([*c]ICancelMethodCalls) callconv(.C) ULONG,
+    Cancel: ?fn ([*c]ICancelMethodCalls, ULONG) callconv(.C) HRESULT,
+    TestCancel: ?fn ([*c]ICancelMethodCalls) callconv(.C) HRESULT,
 };
 pub const struct_ICancelMethodCalls = extern struct {
     lpVtbl: [*c]struct_ICancelMethodCallsVtbl,
 };
 pub const ICallFactory = struct_ICallFactory;
 pub const struct_ICallFactoryVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ICallFactory, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ICallFactory) ULONG,
-    Release: ?extern fn ([*c]ICallFactory) ULONG,
-    CreateCall: ?extern fn ([*c]ICallFactory, [*c]const IID, [*c]IUnknown, [*c]const IID, [*c]([*c]IUnknown)) HRESULT,
+    QueryInterface: ?fn ([*c]ICallFactory, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ICallFactory) callconv(.C) ULONG,
+    Release: ?fn ([*c]ICallFactory) callconv(.C) ULONG,
+    CreateCall: ?fn ([*c]ICallFactory, [*c]const IID, [*c]IUnknown, [*c]const IID, [*c]([*c]IUnknown)) callconv(.C) HRESULT,
 };
 pub const struct_ICallFactory = extern struct {
     lpVtbl: [*c]struct_ICallFactoryVtbl,
 };
 pub const IRpcHelper = struct_IRpcHelper;
 pub const struct_IRpcHelperVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRpcHelper, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRpcHelper) ULONG,
-    Release: ?extern fn ([*c]IRpcHelper) ULONG,
-    GetDCOMProtocolVersion: ?extern fn ([*c]IRpcHelper, [*c]DWORD) HRESULT,
-    GetIIDFromOBJREF: ?extern fn ([*c]IRpcHelper, ?*c_void, [*c]([*c]IID)) HRESULT,
+    QueryInterface: ?fn ([*c]IRpcHelper, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRpcHelper) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRpcHelper) callconv(.C) ULONG,
+    GetDCOMProtocolVersion: ?fn ([*c]IRpcHelper, [*c]DWORD) callconv(.C) HRESULT,
+    GetIIDFromOBJREF: ?fn ([*c]IRpcHelper, ?*c_void, [*c]([*c]IID)) callconv(.C) HRESULT,
 };
 pub const struct_IRpcHelper = extern struct {
     lpVtbl: [*c]struct_IRpcHelperVtbl,
 };
 pub const IReleaseMarshalBuffers = struct_IReleaseMarshalBuffers;
 pub const struct_IReleaseMarshalBuffersVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IReleaseMarshalBuffers, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IReleaseMarshalBuffers) ULONG,
-    Release: ?extern fn ([*c]IReleaseMarshalBuffers) ULONG,
-    ReleaseMarshalBuffer: ?extern fn ([*c]IReleaseMarshalBuffers, [*c]RPCOLEMESSAGE, DWORD, [*c]IUnknown) HRESULT,
+    QueryInterface: ?fn ([*c]IReleaseMarshalBuffers, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IReleaseMarshalBuffers) callconv(.C) ULONG,
+    Release: ?fn ([*c]IReleaseMarshalBuffers) callconv(.C) ULONG,
+    ReleaseMarshalBuffer: ?fn ([*c]IReleaseMarshalBuffers, [*c]RPCOLEMESSAGE, DWORD, [*c]IUnknown) callconv(.C) HRESULT,
 };
 pub const struct_IReleaseMarshalBuffers = extern struct {
     lpVtbl: [*c]struct_IReleaseMarshalBuffersVtbl,
 };
 pub const IWaitMultiple = struct_IWaitMultiple;
 pub const struct_IWaitMultipleVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IWaitMultiple, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IWaitMultiple) ULONG,
-    Release: ?extern fn ([*c]IWaitMultiple) ULONG,
-    WaitMultiple: ?extern fn ([*c]IWaitMultiple, DWORD, [*c]([*c]ISynchronize)) HRESULT,
-    AddSynchronize: ?extern fn ([*c]IWaitMultiple, [*c]ISynchronize) HRESULT,
+    QueryInterface: ?fn ([*c]IWaitMultiple, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IWaitMultiple) callconv(.C) ULONG,
+    Release: ?fn ([*c]IWaitMultiple) callconv(.C) ULONG,
+    WaitMultiple: ?fn ([*c]IWaitMultiple, DWORD, [*c]([*c]ISynchronize)) callconv(.C) HRESULT,
+    AddSynchronize: ?fn ([*c]IWaitMultiple, [*c]ISynchronize) callconv(.C) HRESULT,
 };
 pub const struct_IWaitMultiple = extern struct {
     lpVtbl: [*c]struct_IWaitMultipleVtbl,
 };
 pub const IAddrTrackingControl = struct_IAddrTrackingControl;
 pub const struct_IAddrTrackingControlVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAddrTrackingControl, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAddrTrackingControl) ULONG,
-    Release: ?extern fn ([*c]IAddrTrackingControl) ULONG,
-    EnableCOMDynamicAddrTracking: ?extern fn ([*c]IAddrTrackingControl) HRESULT,
-    DisableCOMDynamicAddrTracking: ?extern fn ([*c]IAddrTrackingControl) HRESULT,
+    QueryInterface: ?fn ([*c]IAddrTrackingControl, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAddrTrackingControl) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAddrTrackingControl) callconv(.C) ULONG,
+    EnableCOMDynamicAddrTracking: ?fn ([*c]IAddrTrackingControl) callconv(.C) HRESULT,
+    DisableCOMDynamicAddrTracking: ?fn ([*c]IAddrTrackingControl) callconv(.C) HRESULT,
 };
 pub const struct_IAddrTrackingControl = extern struct {
     lpVtbl: [*c]struct_IAddrTrackingControlVtbl,
 };
 pub const IAddrExclusionControl = struct_IAddrExclusionControl;
 pub const struct_IAddrExclusionControlVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAddrExclusionControl, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAddrExclusionControl) ULONG,
-    Release: ?extern fn ([*c]IAddrExclusionControl) ULONG,
-    GetCurrentAddrExclusionList: ?extern fn ([*c]IAddrExclusionControl, [*c]const IID, [*c](?*c_void)) HRESULT,
-    UpdateAddrExclusionList: ?extern fn ([*c]IAddrExclusionControl, [*c]IUnknown) HRESULT,
+    QueryInterface: ?fn ([*c]IAddrExclusionControl, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAddrExclusionControl) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAddrExclusionControl) callconv(.C) ULONG,
+    GetCurrentAddrExclusionList: ?fn ([*c]IAddrExclusionControl, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    UpdateAddrExclusionList: ?fn ([*c]IAddrExclusionControl, [*c]IUnknown) callconv(.C) HRESULT,
 };
 pub const struct_IAddrExclusionControl = extern struct {
     lpVtbl: [*c]struct_IAddrExclusionControlVtbl,
 };
 pub const IPipeByte = struct_IPipeByte;
 pub const struct_IPipeByteVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPipeByte, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPipeByte) ULONG,
-    Release: ?extern fn ([*c]IPipeByte) ULONG,
-    Pull: ?extern fn ([*c]IPipeByte, [*c]BYTE, ULONG, [*c]ULONG) HRESULT,
-    Push: ?extern fn ([*c]IPipeByte, [*c]BYTE, ULONG) HRESULT,
+    QueryInterface: ?fn ([*c]IPipeByte, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPipeByte) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPipeByte) callconv(.C) ULONG,
+    Pull: ?fn ([*c]IPipeByte, [*c]BYTE, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Push: ?fn ([*c]IPipeByte, [*c]BYTE, ULONG) callconv(.C) HRESULT,
 };
 pub const struct_IPipeByte = extern struct {
     lpVtbl: [*c]struct_IPipeByteVtbl,
 };
 pub const AsyncIPipeByte = struct_AsyncIPipeByte;
 pub const struct_AsyncIPipeByteVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]AsyncIPipeByte, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]AsyncIPipeByte) ULONG,
-    Release: ?extern fn ([*c]AsyncIPipeByte) ULONG,
-    Begin_Pull: ?extern fn ([*c]AsyncIPipeByte, ULONG) HRESULT,
-    Finish_Pull: ?extern fn ([*c]AsyncIPipeByte, [*c]BYTE, [*c]ULONG) HRESULT,
-    Begin_Push: ?extern fn ([*c]AsyncIPipeByte, [*c]BYTE, ULONG) HRESULT,
-    Finish_Push: ?extern fn ([*c]AsyncIPipeByte) HRESULT,
+    QueryInterface: ?fn ([*c]AsyncIPipeByte, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]AsyncIPipeByte) callconv(.C) ULONG,
+    Release: ?fn ([*c]AsyncIPipeByte) callconv(.C) ULONG,
+    Begin_Pull: ?fn ([*c]AsyncIPipeByte, ULONG) callconv(.C) HRESULT,
+    Finish_Pull: ?fn ([*c]AsyncIPipeByte, [*c]BYTE, [*c]ULONG) callconv(.C) HRESULT,
+    Begin_Push: ?fn ([*c]AsyncIPipeByte, [*c]BYTE, ULONG) callconv(.C) HRESULT,
+    Finish_Push: ?fn ([*c]AsyncIPipeByte) callconv(.C) HRESULT,
 };
 pub const struct_AsyncIPipeByte = extern struct {
     lpVtbl: [*c]struct_AsyncIPipeByteVtbl,
 };
 pub const IPipeLong = struct_IPipeLong;
 pub const struct_IPipeLongVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPipeLong, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPipeLong) ULONG,
-    Release: ?extern fn ([*c]IPipeLong) ULONG,
-    Pull: ?extern fn ([*c]IPipeLong, [*c]LONG, ULONG, [*c]ULONG) HRESULT,
-    Push: ?extern fn ([*c]IPipeLong, [*c]LONG, ULONG) HRESULT,
+    QueryInterface: ?fn ([*c]IPipeLong, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPipeLong) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPipeLong) callconv(.C) ULONG,
+    Pull: ?fn ([*c]IPipeLong, [*c]LONG, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Push: ?fn ([*c]IPipeLong, [*c]LONG, ULONG) callconv(.C) HRESULT,
 };
 pub const struct_IPipeLong = extern struct {
     lpVtbl: [*c]struct_IPipeLongVtbl,
 };
 pub const AsyncIPipeLong = struct_AsyncIPipeLong;
 pub const struct_AsyncIPipeLongVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]AsyncIPipeLong, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]AsyncIPipeLong) ULONG,
-    Release: ?extern fn ([*c]AsyncIPipeLong) ULONG,
-    Begin_Pull: ?extern fn ([*c]AsyncIPipeLong, ULONG) HRESULT,
-    Finish_Pull: ?extern fn ([*c]AsyncIPipeLong, [*c]LONG, [*c]ULONG) HRESULT,
-    Begin_Push: ?extern fn ([*c]AsyncIPipeLong, [*c]LONG, ULONG) HRESULT,
-    Finish_Push: ?extern fn ([*c]AsyncIPipeLong) HRESULT,
+    QueryInterface: ?fn ([*c]AsyncIPipeLong, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]AsyncIPipeLong) callconv(.C) ULONG,
+    Release: ?fn ([*c]AsyncIPipeLong) callconv(.C) ULONG,
+    Begin_Pull: ?fn ([*c]AsyncIPipeLong, ULONG) callconv(.C) HRESULT,
+    Finish_Pull: ?fn ([*c]AsyncIPipeLong, [*c]LONG, [*c]ULONG) callconv(.C) HRESULT,
+    Begin_Push: ?fn ([*c]AsyncIPipeLong, [*c]LONG, ULONG) callconv(.C) HRESULT,
+    Finish_Push: ?fn ([*c]AsyncIPipeLong) callconv(.C) HRESULT,
 };
 pub const struct_AsyncIPipeLong = extern struct {
     lpVtbl: [*c]struct_AsyncIPipeLongVtbl,
 };
 pub const IPipeDouble = struct_IPipeDouble;
 pub const struct_IPipeDoubleVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPipeDouble, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPipeDouble) ULONG,
-    Release: ?extern fn ([*c]IPipeDouble) ULONG,
-    Pull: ?extern fn ([*c]IPipeDouble, [*c]DOUBLE, ULONG, [*c]ULONG) HRESULT,
-    Push: ?extern fn ([*c]IPipeDouble, [*c]DOUBLE, ULONG) HRESULT,
+    QueryInterface: ?fn ([*c]IPipeDouble, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPipeDouble) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPipeDouble) callconv(.C) ULONG,
+    Pull: ?fn ([*c]IPipeDouble, [*c]DOUBLE, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Push: ?fn ([*c]IPipeDouble, [*c]DOUBLE, ULONG) callconv(.C) HRESULT,
 };
 pub const struct_IPipeDouble = extern struct {
     lpVtbl: [*c]struct_IPipeDoubleVtbl,
 };
 pub const AsyncIPipeDouble = struct_AsyncIPipeDouble;
 pub const struct_AsyncIPipeDoubleVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]AsyncIPipeDouble, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]AsyncIPipeDouble) ULONG,
-    Release: ?extern fn ([*c]AsyncIPipeDouble) ULONG,
-    Begin_Pull: ?extern fn ([*c]AsyncIPipeDouble, ULONG) HRESULT,
-    Finish_Pull: ?extern fn ([*c]AsyncIPipeDouble, [*c]DOUBLE, [*c]ULONG) HRESULT,
-    Begin_Push: ?extern fn ([*c]AsyncIPipeDouble, [*c]DOUBLE, ULONG) HRESULT,
-    Finish_Push: ?extern fn ([*c]AsyncIPipeDouble) HRESULT,
+    QueryInterface: ?fn ([*c]AsyncIPipeDouble, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]AsyncIPipeDouble) callconv(.C) ULONG,
+    Release: ?fn ([*c]AsyncIPipeDouble) callconv(.C) ULONG,
+    Begin_Pull: ?fn ([*c]AsyncIPipeDouble, ULONG) callconv(.C) HRESULT,
+    Finish_Pull: ?fn ([*c]AsyncIPipeDouble, [*c]DOUBLE, [*c]ULONG) callconv(.C) HRESULT,
+    Begin_Push: ?fn ([*c]AsyncIPipeDouble, [*c]DOUBLE, ULONG) callconv(.C) HRESULT,
+    Finish_Push: ?fn ([*c]AsyncIPipeDouble) callconv(.C) HRESULT,
 };
 pub const struct_AsyncIPipeDouble = extern struct {
     lpVtbl: [*c]struct_AsyncIPipeDoubleVtbl,
@@ -33551,32 +33551,32 @@ pub const THDTYPE = extern enum {
     THDTYPE_PROCESSMESSAGES = 1,
 };
 pub const struct_IComThreadingInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IComThreadingInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IComThreadingInfo) ULONG,
-    Release: ?extern fn ([*c]IComThreadingInfo) ULONG,
-    GetCurrentApartmentType: ?extern fn ([*c]IComThreadingInfo, [*c]APTTYPE) HRESULT,
-    GetCurrentThreadType: ?extern fn ([*c]IComThreadingInfo, [*c]THDTYPE) HRESULT,
-    GetCurrentLogicalThreadId: ?extern fn ([*c]IComThreadingInfo, [*c]GUID) HRESULT,
-    SetCurrentLogicalThreadId: ?extern fn ([*c]IComThreadingInfo, [*c]const GUID) HRESULT,
+    QueryInterface: ?fn ([*c]IComThreadingInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IComThreadingInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]IComThreadingInfo) callconv(.C) ULONG,
+    GetCurrentApartmentType: ?fn ([*c]IComThreadingInfo, [*c]APTTYPE) callconv(.C) HRESULT,
+    GetCurrentThreadType: ?fn ([*c]IComThreadingInfo, [*c]THDTYPE) callconv(.C) HRESULT,
+    GetCurrentLogicalThreadId: ?fn ([*c]IComThreadingInfo, [*c]GUID) callconv(.C) HRESULT,
+    SetCurrentLogicalThreadId: ?fn ([*c]IComThreadingInfo, [*c]const GUID) callconv(.C) HRESULT,
 };
 pub const struct_IComThreadingInfo = extern struct {
     lpVtbl: [*c]struct_IComThreadingInfoVtbl,
 };
 pub const IProcessInitControl = struct_IProcessInitControl;
 pub const struct_IProcessInitControlVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IProcessInitControl, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IProcessInitControl) ULONG,
-    Release: ?extern fn ([*c]IProcessInitControl) ULONG,
-    ResetInitializerTimeout: ?extern fn ([*c]IProcessInitControl, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IProcessInitControl, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IProcessInitControl) callconv(.C) ULONG,
+    Release: ?fn ([*c]IProcessInitControl) callconv(.C) ULONG,
+    ResetInitializerTimeout: ?fn ([*c]IProcessInitControl, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IProcessInitControl = extern struct {
     lpVtbl: [*c]struct_IProcessInitControlVtbl,
 };
 pub const IFastRundown = struct_IFastRundown;
 pub const struct_IFastRundownVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IFastRundown, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IFastRundown) ULONG,
-    Release: ?extern fn ([*c]IFastRundown) ULONG,
+    QueryInterface: ?fn ([*c]IFastRundown, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IFastRundown) callconv(.C) ULONG,
+    Release: ?fn ([*c]IFastRundown) callconv(.C) ULONG,
 };
 pub const struct_IFastRundown = extern struct {
     lpVtbl: [*c]struct_IFastRundownVtbl,
@@ -33641,31 +33641,31 @@ pub const CO_MARSHALING_CONTEXT_ATTRIBUTES = extern enum {
     CO_MARSHALING_CONTEXT_ATTRIBUTE_RESERVED_17 = -2147483632,
 };
 pub const struct_IMarshalingStreamVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IMarshalingStream, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IMarshalingStream) ULONG,
-    Release: ?extern fn ([*c]IMarshalingStream) ULONG,
-    Read: ?extern fn ([*c]IMarshalingStream, ?*c_void, ULONG, [*c]ULONG) HRESULT,
-    Write: ?extern fn ([*c]IMarshalingStream, ?*const c_void, ULONG, [*c]ULONG) HRESULT,
-    Seek: ?extern fn ([*c]IMarshalingStream, LARGE_INTEGER, DWORD, [*c]ULARGE_INTEGER) HRESULT,
-    SetSize: ?extern fn ([*c]IMarshalingStream, ULARGE_INTEGER) HRESULT,
-    CopyTo: ?extern fn ([*c]IMarshalingStream, [*c]IStream, ULARGE_INTEGER, [*c]ULARGE_INTEGER, [*c]ULARGE_INTEGER) HRESULT,
-    Commit: ?extern fn ([*c]IMarshalingStream, DWORD) HRESULT,
-    Revert: ?extern fn ([*c]IMarshalingStream) HRESULT,
-    LockRegion: ?extern fn ([*c]IMarshalingStream, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) HRESULT,
-    UnlockRegion: ?extern fn ([*c]IMarshalingStream, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) HRESULT,
-    Stat: ?extern fn ([*c]IMarshalingStream, [*c]STATSTG, DWORD) HRESULT,
-    Clone: ?extern fn ([*c]IMarshalingStream, [*c]([*c]IStream)) HRESULT,
-    GetMarshalingContextAttribute: ?extern fn ([*c]IMarshalingStream, CO_MARSHALING_CONTEXT_ATTRIBUTES, [*c]ULONG_PTR) HRESULT,
+    QueryInterface: ?fn ([*c]IMarshalingStream, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IMarshalingStream) callconv(.C) ULONG,
+    Release: ?fn ([*c]IMarshalingStream) callconv(.C) ULONG,
+    Read: ?fn ([*c]IMarshalingStream, ?*c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Write: ?fn ([*c]IMarshalingStream, ?*const c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Seek: ?fn ([*c]IMarshalingStream, LARGE_INTEGER, DWORD, [*c]ULARGE_INTEGER) callconv(.C) HRESULT,
+    SetSize: ?fn ([*c]IMarshalingStream, ULARGE_INTEGER) callconv(.C) HRESULT,
+    CopyTo: ?fn ([*c]IMarshalingStream, [*c]IStream, ULARGE_INTEGER, [*c]ULARGE_INTEGER, [*c]ULARGE_INTEGER) callconv(.C) HRESULT,
+    Commit: ?fn ([*c]IMarshalingStream, DWORD) callconv(.C) HRESULT,
+    Revert: ?fn ([*c]IMarshalingStream) callconv(.C) HRESULT,
+    LockRegion: ?fn ([*c]IMarshalingStream, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) callconv(.C) HRESULT,
+    UnlockRegion: ?fn ([*c]IMarshalingStream, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) callconv(.C) HRESULT,
+    Stat: ?fn ([*c]IMarshalingStream, [*c]STATSTG, DWORD) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IMarshalingStream, [*c]([*c]IStream)) callconv(.C) HRESULT,
+    GetMarshalingContextAttribute: ?fn ([*c]IMarshalingStream, CO_MARSHALING_CONTEXT_ATTRIBUTES, [*c]ULONG_PTR) callconv(.C) HRESULT,
 };
 pub const struct_IMarshalingStream = extern struct {
     lpVtbl: [*c]struct_IMarshalingStreamVtbl,
 };
 pub const IAgileReference = struct_IAgileReference;
 pub const struct_IAgileReferenceVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAgileReference, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAgileReference) ULONG,
-    Release: ?extern fn ([*c]IAgileReference) ULONG,
-    Resolve: ?extern fn ([*c]IAgileReference, [*c]const IID, [*c](?*c_void)) HRESULT,
+    QueryInterface: ?fn ([*c]IAgileReference, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAgileReference) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAgileReference) callconv(.C) ULONG,
+    Resolve: ?fn ([*c]IAgileReference, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
 };
 pub const struct_IAgileReference = extern struct {
     lpVtbl: [*c]struct_IAgileReferenceVtbl,
@@ -34353,25 +34353,25 @@ pub const struct_tagSAFEARRAY = extern struct {
 };
 pub const SAFEARRAY = struct_tagSAFEARRAY;
 pub const struct_IRecordInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRecordInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRecordInfo) ULONG,
-    Release: ?extern fn ([*c]IRecordInfo) ULONG,
-    RecordInit: ?extern fn ([*c]IRecordInfo, PVOID) HRESULT,
-    RecordClear: ?extern fn ([*c]IRecordInfo, PVOID) HRESULT,
-    RecordCopy: ?extern fn ([*c]IRecordInfo, PVOID, PVOID) HRESULT,
-    GetGuid: ?extern fn ([*c]IRecordInfo, [*c]GUID) HRESULT,
-    GetName: ?extern fn ([*c]IRecordInfo, [*c]BSTR) HRESULT,
-    GetSize: ?extern fn ([*c]IRecordInfo, [*c]ULONG) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IRecordInfo, [*c]([*c]ITypeInfo)) HRESULT,
-    GetField: ?extern fn ([*c]IRecordInfo, PVOID, LPCOLESTR, [*c]VARIANT) HRESULT,
-    GetFieldNoCopy: ?extern fn ([*c]IRecordInfo, PVOID, LPCOLESTR, [*c]VARIANT, [*c]PVOID) HRESULT,
-    PutField: ?extern fn ([*c]IRecordInfo, ULONG, PVOID, LPCOLESTR, [*c]VARIANT) HRESULT,
-    PutFieldNoCopy: ?extern fn ([*c]IRecordInfo, ULONG, PVOID, LPCOLESTR, [*c]VARIANT) HRESULT,
-    GetFieldNames: ?extern fn ([*c]IRecordInfo, [*c]ULONG, [*c]BSTR) HRESULT,
-    IsMatchingType: ?extern fn ([*c]IRecordInfo, [*c]IRecordInfo) BOOL,
-    RecordCreate: ?extern fn ([*c]IRecordInfo) PVOID,
-    RecordCreateCopy: ?extern fn ([*c]IRecordInfo, PVOID, [*c]PVOID) HRESULT,
-    RecordDestroy: ?extern fn ([*c]IRecordInfo, PVOID) HRESULT,
+    QueryInterface: ?fn ([*c]IRecordInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRecordInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRecordInfo) callconv(.C) ULONG,
+    RecordInit: ?fn ([*c]IRecordInfo, PVOID) callconv(.C) HRESULT,
+    RecordClear: ?fn ([*c]IRecordInfo, PVOID) callconv(.C) HRESULT,
+    RecordCopy: ?fn ([*c]IRecordInfo, PVOID, PVOID) callconv(.C) HRESULT,
+    GetGuid: ?fn ([*c]IRecordInfo, [*c]GUID) callconv(.C) HRESULT,
+    GetName: ?fn ([*c]IRecordInfo, [*c]BSTR) callconv(.C) HRESULT,
+    GetSize: ?fn ([*c]IRecordInfo, [*c]ULONG) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IRecordInfo, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetField: ?fn ([*c]IRecordInfo, PVOID, LPCOLESTR, [*c]VARIANT) callconv(.C) HRESULT,
+    GetFieldNoCopy: ?fn ([*c]IRecordInfo, PVOID, LPCOLESTR, [*c]VARIANT, [*c]PVOID) callconv(.C) HRESULT,
+    PutField: ?fn ([*c]IRecordInfo, ULONG, PVOID, LPCOLESTR, [*c]VARIANT) callconv(.C) HRESULT,
+    PutFieldNoCopy: ?fn ([*c]IRecordInfo, ULONG, PVOID, LPCOLESTR, [*c]VARIANT) callconv(.C) HRESULT,
+    GetFieldNames: ?fn ([*c]IRecordInfo, [*c]ULONG, [*c]BSTR) callconv(.C) HRESULT,
+    IsMatchingType: ?fn ([*c]IRecordInfo, [*c]IRecordInfo) callconv(.C) BOOL,
+    RecordCreate: ?fn ([*c]IRecordInfo) callconv(.C) PVOID,
+    RecordCreateCopy: ?fn ([*c]IRecordInfo, PVOID, [*c]PVOID) callconv(.C) HRESULT,
+    RecordDestroy: ?fn ([*c]IRecordInfo, PVOID) callconv(.C) HRESULT,
 };
 pub const struct_IRecordInfo = extern struct {
     lpVtbl: [*c]struct_IRecordInfoVtbl,
@@ -34581,11 +34581,11 @@ pub const union_tagBINDPTR = extern union {
 };
 pub const BINDPTR = union_tagBINDPTR;
 pub const struct_ITypeCompVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeComp, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeComp) ULONG,
-    Release: ?extern fn ([*c]ITypeComp) ULONG,
-    Bind: ?extern fn ([*c]ITypeComp, LPOLESTR, ULONG, WORD, [*c]([*c]ITypeInfo), [*c]DESCKIND, [*c]BINDPTR) HRESULT,
-    BindType: ?extern fn ([*c]ITypeComp, LPOLESTR, ULONG, [*c]([*c]ITypeInfo), [*c]([*c]ITypeComp)) HRESULT,
+    QueryInterface: ?fn ([*c]ITypeComp, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeComp) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeComp) callconv(.C) ULONG,
+    Bind: ?fn ([*c]ITypeComp, LPOLESTR, ULONG, WORD, [*c]([*c]ITypeInfo), [*c]DESCKIND, [*c]BINDPTR) callconv(.C) HRESULT,
+    BindType: ?fn ([*c]ITypeComp, LPOLESTR, ULONG, [*c]([*c]ITypeInfo), [*c]([*c]ITypeComp)) callconv(.C) HRESULT,
 };
 pub const struct_ITypeComp = extern struct {
     lpVtbl: [*c]struct_ITypeCompVtbl,
@@ -34606,7 +34606,7 @@ pub const struct_tagEXCEPINFO = extern struct {
     bstrHelpFile: BSTR,
     dwHelpContext: DWORD,
     pvReserved: PVOID,
-    pfnDeferredFillIn: ?extern fn ([*c]struct_tagEXCEPINFO) HRESULT,
+    pfnDeferredFillIn: ?fn ([*c]struct_tagEXCEPINFO) callconv(.C) HRESULT,
     scode: SCODE,
 };
 pub const EXCEPINFO = struct_tagEXCEPINFO;
@@ -34636,60 +34636,60 @@ pub const struct_tagTLIBATTR = extern struct {
 };
 pub const TLIBATTR = struct_tagTLIBATTR;
 pub const struct_ITypeLibVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeLib, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeLib) ULONG,
-    Release: ?extern fn ([*c]ITypeLib) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]ITypeLib) UINT,
-    GetTypeInfo: ?extern fn ([*c]ITypeLib, UINT, [*c]([*c]ITypeInfo)) HRESULT,
-    GetTypeInfoType: ?extern fn ([*c]ITypeLib, UINT, [*c]TYPEKIND) HRESULT,
-    GetTypeInfoOfGuid: ?extern fn ([*c]ITypeLib, [*c]const GUID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetLibAttr: ?extern fn ([*c]ITypeLib, [*c]([*c]TLIBATTR)) HRESULT,
-    GetTypeComp: ?extern fn ([*c]ITypeLib, [*c]([*c]ITypeComp)) HRESULT,
-    GetDocumentation: ?extern fn ([*c]ITypeLib, INT, [*c]BSTR, [*c]BSTR, [*c]DWORD, [*c]BSTR) HRESULT,
-    IsName: ?extern fn ([*c]ITypeLib, LPOLESTR, ULONG, [*c]BOOL) HRESULT,
-    FindName: ?extern fn ([*c]ITypeLib, LPOLESTR, ULONG, [*c]([*c]ITypeInfo), [*c]MEMBERID, [*c]USHORT) HRESULT,
-    ReleaseTLibAttr: ?extern fn ([*c]ITypeLib, [*c]TLIBATTR) void,
+    QueryInterface: ?fn ([*c]ITypeLib, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeLib) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeLib) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]ITypeLib) callconv(.C) UINT,
+    GetTypeInfo: ?fn ([*c]ITypeLib, UINT, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetTypeInfoType: ?fn ([*c]ITypeLib, UINT, [*c]TYPEKIND) callconv(.C) HRESULT,
+    GetTypeInfoOfGuid: ?fn ([*c]ITypeLib, [*c]const GUID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetLibAttr: ?fn ([*c]ITypeLib, [*c]([*c]TLIBATTR)) callconv(.C) HRESULT,
+    GetTypeComp: ?fn ([*c]ITypeLib, [*c]([*c]ITypeComp)) callconv(.C) HRESULT,
+    GetDocumentation: ?fn ([*c]ITypeLib, INT, [*c]BSTR, [*c]BSTR, [*c]DWORD, [*c]BSTR) callconv(.C) HRESULT,
+    IsName: ?fn ([*c]ITypeLib, LPOLESTR, ULONG, [*c]BOOL) callconv(.C) HRESULT,
+    FindName: ?fn ([*c]ITypeLib, LPOLESTR, ULONG, [*c]([*c]ITypeInfo), [*c]MEMBERID, [*c]USHORT) callconv(.C) HRESULT,
+    ReleaseTLibAttr: ?fn ([*c]ITypeLib, [*c]TLIBATTR) callconv(.C) void,
 };
 pub const struct_ITypeLib = extern struct {
     lpVtbl: [*c]struct_ITypeLibVtbl,
 };
 pub const ITypeLib = struct_ITypeLib;
 pub const struct_ITypeInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeInfo) ULONG,
-    Release: ?extern fn ([*c]ITypeInfo) ULONG,
-    GetTypeAttr: ?extern fn ([*c]ITypeInfo, [*c]([*c]TYPEATTR)) HRESULT,
-    GetTypeComp: ?extern fn ([*c]ITypeInfo, [*c]([*c]ITypeComp)) HRESULT,
-    GetFuncDesc: ?extern fn ([*c]ITypeInfo, UINT, [*c]([*c]FUNCDESC)) HRESULT,
-    GetVarDesc: ?extern fn ([*c]ITypeInfo, UINT, [*c]([*c]VARDESC)) HRESULT,
-    GetNames: ?extern fn ([*c]ITypeInfo, MEMBERID, [*c]BSTR, UINT, [*c]UINT) HRESULT,
-    GetRefTypeOfImplType: ?extern fn ([*c]ITypeInfo, UINT, [*c]HREFTYPE) HRESULT,
-    GetImplTypeFlags: ?extern fn ([*c]ITypeInfo, UINT, [*c]INT) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]ITypeInfo, [*c]LPOLESTR, UINT, [*c]MEMBERID) HRESULT,
-    Invoke: ?extern fn ([*c]ITypeInfo, PVOID, MEMBERID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    GetDocumentation: ?extern fn ([*c]ITypeInfo, MEMBERID, [*c]BSTR, [*c]BSTR, [*c]DWORD, [*c]BSTR) HRESULT,
-    GetDllEntry: ?extern fn ([*c]ITypeInfo, MEMBERID, INVOKEKIND, [*c]BSTR, [*c]BSTR, [*c]WORD) HRESULT,
-    GetRefTypeInfo: ?extern fn ([*c]ITypeInfo, HREFTYPE, [*c]([*c]ITypeInfo)) HRESULT,
-    AddressOfMember: ?extern fn ([*c]ITypeInfo, MEMBERID, INVOKEKIND, [*c]PVOID) HRESULT,
-    CreateInstance: ?extern fn ([*c]ITypeInfo, [*c]IUnknown, [*c]const IID, [*c]PVOID) HRESULT,
-    GetMops: ?extern fn ([*c]ITypeInfo, MEMBERID, [*c]BSTR) HRESULT,
-    GetContainingTypeLib: ?extern fn ([*c]ITypeInfo, [*c]([*c]ITypeLib), [*c]UINT) HRESULT,
-    ReleaseTypeAttr: ?extern fn ([*c]ITypeInfo, [*c]TYPEATTR) void,
-    ReleaseFuncDesc: ?extern fn ([*c]ITypeInfo, [*c]FUNCDESC) void,
-    ReleaseVarDesc: ?extern fn ([*c]ITypeInfo, [*c]VARDESC) void,
+    QueryInterface: ?fn ([*c]ITypeInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeInfo) callconv(.C) ULONG,
+    GetTypeAttr: ?fn ([*c]ITypeInfo, [*c]([*c]TYPEATTR)) callconv(.C) HRESULT,
+    GetTypeComp: ?fn ([*c]ITypeInfo, [*c]([*c]ITypeComp)) callconv(.C) HRESULT,
+    GetFuncDesc: ?fn ([*c]ITypeInfo, UINT, [*c]([*c]FUNCDESC)) callconv(.C) HRESULT,
+    GetVarDesc: ?fn ([*c]ITypeInfo, UINT, [*c]([*c]VARDESC)) callconv(.C) HRESULT,
+    GetNames: ?fn ([*c]ITypeInfo, MEMBERID, [*c]BSTR, UINT, [*c]UINT) callconv(.C) HRESULT,
+    GetRefTypeOfImplType: ?fn ([*c]ITypeInfo, UINT, [*c]HREFTYPE) callconv(.C) HRESULT,
+    GetImplTypeFlags: ?fn ([*c]ITypeInfo, UINT, [*c]INT) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]ITypeInfo, [*c]LPOLESTR, UINT, [*c]MEMBERID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]ITypeInfo, PVOID, MEMBERID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    GetDocumentation: ?fn ([*c]ITypeInfo, MEMBERID, [*c]BSTR, [*c]BSTR, [*c]DWORD, [*c]BSTR) callconv(.C) HRESULT,
+    GetDllEntry: ?fn ([*c]ITypeInfo, MEMBERID, INVOKEKIND, [*c]BSTR, [*c]BSTR, [*c]WORD) callconv(.C) HRESULT,
+    GetRefTypeInfo: ?fn ([*c]ITypeInfo, HREFTYPE, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    AddressOfMember: ?fn ([*c]ITypeInfo, MEMBERID, INVOKEKIND, [*c]PVOID) callconv(.C) HRESULT,
+    CreateInstance: ?fn ([*c]ITypeInfo, [*c]IUnknown, [*c]const IID, [*c]PVOID) callconv(.C) HRESULT,
+    GetMops: ?fn ([*c]ITypeInfo, MEMBERID, [*c]BSTR) callconv(.C) HRESULT,
+    GetContainingTypeLib: ?fn ([*c]ITypeInfo, [*c]([*c]ITypeLib), [*c]UINT) callconv(.C) HRESULT,
+    ReleaseTypeAttr: ?fn ([*c]ITypeInfo, [*c]TYPEATTR) callconv(.C) void,
+    ReleaseFuncDesc: ?fn ([*c]ITypeInfo, [*c]FUNCDESC) callconv(.C) void,
+    ReleaseVarDesc: ?fn ([*c]ITypeInfo, [*c]VARDESC) callconv(.C) void,
 };
 pub const struct_ITypeInfo = extern struct {
     lpVtbl: [*c]struct_ITypeInfoVtbl,
 };
 pub const ITypeInfo = struct_ITypeInfo;
 pub const struct_IDispatchVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IDispatch, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IDispatch) ULONG,
-    Release: ?extern fn ([*c]IDispatch) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IDispatch, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IDispatch, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IDispatch, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IDispatch, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
+    QueryInterface: ?fn ([*c]IDispatch, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IDispatch) callconv(.C) ULONG,
+    Release: ?fn ([*c]IDispatch) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IDispatch, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IDispatch, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IDispatch, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IDispatch, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
 };
 pub const struct_IDispatch = extern struct {
     lpVtbl: [*c]struct_IDispatchVtbl,
@@ -34697,37 +34697,37 @@ pub const struct_IDispatch = extern struct {
 pub const IDispatch = struct_IDispatch;
 pub const SNB = [*c]LPOLESTR;
 pub const struct_IEnumSTATSTGVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumSTATSTG, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumSTATSTG) ULONG,
-    Release: ?extern fn ([*c]IEnumSTATSTG) ULONG,
-    Next: ?extern fn ([*c]IEnumSTATSTG, ULONG, [*c]STATSTG, [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumSTATSTG, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumSTATSTG) HRESULT,
-    Clone: ?extern fn ([*c]IEnumSTATSTG, [*c]([*c]IEnumSTATSTG)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumSTATSTG, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumSTATSTG) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumSTATSTG) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumSTATSTG, ULONG, [*c]STATSTG, [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumSTATSTG, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumSTATSTG) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumSTATSTG, [*c]([*c]IEnumSTATSTG)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumSTATSTG = extern struct {
     lpVtbl: [*c]struct_IEnumSTATSTGVtbl,
 };
 pub const IEnumSTATSTG = struct_IEnumSTATSTG;
 pub const struct_IStorageVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IStorage, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IStorage) ULONG,
-    Release: ?extern fn ([*c]IStorage) ULONG,
-    CreateStream: ?extern fn ([*c]IStorage, [*c]const OLECHAR, DWORD, DWORD, DWORD, [*c]([*c]IStream)) HRESULT,
-    OpenStream: ?extern fn ([*c]IStorage, [*c]const OLECHAR, ?*c_void, DWORD, DWORD, [*c]([*c]IStream)) HRESULT,
-    CreateStorage: ?extern fn ([*c]IStorage, [*c]const OLECHAR, DWORD, DWORD, DWORD, [*c]([*c]IStorage)) HRESULT,
-    OpenStorage: ?extern fn ([*c]IStorage, [*c]const OLECHAR, [*c]IStorage, DWORD, SNB, DWORD, [*c]([*c]IStorage)) HRESULT,
-    CopyTo: ?extern fn ([*c]IStorage, DWORD, [*c]const IID, SNB, [*c]IStorage) HRESULT,
-    MoveElementTo: ?extern fn ([*c]IStorage, [*c]const OLECHAR, [*c]IStorage, [*c]const OLECHAR, DWORD) HRESULT,
-    Commit: ?extern fn ([*c]IStorage, DWORD) HRESULT,
-    Revert: ?extern fn ([*c]IStorage) HRESULT,
-    EnumElements: ?extern fn ([*c]IStorage, DWORD, ?*c_void, DWORD, [*c]([*c]IEnumSTATSTG)) HRESULT,
-    DestroyElement: ?extern fn ([*c]IStorage, [*c]const OLECHAR) HRESULT,
-    RenameElement: ?extern fn ([*c]IStorage, [*c]const OLECHAR, [*c]const OLECHAR) HRESULT,
-    SetElementTimes: ?extern fn ([*c]IStorage, [*c]const OLECHAR, [*c]const FILETIME, [*c]const FILETIME, [*c]const FILETIME) HRESULT,
-    SetClass: ?extern fn ([*c]IStorage, [*c]const IID) HRESULT,
-    SetStateBits: ?extern fn ([*c]IStorage, DWORD, DWORD) HRESULT,
-    Stat: ?extern fn ([*c]IStorage, [*c]STATSTG, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IStorage, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IStorage) callconv(.C) ULONG,
+    Release: ?fn ([*c]IStorage) callconv(.C) ULONG,
+    CreateStream: ?fn ([*c]IStorage, [*c]const OLECHAR, DWORD, DWORD, DWORD, [*c]([*c]IStream)) callconv(.C) HRESULT,
+    OpenStream: ?fn ([*c]IStorage, [*c]const OLECHAR, ?*c_void, DWORD, DWORD, [*c]([*c]IStream)) callconv(.C) HRESULT,
+    CreateStorage: ?fn ([*c]IStorage, [*c]const OLECHAR, DWORD, DWORD, DWORD, [*c]([*c]IStorage)) callconv(.C) HRESULT,
+    OpenStorage: ?fn ([*c]IStorage, [*c]const OLECHAR, [*c]IStorage, DWORD, SNB, DWORD, [*c]([*c]IStorage)) callconv(.C) HRESULT,
+    CopyTo: ?fn ([*c]IStorage, DWORD, [*c]const IID, SNB, [*c]IStorage) callconv(.C) HRESULT,
+    MoveElementTo: ?fn ([*c]IStorage, [*c]const OLECHAR, [*c]IStorage, [*c]const OLECHAR, DWORD) callconv(.C) HRESULT,
+    Commit: ?fn ([*c]IStorage, DWORD) callconv(.C) HRESULT,
+    Revert: ?fn ([*c]IStorage) callconv(.C) HRESULT,
+    EnumElements: ?fn ([*c]IStorage, DWORD, ?*c_void, DWORD, [*c]([*c]IEnumSTATSTG)) callconv(.C) HRESULT,
+    DestroyElement: ?fn ([*c]IStorage, [*c]const OLECHAR) callconv(.C) HRESULT,
+    RenameElement: ?fn ([*c]IStorage, [*c]const OLECHAR, [*c]const OLECHAR) callconv(.C) HRESULT,
+    SetElementTimes: ?fn ([*c]IStorage, [*c]const OLECHAR, [*c]const FILETIME, [*c]const FILETIME, [*c]const FILETIME) callconv(.C) HRESULT,
+    SetClass: ?fn ([*c]IStorage, [*c]const IID) callconv(.C) HRESULT,
+    SetStateBits: ?fn ([*c]IStorage, DWORD, DWORD) callconv(.C) HRESULT,
+    Stat: ?fn ([*c]IStorage, [*c]STATSTG, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IStorage = extern struct {
     lpVtbl: [*c]struct_IStorageVtbl,
@@ -34974,8 +34974,8 @@ pub const enum_AgileReferenceOptions = extern enum {
     AGILEREFERENCE_DELAYEDMARSHAL = 1,
 };
 pub extern "ole32" fn RoGetAgileReference(options: enum_AgileReferenceOptions, riid: [*c]const IID, pUnk: [*c]IUnknown, ppAgileReference: [*c]([*c]IAgileReference)) callconv(.Stdcall) HRESULT;
-pub const LPFNGETCLASSOBJECT = ?extern fn ([*c]const IID, [*c]const IID, [*c]LPVOID) HRESULT;
-pub const LPFNCANUNLOADNOW = ?extern fn () HRESULT;
+pub const LPFNGETCLASSOBJECT = ?fn ([*c]const IID, [*c]const IID, [*c]LPVOID) callconv(.C) HRESULT;
+pub const LPFNCANUNLOADNOW = ?fn () callconv(.C) HRESULT;
 pub extern "ole32" fn DllGetClassObject(rclsid: [*c]const IID, riid: [*c]const IID, ppv: [*c]LPVOID) callconv(.Stdcall) HRESULT;
 pub extern "ole32" fn DllCanUnloadNow() callconv(.Stdcall) HRESULT;
 pub extern "ole32" fn CoTaskMemAlloc(cb: SIZE_T) callconv(.Stdcall) LPVOID;
@@ -34985,21 +34985,21 @@ pub extern "ole32" fn CoFileTimeNow(lpFileTime: [*c]FILETIME) callconv(.Stdcall)
 pub extern "ole32" fn CLSIDFromProgIDEx(lpszProgID: LPCOLESTR, lpclsid: LPCLSID) callconv(.Stdcall) HRESULT;
 pub const IMallocSpy = struct_IMallocSpy;
 pub const struct_IMallocSpyVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IMallocSpy, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IMallocSpy) ULONG,
-    Release: ?extern fn ([*c]IMallocSpy) ULONG,
-    PreAlloc: ?extern fn ([*c]IMallocSpy, SIZE_T) SIZE_T,
-    PostAlloc: ?extern fn ([*c]IMallocSpy, ?*c_void) ?*c_void,
-    PreFree: ?extern fn ([*c]IMallocSpy, ?*c_void, BOOL) ?*c_void,
-    PostFree: ?extern fn ([*c]IMallocSpy, BOOL) void,
-    PreRealloc: ?extern fn ([*c]IMallocSpy, ?*c_void, SIZE_T, [*c](?*c_void), BOOL) SIZE_T,
-    PostRealloc: ?extern fn ([*c]IMallocSpy, ?*c_void, BOOL) ?*c_void,
-    PreGetSize: ?extern fn ([*c]IMallocSpy, ?*c_void, BOOL) ?*c_void,
-    PostGetSize: ?extern fn ([*c]IMallocSpy, SIZE_T, BOOL) SIZE_T,
-    PreDidAlloc: ?extern fn ([*c]IMallocSpy, ?*c_void, BOOL) ?*c_void,
-    PostDidAlloc: ?extern fn ([*c]IMallocSpy, ?*c_void, BOOL, c_int) c_int,
-    PreHeapMinimize: ?extern fn ([*c]IMallocSpy) void,
-    PostHeapMinimize: ?extern fn ([*c]IMallocSpy) void,
+    QueryInterface: ?fn ([*c]IMallocSpy, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IMallocSpy) callconv(.C) ULONG,
+    Release: ?fn ([*c]IMallocSpy) callconv(.C) ULONG,
+    PreAlloc: ?fn ([*c]IMallocSpy, SIZE_T) callconv(.C) SIZE_T,
+    PostAlloc: ?fn ([*c]IMallocSpy, ?*c_void) callconv(.C) ?*c_void,
+    PreFree: ?fn ([*c]IMallocSpy, ?*c_void, BOOL) callconv(.C) ?*c_void,
+    PostFree: ?fn ([*c]IMallocSpy, BOOL) callconv(.C) void,
+    PreRealloc: ?fn ([*c]IMallocSpy, ?*c_void, SIZE_T, [*c](?*c_void), BOOL) callconv(.C) SIZE_T,
+    PostRealloc: ?fn ([*c]IMallocSpy, ?*c_void, BOOL) callconv(.C) ?*c_void,
+    PreGetSize: ?fn ([*c]IMallocSpy, ?*c_void, BOOL) callconv(.C) ?*c_void,
+    PostGetSize: ?fn ([*c]IMallocSpy, SIZE_T, BOOL) callconv(.C) SIZE_T,
+    PreDidAlloc: ?fn ([*c]IMallocSpy, ?*c_void, BOOL) callconv(.C) ?*c_void,
+    PostDidAlloc: ?fn ([*c]IMallocSpy, ?*c_void, BOOL, c_int) callconv(.C) c_int,
+    PreHeapMinimize: ?fn ([*c]IMallocSpy) callconv(.C) void,
+    PostHeapMinimize: ?fn ([*c]IMallocSpy) callconv(.C) void,
 };
 pub const struct_IMallocSpy = extern struct {
     lpVtbl: [*c]struct_IMallocSpyVtbl,
@@ -35013,77 +35013,77 @@ pub const struct_tagBIND_OPTS = extern struct {
 };
 pub const BIND_OPTS = struct_tagBIND_OPTS;
 pub const struct_IEnumMonikerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumMoniker, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumMoniker) ULONG,
-    Release: ?extern fn ([*c]IEnumMoniker) ULONG,
-    Next: ?extern fn ([*c]IEnumMoniker, ULONG, [*c]([*c]IMoniker), [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumMoniker, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumMoniker) HRESULT,
-    Clone: ?extern fn ([*c]IEnumMoniker, [*c]([*c]IEnumMoniker)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumMoniker, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumMoniker) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumMoniker) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumMoniker, ULONG, [*c]([*c]IMoniker), [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumMoniker, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumMoniker) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumMoniker, [*c]([*c]IEnumMoniker)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumMoniker = extern struct {
     lpVtbl: [*c]struct_IEnumMonikerVtbl,
 };
 pub const IEnumMoniker = struct_IEnumMoniker;
 pub const struct_IMonikerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IMoniker, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IMoniker) ULONG,
-    Release: ?extern fn ([*c]IMoniker) ULONG,
-    GetClassID: ?extern fn ([*c]IMoniker, [*c]CLSID) HRESULT,
-    IsDirty: ?extern fn ([*c]IMoniker) HRESULT,
-    Load: ?extern fn ([*c]IMoniker, [*c]IStream) HRESULT,
-    Save: ?extern fn ([*c]IMoniker, [*c]IStream, BOOL) HRESULT,
-    GetSizeMax: ?extern fn ([*c]IMoniker, [*c]ULARGE_INTEGER) HRESULT,
-    BindToObject: ?extern fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]const IID, [*c](?*c_void)) HRESULT,
-    BindToStorage: ?extern fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]const IID, [*c](?*c_void)) HRESULT,
-    Reduce: ?extern fn ([*c]IMoniker, [*c]IBindCtx, DWORD, [*c]([*c]IMoniker), [*c]([*c]IMoniker)) HRESULT,
-    ComposeWith: ?extern fn ([*c]IMoniker, [*c]IMoniker, BOOL, [*c]([*c]IMoniker)) HRESULT,
-    Enum: ?extern fn ([*c]IMoniker, BOOL, [*c]([*c]IEnumMoniker)) HRESULT,
-    IsEqual: ?extern fn ([*c]IMoniker, [*c]IMoniker) HRESULT,
-    Hash: ?extern fn ([*c]IMoniker, [*c]DWORD) HRESULT,
-    IsRunning: ?extern fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]IMoniker) HRESULT,
-    GetTimeOfLastChange: ?extern fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]FILETIME) HRESULT,
-    Inverse: ?extern fn ([*c]IMoniker, [*c]([*c]IMoniker)) HRESULT,
-    CommonPrefixWith: ?extern fn ([*c]IMoniker, [*c]IMoniker, [*c]([*c]IMoniker)) HRESULT,
-    RelativePathTo: ?extern fn ([*c]IMoniker, [*c]IMoniker, [*c]([*c]IMoniker)) HRESULT,
-    GetDisplayName: ?extern fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]LPOLESTR) HRESULT,
-    ParseDisplayName: ?extern fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, LPOLESTR, [*c]ULONG, [*c]([*c]IMoniker)) HRESULT,
-    IsSystemMoniker: ?extern fn ([*c]IMoniker, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IMoniker, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IMoniker) callconv(.C) ULONG,
+    Release: ?fn ([*c]IMoniker) callconv(.C) ULONG,
+    GetClassID: ?fn ([*c]IMoniker, [*c]CLSID) callconv(.C) HRESULT,
+    IsDirty: ?fn ([*c]IMoniker) callconv(.C) HRESULT,
+    Load: ?fn ([*c]IMoniker, [*c]IStream) callconv(.C) HRESULT,
+    Save: ?fn ([*c]IMoniker, [*c]IStream, BOOL) callconv(.C) HRESULT,
+    GetSizeMax: ?fn ([*c]IMoniker, [*c]ULARGE_INTEGER) callconv(.C) HRESULT,
+    BindToObject: ?fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    BindToStorage: ?fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    Reduce: ?fn ([*c]IMoniker, [*c]IBindCtx, DWORD, [*c]([*c]IMoniker), [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    ComposeWith: ?fn ([*c]IMoniker, [*c]IMoniker, BOOL, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    Enum: ?fn ([*c]IMoniker, BOOL, [*c]([*c]IEnumMoniker)) callconv(.C) HRESULT,
+    IsEqual: ?fn ([*c]IMoniker, [*c]IMoniker) callconv(.C) HRESULT,
+    Hash: ?fn ([*c]IMoniker, [*c]DWORD) callconv(.C) HRESULT,
+    IsRunning: ?fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]IMoniker) callconv(.C) HRESULT,
+    GetTimeOfLastChange: ?fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]FILETIME) callconv(.C) HRESULT,
+    Inverse: ?fn ([*c]IMoniker, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    CommonPrefixWith: ?fn ([*c]IMoniker, [*c]IMoniker, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    RelativePathTo: ?fn ([*c]IMoniker, [*c]IMoniker, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    GetDisplayName: ?fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, [*c]LPOLESTR) callconv(.C) HRESULT,
+    ParseDisplayName: ?fn ([*c]IMoniker, [*c]IBindCtx, [*c]IMoniker, LPOLESTR, [*c]ULONG, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    IsSystemMoniker: ?fn ([*c]IMoniker, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IMoniker = extern struct {
     lpVtbl: [*c]struct_IMonikerVtbl,
 };
 pub const IMoniker = struct_IMoniker;
 pub const struct_IRunningObjectTableVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRunningObjectTable, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRunningObjectTable) ULONG,
-    Release: ?extern fn ([*c]IRunningObjectTable) ULONG,
-    Register: ?extern fn ([*c]IRunningObjectTable, DWORD, [*c]IUnknown, [*c]IMoniker, [*c]DWORD) HRESULT,
-    Revoke: ?extern fn ([*c]IRunningObjectTable, DWORD) HRESULT,
-    IsRunning: ?extern fn ([*c]IRunningObjectTable, [*c]IMoniker) HRESULT,
-    GetObjectA: ?extern fn ([*c]IRunningObjectTable, [*c]IMoniker, [*c]([*c]IUnknown)) HRESULT,
-    NoteChangeTime: ?extern fn ([*c]IRunningObjectTable, DWORD, [*c]FILETIME) HRESULT,
-    GetTimeOfLastChange: ?extern fn ([*c]IRunningObjectTable, [*c]IMoniker, [*c]FILETIME) HRESULT,
-    EnumRunning: ?extern fn ([*c]IRunningObjectTable, [*c]([*c]IEnumMoniker)) HRESULT,
+    QueryInterface: ?fn ([*c]IRunningObjectTable, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRunningObjectTable) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRunningObjectTable) callconv(.C) ULONG,
+    Register: ?fn ([*c]IRunningObjectTable, DWORD, [*c]IUnknown, [*c]IMoniker, [*c]DWORD) callconv(.C) HRESULT,
+    Revoke: ?fn ([*c]IRunningObjectTable, DWORD) callconv(.C) HRESULT,
+    IsRunning: ?fn ([*c]IRunningObjectTable, [*c]IMoniker) callconv(.C) HRESULT,
+    GetObjectA: ?fn ([*c]IRunningObjectTable, [*c]IMoniker, [*c]([*c]IUnknown)) callconv(.C) HRESULT,
+    NoteChangeTime: ?fn ([*c]IRunningObjectTable, DWORD, [*c]FILETIME) callconv(.C) HRESULT,
+    GetTimeOfLastChange: ?fn ([*c]IRunningObjectTable, [*c]IMoniker, [*c]FILETIME) callconv(.C) HRESULT,
+    EnumRunning: ?fn ([*c]IRunningObjectTable, [*c]([*c]IEnumMoniker)) callconv(.C) HRESULT,
 };
 pub const struct_IRunningObjectTable = extern struct {
     lpVtbl: [*c]struct_IRunningObjectTableVtbl,
 };
 pub const IRunningObjectTable = struct_IRunningObjectTable;
 pub const struct_IBindCtxVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IBindCtx, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IBindCtx) ULONG,
-    Release: ?extern fn ([*c]IBindCtx) ULONG,
-    RegisterObjectBound: ?extern fn ([*c]IBindCtx, [*c]IUnknown) HRESULT,
-    RevokeObjectBound: ?extern fn ([*c]IBindCtx, [*c]IUnknown) HRESULT,
-    ReleaseBoundObjects: ?extern fn ([*c]IBindCtx) HRESULT,
-    SetBindOptions: ?extern fn ([*c]IBindCtx, [*c]BIND_OPTS) HRESULT,
-    GetBindOptions: ?extern fn ([*c]IBindCtx, [*c]BIND_OPTS) HRESULT,
-    GetRunningObjectTable: ?extern fn ([*c]IBindCtx, [*c]([*c]IRunningObjectTable)) HRESULT,
-    RegisterObjectParam: ?extern fn ([*c]IBindCtx, LPOLESTR, [*c]IUnknown) HRESULT,
-    GetObjectParam: ?extern fn ([*c]IBindCtx, LPOLESTR, [*c]([*c]IUnknown)) HRESULT,
-    EnumObjectParam: ?extern fn ([*c]IBindCtx, [*c]([*c]IEnumString)) HRESULT,
-    RevokeObjectParam: ?extern fn ([*c]IBindCtx, LPOLESTR) HRESULT,
+    QueryInterface: ?fn ([*c]IBindCtx, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IBindCtx) callconv(.C) ULONG,
+    Release: ?fn ([*c]IBindCtx) callconv(.C) ULONG,
+    RegisterObjectBound: ?fn ([*c]IBindCtx, [*c]IUnknown) callconv(.C) HRESULT,
+    RevokeObjectBound: ?fn ([*c]IBindCtx, [*c]IUnknown) callconv(.C) HRESULT,
+    ReleaseBoundObjects: ?fn ([*c]IBindCtx) callconv(.C) HRESULT,
+    SetBindOptions: ?fn ([*c]IBindCtx, [*c]BIND_OPTS) callconv(.C) HRESULT,
+    GetBindOptions: ?fn ([*c]IBindCtx, [*c]BIND_OPTS) callconv(.C) HRESULT,
+    GetRunningObjectTable: ?fn ([*c]IBindCtx, [*c]([*c]IRunningObjectTable)) callconv(.C) HRESULT,
+    RegisterObjectParam: ?fn ([*c]IBindCtx, LPOLESTR, [*c]IUnknown) callconv(.C) HRESULT,
+    GetObjectParam: ?fn ([*c]IBindCtx, LPOLESTR, [*c]([*c]IUnknown)) callconv(.C) HRESULT,
+    EnumObjectParam: ?fn ([*c]IBindCtx, [*c]([*c]IEnumString)) callconv(.C) HRESULT,
+    RevokeObjectParam: ?fn ([*c]IBindCtx, LPOLESTR) callconv(.C) HRESULT,
 };
 pub const struct_IBindCtx = extern struct {
     lpVtbl: [*c]struct_IBindCtxVtbl,
@@ -35091,95 +35091,95 @@ pub const struct_IBindCtx = extern struct {
 pub const IRunnableObject = struct_IRunnableObject;
 pub const LPBINDCTX = [*c]IBindCtx;
 pub const struct_IRunnableObjectVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRunnableObject, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRunnableObject) ULONG,
-    Release: ?extern fn ([*c]IRunnableObject) ULONG,
-    GetRunningClass: ?extern fn ([*c]IRunnableObject, LPCLSID) HRESULT,
-    Run: ?extern fn ([*c]IRunnableObject, LPBINDCTX) HRESULT,
-    IsRunning: ?extern fn ([*c]IRunnableObject) BOOL,
-    LockRunning: ?extern fn ([*c]IRunnableObject, BOOL, BOOL) HRESULT,
-    SetContainedObject: ?extern fn ([*c]IRunnableObject, BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IRunnableObject, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRunnableObject) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRunnableObject) callconv(.C) ULONG,
+    GetRunningClass: ?fn ([*c]IRunnableObject, LPCLSID) callconv(.C) HRESULT,
+    Run: ?fn ([*c]IRunnableObject, LPBINDCTX) callconv(.C) HRESULT,
+    IsRunning: ?fn ([*c]IRunnableObject) callconv(.C) BOOL,
+    LockRunning: ?fn ([*c]IRunnableObject, BOOL, BOOL) callconv(.C) HRESULT,
+    SetContainedObject: ?fn ([*c]IRunnableObject, BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IRunnableObject = extern struct {
     lpVtbl: [*c]struct_IRunnableObjectVtbl,
 };
 pub const IPersist = struct_IPersist;
 pub const struct_IPersistVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPersist, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPersist) ULONG,
-    Release: ?extern fn ([*c]IPersist) ULONG,
-    GetClassID: ?extern fn ([*c]IPersist, [*c]CLSID) HRESULT,
+    QueryInterface: ?fn ([*c]IPersist, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPersist) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPersist) callconv(.C) ULONG,
+    GetClassID: ?fn ([*c]IPersist, [*c]CLSID) callconv(.C) HRESULT,
 };
 pub const struct_IPersist = extern struct {
     lpVtbl: [*c]struct_IPersistVtbl,
 };
 pub const IPersistStream = struct_IPersistStream;
 pub const struct_IPersistStreamVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPersistStream, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPersistStream) ULONG,
-    Release: ?extern fn ([*c]IPersistStream) ULONG,
-    GetClassID: ?extern fn ([*c]IPersistStream, [*c]CLSID) HRESULT,
-    IsDirty: ?extern fn ([*c]IPersistStream) HRESULT,
-    Load: ?extern fn ([*c]IPersistStream, [*c]IStream) HRESULT,
-    Save: ?extern fn ([*c]IPersistStream, [*c]IStream, BOOL) HRESULT,
-    GetSizeMax: ?extern fn ([*c]IPersistStream, [*c]ULARGE_INTEGER) HRESULT,
+    QueryInterface: ?fn ([*c]IPersistStream, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPersistStream) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPersistStream) callconv(.C) ULONG,
+    GetClassID: ?fn ([*c]IPersistStream, [*c]CLSID) callconv(.C) HRESULT,
+    IsDirty: ?fn ([*c]IPersistStream) callconv(.C) HRESULT,
+    Load: ?fn ([*c]IPersistStream, [*c]IStream) callconv(.C) HRESULT,
+    Save: ?fn ([*c]IPersistStream, [*c]IStream, BOOL) callconv(.C) HRESULT,
+    GetSizeMax: ?fn ([*c]IPersistStream, [*c]ULARGE_INTEGER) callconv(.C) HRESULT,
 };
 pub const struct_IPersistStream = extern struct {
     lpVtbl: [*c]struct_IPersistStreamVtbl,
 };
 pub const IROTData = struct_IROTData;
 pub const struct_IROTDataVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IROTData, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IROTData) ULONG,
-    Release: ?extern fn ([*c]IROTData) ULONG,
-    GetComparisonData: ?extern fn ([*c]IROTData, [*c]byte, ULONG, [*c]ULONG) HRESULT,
+    QueryInterface: ?fn ([*c]IROTData, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IROTData) callconv(.C) ULONG,
+    Release: ?fn ([*c]IROTData) callconv(.C) ULONG,
+    GetComparisonData: ?fn ([*c]IROTData, [*c]byte, ULONG, [*c]ULONG) callconv(.C) HRESULT,
 };
 pub const struct_IROTData = extern struct {
     lpVtbl: [*c]struct_IROTDataVtbl,
 };
 pub const IPersistFile = struct_IPersistFile;
 pub const struct_IPersistFileVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPersistFile, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPersistFile) ULONG,
-    Release: ?extern fn ([*c]IPersistFile) ULONG,
-    GetClassID: ?extern fn ([*c]IPersistFile, [*c]CLSID) HRESULT,
-    IsDirty: ?extern fn ([*c]IPersistFile) HRESULT,
-    Load: ?extern fn ([*c]IPersistFile, LPCOLESTR, DWORD) HRESULT,
-    Save: ?extern fn ([*c]IPersistFile, LPCOLESTR, BOOL) HRESULT,
-    SaveCompleted: ?extern fn ([*c]IPersistFile, LPCOLESTR) HRESULT,
-    GetCurFile: ?extern fn ([*c]IPersistFile, [*c]LPOLESTR) HRESULT,
+    QueryInterface: ?fn ([*c]IPersistFile, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPersistFile) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPersistFile) callconv(.C) ULONG,
+    GetClassID: ?fn ([*c]IPersistFile, [*c]CLSID) callconv(.C) HRESULT,
+    IsDirty: ?fn ([*c]IPersistFile) callconv(.C) HRESULT,
+    Load: ?fn ([*c]IPersistFile, LPCOLESTR, DWORD) callconv(.C) HRESULT,
+    Save: ?fn ([*c]IPersistFile, LPCOLESTR, BOOL) callconv(.C) HRESULT,
+    SaveCompleted: ?fn ([*c]IPersistFile, LPCOLESTR) callconv(.C) HRESULT,
+    GetCurFile: ?fn ([*c]IPersistFile, [*c]LPOLESTR) callconv(.C) HRESULT,
 };
 pub const struct_IPersistFile = extern struct {
     lpVtbl: [*c]struct_IPersistFileVtbl,
 };
 pub const IPersistStorage = struct_IPersistStorage;
 pub const struct_IPersistStorageVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPersistStorage, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPersistStorage) ULONG,
-    Release: ?extern fn ([*c]IPersistStorage) ULONG,
-    GetClassID: ?extern fn ([*c]IPersistStorage, [*c]CLSID) HRESULT,
-    IsDirty: ?extern fn ([*c]IPersistStorage) HRESULT,
-    InitNew: ?extern fn ([*c]IPersistStorage, [*c]IStorage) HRESULT,
-    Load: ?extern fn ([*c]IPersistStorage, [*c]IStorage) HRESULT,
-    Save: ?extern fn ([*c]IPersistStorage, [*c]IStorage, BOOL) HRESULT,
-    SaveCompleted: ?extern fn ([*c]IPersistStorage, [*c]IStorage) HRESULT,
-    HandsOffStorage: ?extern fn ([*c]IPersistStorage) HRESULT,
+    QueryInterface: ?fn ([*c]IPersistStorage, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPersistStorage) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPersistStorage) callconv(.C) ULONG,
+    GetClassID: ?fn ([*c]IPersistStorage, [*c]CLSID) callconv(.C) HRESULT,
+    IsDirty: ?fn ([*c]IPersistStorage) callconv(.C) HRESULT,
+    InitNew: ?fn ([*c]IPersistStorage, [*c]IStorage) callconv(.C) HRESULT,
+    Load: ?fn ([*c]IPersistStorage, [*c]IStorage) callconv(.C) HRESULT,
+    Save: ?fn ([*c]IPersistStorage, [*c]IStorage, BOOL) callconv(.C) HRESULT,
+    SaveCompleted: ?fn ([*c]IPersistStorage, [*c]IStorage) callconv(.C) HRESULT,
+    HandsOffStorage: ?fn ([*c]IPersistStorage) callconv(.C) HRESULT,
 };
 pub const struct_IPersistStorage = extern struct {
     lpVtbl: [*c]struct_IPersistStorageVtbl,
 };
 pub const ILockBytes = struct_ILockBytes;
 pub const struct_ILockBytesVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ILockBytes, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ILockBytes) ULONG,
-    Release: ?extern fn ([*c]ILockBytes) ULONG,
-    ReadAt: ?extern fn ([*c]ILockBytes, ULARGE_INTEGER, ?*c_void, ULONG, [*c]ULONG) HRESULT,
-    WriteAt: ?extern fn ([*c]ILockBytes, ULARGE_INTEGER, ?*const c_void, ULONG, [*c]ULONG) HRESULT,
-    Flush: ?extern fn ([*c]ILockBytes) HRESULT,
-    SetSize: ?extern fn ([*c]ILockBytes, ULARGE_INTEGER) HRESULT,
-    LockRegion: ?extern fn ([*c]ILockBytes, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) HRESULT,
-    UnlockRegion: ?extern fn ([*c]ILockBytes, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) HRESULT,
-    Stat: ?extern fn ([*c]ILockBytes, [*c]STATSTG, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]ILockBytes, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ILockBytes) callconv(.C) ULONG,
+    Release: ?fn ([*c]ILockBytes) callconv(.C) ULONG,
+    ReadAt: ?fn ([*c]ILockBytes, ULARGE_INTEGER, ?*c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    WriteAt: ?fn ([*c]ILockBytes, ULARGE_INTEGER, ?*const c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Flush: ?fn ([*c]ILockBytes) callconv(.C) HRESULT,
+    SetSize: ?fn ([*c]ILockBytes, ULARGE_INTEGER) callconv(.C) HRESULT,
+    LockRegion: ?fn ([*c]ILockBytes, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) callconv(.C) HRESULT,
+    UnlockRegion: ?fn ([*c]ILockBytes, ULARGE_INTEGER, ULARGE_INTEGER, DWORD) callconv(.C) HRESULT,
+    Stat: ?fn ([*c]ILockBytes, [*c]STATSTG, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_ILockBytes = extern struct {
     lpVtbl: [*c]struct_ILockBytesVtbl,
@@ -35203,13 +35203,13 @@ pub const struct_tagFORMATETC = extern struct {
 };
 pub const FORMATETC = struct_tagFORMATETC;
 pub const struct_IEnumFORMATETCVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumFORMATETC, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumFORMATETC) ULONG,
-    Release: ?extern fn ([*c]IEnumFORMATETC) ULONG,
-    Next: ?extern fn ([*c]IEnumFORMATETC, ULONG, [*c]FORMATETC, [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumFORMATETC, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumFORMATETC) HRESULT,
-    Clone: ?extern fn ([*c]IEnumFORMATETC, [*c]([*c]IEnumFORMATETC)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumFORMATETC, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumFORMATETC) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumFORMATETC) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumFORMATETC, ULONG, [*c]FORMATETC, [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumFORMATETC, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumFORMATETC) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumFORMATETC, [*c]([*c]IEnumFORMATETC)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumFORMATETC = extern struct {
     lpVtbl: [*c]struct_IEnumFORMATETCVtbl,
@@ -35231,14 +35231,14 @@ pub const struct_tagSTGMEDIUM = extern struct {
 pub const uSTGMEDIUM = struct_tagSTGMEDIUM;
 pub const STGMEDIUM = uSTGMEDIUM;
 pub const struct_IAdviseSinkVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAdviseSink, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAdviseSink) ULONG,
-    Release: ?extern fn ([*c]IAdviseSink) ULONG,
-    OnDataChange: ?extern fn ([*c]IAdviseSink, [*c]FORMATETC, [*c]STGMEDIUM) void,
-    OnViewChange: ?extern fn ([*c]IAdviseSink, DWORD, LONG) void,
-    OnRename: ?extern fn ([*c]IAdviseSink, [*c]IMoniker) void,
-    OnSave: ?extern fn ([*c]IAdviseSink) void,
-    OnClose: ?extern fn ([*c]IAdviseSink) void,
+    QueryInterface: ?fn ([*c]IAdviseSink, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAdviseSink) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAdviseSink) callconv(.C) ULONG,
+    OnDataChange: ?fn ([*c]IAdviseSink, [*c]FORMATETC, [*c]STGMEDIUM) callconv(.C) void,
+    OnViewChange: ?fn ([*c]IAdviseSink, DWORD, LONG) callconv(.C) void,
+    OnRename: ?fn ([*c]IAdviseSink, [*c]IMoniker) callconv(.C) void,
+    OnSave: ?fn ([*c]IAdviseSink) callconv(.C) void,
+    OnClose: ?fn ([*c]IAdviseSink) callconv(.C) void,
 };
 pub const struct_IAdviseSink = extern struct {
     lpVtbl: [*c]struct_IAdviseSinkVtbl,
@@ -35252,109 +35252,109 @@ pub const struct_tagSTATDATA = extern struct {
 };
 pub const STATDATA = struct_tagSTATDATA;
 pub const struct_IEnumSTATDATAVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumSTATDATA, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumSTATDATA) ULONG,
-    Release: ?extern fn ([*c]IEnumSTATDATA) ULONG,
-    Next: ?extern fn ([*c]IEnumSTATDATA, ULONG, [*c]STATDATA, [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumSTATDATA, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumSTATDATA) HRESULT,
-    Clone: ?extern fn ([*c]IEnumSTATDATA, [*c]([*c]IEnumSTATDATA)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumSTATDATA, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumSTATDATA) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumSTATDATA) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumSTATDATA, ULONG, [*c]STATDATA, [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumSTATDATA, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumSTATDATA) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumSTATDATA, [*c]([*c]IEnumSTATDATA)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumSTATDATA = extern struct {
     lpVtbl: [*c]struct_IEnumSTATDATAVtbl,
 };
 pub const IRootStorage = struct_IRootStorage;
 pub const struct_IRootStorageVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IRootStorage, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IRootStorage) ULONG,
-    Release: ?extern fn ([*c]IRootStorage) ULONG,
-    SwitchToFile: ?extern fn ([*c]IRootStorage, LPOLESTR) HRESULT,
+    QueryInterface: ?fn ([*c]IRootStorage, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IRootStorage) callconv(.C) ULONG,
+    Release: ?fn ([*c]IRootStorage) callconv(.C) ULONG,
+    SwitchToFile: ?fn ([*c]IRootStorage, LPOLESTR) callconv(.C) HRESULT,
 };
 pub const struct_IRootStorage = extern struct {
     lpVtbl: [*c]struct_IRootStorageVtbl,
 };
 pub const AsyncIAdviseSink = struct_AsyncIAdviseSink;
 pub const struct_AsyncIAdviseSinkVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]AsyncIAdviseSink, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]AsyncIAdviseSink) ULONG,
-    Release: ?extern fn ([*c]AsyncIAdviseSink) ULONG,
-    Begin_OnDataChange: ?extern fn ([*c]AsyncIAdviseSink, [*c]FORMATETC, [*c]STGMEDIUM) void,
-    Finish_OnDataChange: ?extern fn ([*c]AsyncIAdviseSink) void,
-    Begin_OnViewChange: ?extern fn ([*c]AsyncIAdviseSink, DWORD, LONG) void,
-    Finish_OnViewChange: ?extern fn ([*c]AsyncIAdviseSink) void,
-    Begin_OnRename: ?extern fn ([*c]AsyncIAdviseSink, [*c]IMoniker) void,
-    Finish_OnRename: ?extern fn ([*c]AsyncIAdviseSink) void,
-    Begin_OnSave: ?extern fn ([*c]AsyncIAdviseSink) void,
-    Finish_OnSave: ?extern fn ([*c]AsyncIAdviseSink) void,
-    Begin_OnClose: ?extern fn ([*c]AsyncIAdviseSink) void,
-    Finish_OnClose: ?extern fn ([*c]AsyncIAdviseSink) void,
+    QueryInterface: ?fn ([*c]AsyncIAdviseSink, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]AsyncIAdviseSink) callconv(.C) ULONG,
+    Release: ?fn ([*c]AsyncIAdviseSink) callconv(.C) ULONG,
+    Begin_OnDataChange: ?fn ([*c]AsyncIAdviseSink, [*c]FORMATETC, [*c]STGMEDIUM) callconv(.C) void,
+    Finish_OnDataChange: ?fn ([*c]AsyncIAdviseSink) callconv(.C) void,
+    Begin_OnViewChange: ?fn ([*c]AsyncIAdviseSink, DWORD, LONG) callconv(.C) void,
+    Finish_OnViewChange: ?fn ([*c]AsyncIAdviseSink) callconv(.C) void,
+    Begin_OnRename: ?fn ([*c]AsyncIAdviseSink, [*c]IMoniker) callconv(.C) void,
+    Finish_OnRename: ?fn ([*c]AsyncIAdviseSink) callconv(.C) void,
+    Begin_OnSave: ?fn ([*c]AsyncIAdviseSink) callconv(.C) void,
+    Finish_OnSave: ?fn ([*c]AsyncIAdviseSink) callconv(.C) void,
+    Begin_OnClose: ?fn ([*c]AsyncIAdviseSink) callconv(.C) void,
+    Finish_OnClose: ?fn ([*c]AsyncIAdviseSink) callconv(.C) void,
 };
 pub const struct_AsyncIAdviseSink = extern struct {
     lpVtbl: [*c]struct_AsyncIAdviseSinkVtbl,
 };
 pub const IAdviseSink2 = struct_IAdviseSink2;
 pub const struct_IAdviseSink2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAdviseSink2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAdviseSink2) ULONG,
-    Release: ?extern fn ([*c]IAdviseSink2) ULONG,
-    OnDataChange: ?extern fn ([*c]IAdviseSink2, [*c]FORMATETC, [*c]STGMEDIUM) void,
-    OnViewChange: ?extern fn ([*c]IAdviseSink2, DWORD, LONG) void,
-    OnRename: ?extern fn ([*c]IAdviseSink2, [*c]IMoniker) void,
-    OnSave: ?extern fn ([*c]IAdviseSink2) void,
-    OnClose: ?extern fn ([*c]IAdviseSink2) void,
-    OnLinkSrcChange: ?extern fn ([*c]IAdviseSink2, [*c]IMoniker) void,
+    QueryInterface: ?fn ([*c]IAdviseSink2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAdviseSink2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAdviseSink2) callconv(.C) ULONG,
+    OnDataChange: ?fn ([*c]IAdviseSink2, [*c]FORMATETC, [*c]STGMEDIUM) callconv(.C) void,
+    OnViewChange: ?fn ([*c]IAdviseSink2, DWORD, LONG) callconv(.C) void,
+    OnRename: ?fn ([*c]IAdviseSink2, [*c]IMoniker) callconv(.C) void,
+    OnSave: ?fn ([*c]IAdviseSink2) callconv(.C) void,
+    OnClose: ?fn ([*c]IAdviseSink2) callconv(.C) void,
+    OnLinkSrcChange: ?fn ([*c]IAdviseSink2, [*c]IMoniker) callconv(.C) void,
 };
 pub const struct_IAdviseSink2 = extern struct {
     lpVtbl: [*c]struct_IAdviseSink2Vtbl,
 };
 pub const AsyncIAdviseSink2 = struct_AsyncIAdviseSink2;
 pub const struct_AsyncIAdviseSink2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]AsyncIAdviseSink2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]AsyncIAdviseSink2) ULONG,
-    Release: ?extern fn ([*c]AsyncIAdviseSink2) ULONG,
-    Begin_OnDataChange: ?extern fn ([*c]AsyncIAdviseSink2, [*c]FORMATETC, [*c]STGMEDIUM) void,
-    Finish_OnDataChange: ?extern fn ([*c]AsyncIAdviseSink2) void,
-    Begin_OnViewChange: ?extern fn ([*c]AsyncIAdviseSink2, DWORD, LONG) void,
-    Finish_OnViewChange: ?extern fn ([*c]AsyncIAdviseSink2) void,
-    Begin_OnRename: ?extern fn ([*c]AsyncIAdviseSink2, [*c]IMoniker) void,
-    Finish_OnRename: ?extern fn ([*c]AsyncIAdviseSink2) void,
-    Begin_OnSave: ?extern fn ([*c]AsyncIAdviseSink2) void,
-    Finish_OnSave: ?extern fn ([*c]AsyncIAdviseSink2) void,
-    Begin_OnClose: ?extern fn ([*c]AsyncIAdviseSink2) void,
-    Finish_OnClose: ?extern fn ([*c]AsyncIAdviseSink2) void,
-    Begin_OnLinkSrcChange: ?extern fn ([*c]AsyncIAdviseSink2, [*c]IMoniker) void,
-    Finish_OnLinkSrcChange: ?extern fn ([*c]AsyncIAdviseSink2) void,
+    QueryInterface: ?fn ([*c]AsyncIAdviseSink2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) ULONG,
+    Release: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) ULONG,
+    Begin_OnDataChange: ?fn ([*c]AsyncIAdviseSink2, [*c]FORMATETC, [*c]STGMEDIUM) callconv(.C) void,
+    Finish_OnDataChange: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) void,
+    Begin_OnViewChange: ?fn ([*c]AsyncIAdviseSink2, DWORD, LONG) callconv(.C) void,
+    Finish_OnViewChange: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) void,
+    Begin_OnRename: ?fn ([*c]AsyncIAdviseSink2, [*c]IMoniker) callconv(.C) void,
+    Finish_OnRename: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) void,
+    Begin_OnSave: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) void,
+    Finish_OnSave: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) void,
+    Begin_OnClose: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) void,
+    Finish_OnClose: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) void,
+    Begin_OnLinkSrcChange: ?fn ([*c]AsyncIAdviseSink2, [*c]IMoniker) callconv(.C) void,
+    Finish_OnLinkSrcChange: ?fn ([*c]AsyncIAdviseSink2) callconv(.C) void,
 };
 pub const struct_AsyncIAdviseSink2 = extern struct {
     lpVtbl: [*c]struct_AsyncIAdviseSink2Vtbl,
 };
 pub const IDataObject = struct_IDataObject;
 pub const struct_IDataObjectVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IDataObject, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IDataObject) ULONG,
-    Release: ?extern fn ([*c]IDataObject) ULONG,
-    GetData: ?extern fn ([*c]IDataObject, [*c]FORMATETC, [*c]STGMEDIUM) HRESULT,
-    GetDataHere: ?extern fn ([*c]IDataObject, [*c]FORMATETC, [*c]STGMEDIUM) HRESULT,
-    QueryGetData: ?extern fn ([*c]IDataObject, [*c]FORMATETC) HRESULT,
-    GetCanonicalFormatEtc: ?extern fn ([*c]IDataObject, [*c]FORMATETC, [*c]FORMATETC) HRESULT,
-    SetData: ?extern fn ([*c]IDataObject, [*c]FORMATETC, [*c]STGMEDIUM, BOOL) HRESULT,
-    EnumFormatEtc: ?extern fn ([*c]IDataObject, DWORD, [*c]([*c]IEnumFORMATETC)) HRESULT,
-    DAdvise: ?extern fn ([*c]IDataObject, [*c]FORMATETC, DWORD, [*c]IAdviseSink, [*c]DWORD) HRESULT,
-    DUnadvise: ?extern fn ([*c]IDataObject, DWORD) HRESULT,
-    EnumDAdvise: ?extern fn ([*c]IDataObject, [*c]([*c]IEnumSTATDATA)) HRESULT,
+    QueryInterface: ?fn ([*c]IDataObject, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IDataObject) callconv(.C) ULONG,
+    Release: ?fn ([*c]IDataObject) callconv(.C) ULONG,
+    GetData: ?fn ([*c]IDataObject, [*c]FORMATETC, [*c]STGMEDIUM) callconv(.C) HRESULT,
+    GetDataHere: ?fn ([*c]IDataObject, [*c]FORMATETC, [*c]STGMEDIUM) callconv(.C) HRESULT,
+    QueryGetData: ?fn ([*c]IDataObject, [*c]FORMATETC) callconv(.C) HRESULT,
+    GetCanonicalFormatEtc: ?fn ([*c]IDataObject, [*c]FORMATETC, [*c]FORMATETC) callconv(.C) HRESULT,
+    SetData: ?fn ([*c]IDataObject, [*c]FORMATETC, [*c]STGMEDIUM, BOOL) callconv(.C) HRESULT,
+    EnumFormatEtc: ?fn ([*c]IDataObject, DWORD, [*c]([*c]IEnumFORMATETC)) callconv(.C) HRESULT,
+    DAdvise: ?fn ([*c]IDataObject, [*c]FORMATETC, DWORD, [*c]IAdviseSink, [*c]DWORD) callconv(.C) HRESULT,
+    DUnadvise: ?fn ([*c]IDataObject, DWORD) callconv(.C) HRESULT,
+    EnumDAdvise: ?fn ([*c]IDataObject, [*c]([*c]IEnumSTATDATA)) callconv(.C) HRESULT,
 };
 pub const struct_IDataObject = extern struct {
     lpVtbl: [*c]struct_IDataObjectVtbl,
 };
 pub const IDataAdviseHolder = struct_IDataAdviseHolder;
 pub const struct_IDataAdviseHolderVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IDataAdviseHolder, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IDataAdviseHolder) ULONG,
-    Release: ?extern fn ([*c]IDataAdviseHolder) ULONG,
-    Advise: ?extern fn ([*c]IDataAdviseHolder, [*c]IDataObject, [*c]FORMATETC, DWORD, [*c]IAdviseSink, [*c]DWORD) HRESULT,
-    Unadvise: ?extern fn ([*c]IDataAdviseHolder, DWORD) HRESULT,
-    EnumAdvise: ?extern fn ([*c]IDataAdviseHolder, [*c]([*c]IEnumSTATDATA)) HRESULT,
-    SendOnDataChange: ?extern fn ([*c]IDataAdviseHolder, [*c]IDataObject, DWORD, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IDataAdviseHolder, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IDataAdviseHolder) callconv(.C) ULONG,
+    Release: ?fn ([*c]IDataAdviseHolder) callconv(.C) ULONG,
+    Advise: ?fn ([*c]IDataAdviseHolder, [*c]IDataObject, [*c]FORMATETC, DWORD, [*c]IAdviseSink, [*c]DWORD) callconv(.C) HRESULT,
+    Unadvise: ?fn ([*c]IDataAdviseHolder, DWORD) callconv(.C) HRESULT,
+    EnumAdvise: ?fn ([*c]IDataAdviseHolder, [*c]([*c]IEnumSTATDATA)) callconv(.C) HRESULT,
+    SendOnDataChange: ?fn ([*c]IDataAdviseHolder, [*c]IDataObject, DWORD, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IDataAdviseHolder = extern struct {
     lpVtbl: [*c]struct_IDataAdviseHolderVtbl,
@@ -35367,45 +35367,45 @@ pub const struct_tagINTERFACEINFO = extern struct {
 };
 pub const LPINTERFACEINFO = [*c]struct_tagINTERFACEINFO;
 pub const struct_IMessageFilterVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IMessageFilter, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IMessageFilter) ULONG,
-    Release: ?extern fn ([*c]IMessageFilter) ULONG,
-    HandleInComingCall: ?extern fn ([*c]IMessageFilter, DWORD, HTASK, DWORD, LPINTERFACEINFO) DWORD,
-    RetryRejectedCall: ?extern fn ([*c]IMessageFilter, HTASK, DWORD, DWORD) DWORD,
-    MessagePending: ?extern fn ([*c]IMessageFilter, HTASK, DWORD, DWORD) DWORD,
+    QueryInterface: ?fn ([*c]IMessageFilter, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IMessageFilter) callconv(.C) ULONG,
+    Release: ?fn ([*c]IMessageFilter) callconv(.C) ULONG,
+    HandleInComingCall: ?fn ([*c]IMessageFilter, DWORD, HTASK, DWORD, LPINTERFACEINFO) callconv(.C) DWORD,
+    RetryRejectedCall: ?fn ([*c]IMessageFilter, HTASK, DWORD, DWORD) callconv(.C) DWORD,
+    MessagePending: ?fn ([*c]IMessageFilter, HTASK, DWORD, DWORD) callconv(.C) DWORD,
 };
 pub const struct_IMessageFilter = extern struct {
     lpVtbl: [*c]struct_IMessageFilterVtbl,
 };
 pub const IClassActivator = struct_IClassActivator;
 pub const struct_IClassActivatorVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IClassActivator, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IClassActivator) ULONG,
-    Release: ?extern fn ([*c]IClassActivator) ULONG,
-    GetClassObject: ?extern fn ([*c]IClassActivator, [*c]const IID, DWORD, LCID, [*c]const IID, [*c](?*c_void)) HRESULT,
+    QueryInterface: ?fn ([*c]IClassActivator, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IClassActivator) callconv(.C) ULONG,
+    Release: ?fn ([*c]IClassActivator) callconv(.C) ULONG,
+    GetClassObject: ?fn ([*c]IClassActivator, [*c]const IID, DWORD, LCID, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
 };
 pub const struct_IClassActivator = extern struct {
     lpVtbl: [*c]struct_IClassActivatorVtbl,
 };
 pub const IFillLockBytes = struct_IFillLockBytes;
 pub const struct_IFillLockBytesVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IFillLockBytes, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IFillLockBytes) ULONG,
-    Release: ?extern fn ([*c]IFillLockBytes) ULONG,
-    FillAppend: ?extern fn ([*c]IFillLockBytes, ?*const c_void, ULONG, [*c]ULONG) HRESULT,
-    FillAt: ?extern fn ([*c]IFillLockBytes, ULARGE_INTEGER, ?*const c_void, ULONG, [*c]ULONG) HRESULT,
-    SetFillSize: ?extern fn ([*c]IFillLockBytes, ULARGE_INTEGER) HRESULT,
-    Terminate: ?extern fn ([*c]IFillLockBytes, BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IFillLockBytes, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IFillLockBytes) callconv(.C) ULONG,
+    Release: ?fn ([*c]IFillLockBytes) callconv(.C) ULONG,
+    FillAppend: ?fn ([*c]IFillLockBytes, ?*const c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    FillAt: ?fn ([*c]IFillLockBytes, ULARGE_INTEGER, ?*const c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    SetFillSize: ?fn ([*c]IFillLockBytes, ULARGE_INTEGER) callconv(.C) HRESULT,
+    Terminate: ?fn ([*c]IFillLockBytes, BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IFillLockBytes = extern struct {
     lpVtbl: [*c]struct_IFillLockBytesVtbl,
 };
 pub const IProgressNotify = struct_IProgressNotify;
 pub const struct_IProgressNotifyVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IProgressNotify, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IProgressNotify) ULONG,
-    Release: ?extern fn ([*c]IProgressNotify) ULONG,
-    OnProgress: ?extern fn ([*c]IProgressNotify, DWORD, DWORD, BOOL, BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IProgressNotify, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IProgressNotify) callconv(.C) ULONG,
+    Release: ?fn ([*c]IProgressNotify) callconv(.C) ULONG,
+    OnProgress: ?fn ([*c]IProgressNotify, DWORD, DWORD, BOOL, BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IProgressNotify = extern struct {
     lpVtbl: [*c]struct_IProgressNotifyVtbl,
@@ -35419,110 +35419,110 @@ pub const struct_tagStorageLayout = extern struct {
 };
 pub const StorageLayout = struct_tagStorageLayout;
 pub const struct_ILayoutStorageVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ILayoutStorage, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ILayoutStorage) ULONG,
-    Release: ?extern fn ([*c]ILayoutStorage) ULONG,
-    LayoutScript: ?extern fn ([*c]ILayoutStorage, [*c]StorageLayout, DWORD, DWORD) HRESULT,
-    BeginMonitor: ?extern fn ([*c]ILayoutStorage) HRESULT,
-    EndMonitor: ?extern fn ([*c]ILayoutStorage) HRESULT,
-    ReLayoutDocfile: ?extern fn ([*c]ILayoutStorage, [*c]OLECHAR) HRESULT,
-    ReLayoutDocfileOnILockBytes: ?extern fn ([*c]ILayoutStorage, [*c]ILockBytes) HRESULT,
+    QueryInterface: ?fn ([*c]ILayoutStorage, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ILayoutStorage) callconv(.C) ULONG,
+    Release: ?fn ([*c]ILayoutStorage) callconv(.C) ULONG,
+    LayoutScript: ?fn ([*c]ILayoutStorage, [*c]StorageLayout, DWORD, DWORD) callconv(.C) HRESULT,
+    BeginMonitor: ?fn ([*c]ILayoutStorage) callconv(.C) HRESULT,
+    EndMonitor: ?fn ([*c]ILayoutStorage) callconv(.C) HRESULT,
+    ReLayoutDocfile: ?fn ([*c]ILayoutStorage, [*c]OLECHAR) callconv(.C) HRESULT,
+    ReLayoutDocfileOnILockBytes: ?fn ([*c]ILayoutStorage, [*c]ILockBytes) callconv(.C) HRESULT,
 };
 pub const struct_ILayoutStorage = extern struct {
     lpVtbl: [*c]struct_ILayoutStorageVtbl,
 };
 pub const IBlockingLock = struct_IBlockingLock;
 pub const struct_IBlockingLockVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IBlockingLock, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IBlockingLock) ULONG,
-    Release: ?extern fn ([*c]IBlockingLock) ULONG,
-    Lock: ?extern fn ([*c]IBlockingLock, DWORD) HRESULT,
-    Unlock: ?extern fn ([*c]IBlockingLock) HRESULT,
+    QueryInterface: ?fn ([*c]IBlockingLock, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IBlockingLock) callconv(.C) ULONG,
+    Release: ?fn ([*c]IBlockingLock) callconv(.C) ULONG,
+    Lock: ?fn ([*c]IBlockingLock, DWORD) callconv(.C) HRESULT,
+    Unlock: ?fn ([*c]IBlockingLock) callconv(.C) HRESULT,
 };
 pub const struct_IBlockingLock = extern struct {
     lpVtbl: [*c]struct_IBlockingLockVtbl,
 };
 pub const ITimeAndNoticeControl = struct_ITimeAndNoticeControl;
 pub const struct_ITimeAndNoticeControlVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITimeAndNoticeControl, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITimeAndNoticeControl) ULONG,
-    Release: ?extern fn ([*c]ITimeAndNoticeControl) ULONG,
-    SuppressChanges: ?extern fn ([*c]ITimeAndNoticeControl, DWORD, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]ITimeAndNoticeControl, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITimeAndNoticeControl) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITimeAndNoticeControl) callconv(.C) ULONG,
+    SuppressChanges: ?fn ([*c]ITimeAndNoticeControl, DWORD, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_ITimeAndNoticeControl = extern struct {
     lpVtbl: [*c]struct_ITimeAndNoticeControlVtbl,
 };
 pub const IOplockStorage = struct_IOplockStorage;
 pub const struct_IOplockStorageVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOplockStorage, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOplockStorage) ULONG,
-    Release: ?extern fn ([*c]IOplockStorage) ULONG,
-    CreateStorageEx: ?extern fn ([*c]IOplockStorage, LPCWSTR, DWORD, DWORD, DWORD, [*c]const IID, [*c](?*c_void)) HRESULT,
-    OpenStorageEx: ?extern fn ([*c]IOplockStorage, LPCWSTR, DWORD, DWORD, DWORD, [*c]const IID, [*c](?*c_void)) HRESULT,
+    QueryInterface: ?fn ([*c]IOplockStorage, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOplockStorage) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOplockStorage) callconv(.C) ULONG,
+    CreateStorageEx: ?fn ([*c]IOplockStorage, LPCWSTR, DWORD, DWORD, DWORD, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    OpenStorageEx: ?fn ([*c]IOplockStorage, LPCWSTR, DWORD, DWORD, DWORD, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
 };
 pub const struct_IOplockStorage = extern struct {
     lpVtbl: [*c]struct_IOplockStorageVtbl,
 };
 pub const IDirectWriterLock = struct_IDirectWriterLock;
 pub const struct_IDirectWriterLockVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IDirectWriterLock, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IDirectWriterLock) ULONG,
-    Release: ?extern fn ([*c]IDirectWriterLock) ULONG,
-    WaitForWriteAccess: ?extern fn ([*c]IDirectWriterLock, DWORD) HRESULT,
-    ReleaseWriteAccess: ?extern fn ([*c]IDirectWriterLock) HRESULT,
-    HaveWriteAccess: ?extern fn ([*c]IDirectWriterLock) HRESULT,
+    QueryInterface: ?fn ([*c]IDirectWriterLock, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IDirectWriterLock) callconv(.C) ULONG,
+    Release: ?fn ([*c]IDirectWriterLock) callconv(.C) ULONG,
+    WaitForWriteAccess: ?fn ([*c]IDirectWriterLock, DWORD) callconv(.C) HRESULT,
+    ReleaseWriteAccess: ?fn ([*c]IDirectWriterLock) callconv(.C) HRESULT,
+    HaveWriteAccess: ?fn ([*c]IDirectWriterLock) callconv(.C) HRESULT,
 };
 pub const struct_IDirectWriterLock = extern struct {
     lpVtbl: [*c]struct_IDirectWriterLockVtbl,
 };
 pub const IUrlMon = struct_IUrlMon;
 pub const struct_IUrlMonVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IUrlMon, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IUrlMon) ULONG,
-    Release: ?extern fn ([*c]IUrlMon) ULONG,
-    AsyncGetClassBits: ?extern fn ([*c]IUrlMon, [*c]const IID, LPCWSTR, LPCWSTR, DWORD, DWORD, LPCWSTR, [*c]IBindCtx, DWORD, [*c]const IID, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IUrlMon, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IUrlMon) callconv(.C) ULONG,
+    Release: ?fn ([*c]IUrlMon) callconv(.C) ULONG,
+    AsyncGetClassBits: ?fn ([*c]IUrlMon, [*c]const IID, LPCWSTR, LPCWSTR, DWORD, DWORD, LPCWSTR, [*c]IBindCtx, DWORD, [*c]const IID, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IUrlMon = extern struct {
     lpVtbl: [*c]struct_IUrlMonVtbl,
 };
 pub const IForegroundTransfer = struct_IForegroundTransfer;
 pub const struct_IForegroundTransferVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IForegroundTransfer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IForegroundTransfer) ULONG,
-    Release: ?extern fn ([*c]IForegroundTransfer) ULONG,
-    AllowForegroundTransfer: ?extern fn ([*c]IForegroundTransfer, ?*c_void) HRESULT,
+    QueryInterface: ?fn ([*c]IForegroundTransfer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IForegroundTransfer) callconv(.C) ULONG,
+    Release: ?fn ([*c]IForegroundTransfer) callconv(.C) ULONG,
+    AllowForegroundTransfer: ?fn ([*c]IForegroundTransfer, ?*c_void) callconv(.C) HRESULT,
 };
 pub const struct_IForegroundTransfer = extern struct {
     lpVtbl: [*c]struct_IForegroundTransferVtbl,
 };
 pub const IThumbnailExtractor = struct_IThumbnailExtractor;
 pub const struct_IThumbnailExtractorVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IThumbnailExtractor, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IThumbnailExtractor) ULONG,
-    Release: ?extern fn ([*c]IThumbnailExtractor) ULONG,
-    ExtractThumbnail: ?extern fn ([*c]IThumbnailExtractor, [*c]IStorage, ULONG, ULONG, [*c]ULONG, [*c]ULONG, [*c]HBITMAP) HRESULT,
-    OnFileUpdated: ?extern fn ([*c]IThumbnailExtractor, [*c]IStorage) HRESULT,
+    QueryInterface: ?fn ([*c]IThumbnailExtractor, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IThumbnailExtractor) callconv(.C) ULONG,
+    Release: ?fn ([*c]IThumbnailExtractor) callconv(.C) ULONG,
+    ExtractThumbnail: ?fn ([*c]IThumbnailExtractor, [*c]IStorage, ULONG, ULONG, [*c]ULONG, [*c]ULONG, [*c]HBITMAP) callconv(.C) HRESULT,
+    OnFileUpdated: ?fn ([*c]IThumbnailExtractor, [*c]IStorage) callconv(.C) HRESULT,
 };
 pub const struct_IThumbnailExtractor = extern struct {
     lpVtbl: [*c]struct_IThumbnailExtractorVtbl,
 };
 pub const IDummyHICONIncluder = struct_IDummyHICONIncluder;
 pub const struct_IDummyHICONIncluderVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IDummyHICONIncluder, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IDummyHICONIncluder) ULONG,
-    Release: ?extern fn ([*c]IDummyHICONIncluder) ULONG,
-    Dummy: ?extern fn ([*c]IDummyHICONIncluder, HICON, HDC) HRESULT,
+    QueryInterface: ?fn ([*c]IDummyHICONIncluder, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IDummyHICONIncluder) callconv(.C) ULONG,
+    Release: ?fn ([*c]IDummyHICONIncluder) callconv(.C) ULONG,
+    Dummy: ?fn ([*c]IDummyHICONIncluder, HICON, HDC) callconv(.C) HRESULT,
 };
 pub const struct_IDummyHICONIncluder = extern struct {
     lpVtbl: [*c]struct_IDummyHICONIncluderVtbl,
 };
 pub const IProcessLock = struct_IProcessLock;
 pub const struct_IProcessLockVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IProcessLock, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IProcessLock) ULONG,
-    Release: ?extern fn ([*c]IProcessLock) ULONG,
-    AddRefOnProcess: ?extern fn ([*c]IProcessLock) ULONG,
-    ReleaseRefOnProcess: ?extern fn ([*c]IProcessLock) ULONG,
+    QueryInterface: ?fn ([*c]IProcessLock, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IProcessLock) callconv(.C) ULONG,
+    Release: ?fn ([*c]IProcessLock) callconv(.C) ULONG,
+    AddRefOnProcess: ?fn ([*c]IProcessLock) callconv(.C) ULONG,
+    ReleaseRefOnProcess: ?fn ([*c]IProcessLock) callconv(.C) ULONG,
 };
 pub const struct_IProcessLock = extern struct {
     lpVtbl: [*c]struct_IProcessLockVtbl,
@@ -35549,37 +35549,37 @@ pub const ShutdownType = extern enum {
     ForcedShutdown = 1,
 };
 pub const struct_ISurrogateServiceVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISurrogateService, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISurrogateService) ULONG,
-    Release: ?extern fn ([*c]ISurrogateService) ULONG,
-    Init: ?extern fn ([*c]ISurrogateService, [*c]const GUID, [*c]IProcessLock, [*c]BOOL) HRESULT,
-    ApplicationLaunch: ?extern fn ([*c]ISurrogateService, [*c]const GUID, ApplicationType) HRESULT,
-    ApplicationFree: ?extern fn ([*c]ISurrogateService, [*c]const GUID) HRESULT,
-    CatalogRefresh: ?extern fn ([*c]ISurrogateService, ULONG) HRESULT,
-    ProcessShutdown: ?extern fn ([*c]ISurrogateService, ShutdownType) HRESULT,
+    QueryInterface: ?fn ([*c]ISurrogateService, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISurrogateService) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISurrogateService) callconv(.C) ULONG,
+    Init: ?fn ([*c]ISurrogateService, [*c]const GUID, [*c]IProcessLock, [*c]BOOL) callconv(.C) HRESULT,
+    ApplicationLaunch: ?fn ([*c]ISurrogateService, [*c]const GUID, ApplicationType) callconv(.C) HRESULT,
+    ApplicationFree: ?fn ([*c]ISurrogateService, [*c]const GUID) callconv(.C) HRESULT,
+    CatalogRefresh: ?fn ([*c]ISurrogateService, ULONG) callconv(.C) HRESULT,
+    ProcessShutdown: ?fn ([*c]ISurrogateService, ShutdownType) callconv(.C) HRESULT,
 };
 pub const struct_ISurrogateService = extern struct {
     lpVtbl: [*c]struct_ISurrogateServiceVtbl,
 };
 pub const IInitializeSpy = struct_IInitializeSpy;
 pub const struct_IInitializeSpyVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInitializeSpy, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInitializeSpy) ULONG,
-    Release: ?extern fn ([*c]IInitializeSpy) ULONG,
-    PreInitialize: ?extern fn ([*c]IInitializeSpy, DWORD, DWORD) HRESULT,
-    PostInitialize: ?extern fn ([*c]IInitializeSpy, HRESULT, DWORD, DWORD) HRESULT,
-    PreUninitialize: ?extern fn ([*c]IInitializeSpy, DWORD) HRESULT,
-    PostUninitialize: ?extern fn ([*c]IInitializeSpy, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IInitializeSpy, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInitializeSpy) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInitializeSpy) callconv(.C) ULONG,
+    PreInitialize: ?fn ([*c]IInitializeSpy, DWORD, DWORD) callconv(.C) HRESULT,
+    PostInitialize: ?fn ([*c]IInitializeSpy, HRESULT, DWORD, DWORD) callconv(.C) HRESULT,
+    PreUninitialize: ?fn ([*c]IInitializeSpy, DWORD) callconv(.C) HRESULT,
+    PostUninitialize: ?fn ([*c]IInitializeSpy, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IInitializeSpy = extern struct {
     lpVtbl: [*c]struct_IInitializeSpyVtbl,
 };
 pub const IApartmentShutdown = struct_IApartmentShutdown;
 pub const struct_IApartmentShutdownVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IApartmentShutdown, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IApartmentShutdown) ULONG,
-    Release: ?extern fn ([*c]IApartmentShutdown) ULONG,
-    OnUninitialize: ?extern fn ([*c]IApartmentShutdown, UINT64) void,
+    QueryInterface: ?fn ([*c]IApartmentShutdown, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IApartmentShutdown) callconv(.C) ULONG,
+    Release: ?fn ([*c]IApartmentShutdown) callconv(.C) ULONG,
+    OnUninitialize: ?fn ([*c]IApartmentShutdown, UINT64) callconv(.C) void,
 };
 pub const struct_IApartmentShutdown = extern struct {
     lpVtbl: [*c]struct_IApartmentShutdownVtbl,
@@ -36187,13 +36187,13 @@ pub const struct_tagSTATPROPSTG = extern struct {
 };
 pub const STATPROPSTG = struct_tagSTATPROPSTG;
 pub const struct_IEnumSTATPROPSTGVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumSTATPROPSTG, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumSTATPROPSTG) ULONG,
-    Release: ?extern fn ([*c]IEnumSTATPROPSTG) ULONG,
-    Next: ?extern fn ([*c]IEnumSTATPROPSTG, ULONG, [*c]STATPROPSTG, [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumSTATPROPSTG, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumSTATPROPSTG) HRESULT,
-    Clone: ?extern fn ([*c]IEnumSTATPROPSTG, [*c]([*c]IEnumSTATPROPSTG)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumSTATPROPSTG, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumSTATPROPSTG) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumSTATPROPSTG) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumSTATPROPSTG, ULONG, [*c]STATPROPSTG, [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumSTATPROPSTG, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumSTATPROPSTG) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumSTATPROPSTG, [*c]([*c]IEnumSTATPROPSTG)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumSTATPROPSTG = extern struct {
     lpVtbl: [*c]struct_IEnumSTATPROPSTGVtbl,
@@ -36210,181 +36210,181 @@ pub const struct_tagSTATPROPSETSTG = extern struct {
 };
 pub const STATPROPSETSTG = struct_tagSTATPROPSETSTG;
 pub const struct_IPropertyStorageVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPropertyStorage, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPropertyStorage) ULONG,
-    Release: ?extern fn ([*c]IPropertyStorage) ULONG,
-    ReadMultiple: ?extern fn ([*c]IPropertyStorage, ULONG, [*c]const PROPSPEC, [*c]PROPVARIANT) HRESULT,
-    WriteMultiple: ?extern fn ([*c]IPropertyStorage, ULONG, [*c]const PROPSPEC, [*c]const PROPVARIANT, PROPID) HRESULT,
-    DeleteMultiple: ?extern fn ([*c]IPropertyStorage, ULONG, [*c]const PROPSPEC) HRESULT,
-    ReadPropertyNames: ?extern fn ([*c]IPropertyStorage, ULONG, [*c]const PROPID, [*c]LPOLESTR) HRESULT,
-    WritePropertyNames: ?extern fn ([*c]IPropertyStorage, ULONG, [*c]const PROPID, [*c]const LPOLESTR) HRESULT,
-    DeletePropertyNames: ?extern fn ([*c]IPropertyStorage, ULONG, [*c]const PROPID) HRESULT,
-    Commit: ?extern fn ([*c]IPropertyStorage, DWORD) HRESULT,
-    Revert: ?extern fn ([*c]IPropertyStorage) HRESULT,
-    Enum: ?extern fn ([*c]IPropertyStorage, [*c]([*c]IEnumSTATPROPSTG)) HRESULT,
-    SetTimes: ?extern fn ([*c]IPropertyStorage, [*c]const FILETIME, [*c]const FILETIME, [*c]const FILETIME) HRESULT,
-    SetClass: ?extern fn ([*c]IPropertyStorage, [*c]const IID) HRESULT,
-    Stat: ?extern fn ([*c]IPropertyStorage, [*c]STATPROPSETSTG) HRESULT,
+    QueryInterface: ?fn ([*c]IPropertyStorage, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPropertyStorage) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPropertyStorage) callconv(.C) ULONG,
+    ReadMultiple: ?fn ([*c]IPropertyStorage, ULONG, [*c]const PROPSPEC, [*c]PROPVARIANT) callconv(.C) HRESULT,
+    WriteMultiple: ?fn ([*c]IPropertyStorage, ULONG, [*c]const PROPSPEC, [*c]const PROPVARIANT, PROPID) callconv(.C) HRESULT,
+    DeleteMultiple: ?fn ([*c]IPropertyStorage, ULONG, [*c]const PROPSPEC) callconv(.C) HRESULT,
+    ReadPropertyNames: ?fn ([*c]IPropertyStorage, ULONG, [*c]const PROPID, [*c]LPOLESTR) callconv(.C) HRESULT,
+    WritePropertyNames: ?fn ([*c]IPropertyStorage, ULONG, [*c]const PROPID, [*c]const LPOLESTR) callconv(.C) HRESULT,
+    DeletePropertyNames: ?fn ([*c]IPropertyStorage, ULONG, [*c]const PROPID) callconv(.C) HRESULT,
+    Commit: ?fn ([*c]IPropertyStorage, DWORD) callconv(.C) HRESULT,
+    Revert: ?fn ([*c]IPropertyStorage) callconv(.C) HRESULT,
+    Enum: ?fn ([*c]IPropertyStorage, [*c]([*c]IEnumSTATPROPSTG)) callconv(.C) HRESULT,
+    SetTimes: ?fn ([*c]IPropertyStorage, [*c]const FILETIME, [*c]const FILETIME, [*c]const FILETIME) callconv(.C) HRESULT,
+    SetClass: ?fn ([*c]IPropertyStorage, [*c]const IID) callconv(.C) HRESULT,
+    Stat: ?fn ([*c]IPropertyStorage, [*c]STATPROPSETSTG) callconv(.C) HRESULT,
 };
 pub const struct_IPropertyStorage = extern struct {
     lpVtbl: [*c]struct_IPropertyStorageVtbl,
 };
 pub const IPropertySetStorage = struct_IPropertySetStorage;
 pub const struct_IEnumSTATPROPSETSTGVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumSTATPROPSETSTG, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumSTATPROPSETSTG) ULONG,
-    Release: ?extern fn ([*c]IEnumSTATPROPSETSTG) ULONG,
-    Next: ?extern fn ([*c]IEnumSTATPROPSETSTG, ULONG, [*c]STATPROPSETSTG, [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumSTATPROPSETSTG, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumSTATPROPSETSTG) HRESULT,
-    Clone: ?extern fn ([*c]IEnumSTATPROPSETSTG, [*c]([*c]IEnumSTATPROPSETSTG)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumSTATPROPSETSTG, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumSTATPROPSETSTG) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumSTATPROPSETSTG) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumSTATPROPSETSTG, ULONG, [*c]STATPROPSETSTG, [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumSTATPROPSETSTG, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumSTATPROPSETSTG) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumSTATPROPSETSTG, [*c]([*c]IEnumSTATPROPSETSTG)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumSTATPROPSETSTG = extern struct {
     lpVtbl: [*c]struct_IEnumSTATPROPSETSTGVtbl,
 };
 pub const IEnumSTATPROPSETSTG = struct_IEnumSTATPROPSETSTG;
 pub const struct_IPropertySetStorageVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPropertySetStorage, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPropertySetStorage) ULONG,
-    Release: ?extern fn ([*c]IPropertySetStorage) ULONG,
-    Create: ?extern fn ([*c]IPropertySetStorage, [*c]const IID, [*c]const CLSID, DWORD, DWORD, [*c]([*c]IPropertyStorage)) HRESULT,
-    Open: ?extern fn ([*c]IPropertySetStorage, [*c]const IID, DWORD, [*c]([*c]IPropertyStorage)) HRESULT,
-    Delete: ?extern fn ([*c]IPropertySetStorage, [*c]const IID) HRESULT,
-    Enum: ?extern fn ([*c]IPropertySetStorage, [*c]([*c]IEnumSTATPROPSETSTG)) HRESULT,
+    QueryInterface: ?fn ([*c]IPropertySetStorage, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPropertySetStorage) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPropertySetStorage) callconv(.C) ULONG,
+    Create: ?fn ([*c]IPropertySetStorage, [*c]const IID, [*c]const CLSID, DWORD, DWORD, [*c]([*c]IPropertyStorage)) callconv(.C) HRESULT,
+    Open: ?fn ([*c]IPropertySetStorage, [*c]const IID, DWORD, [*c]([*c]IPropertyStorage)) callconv(.C) HRESULT,
+    Delete: ?fn ([*c]IPropertySetStorage, [*c]const IID) callconv(.C) HRESULT,
+    Enum: ?fn ([*c]IPropertySetStorage, [*c]([*c]IEnumSTATPROPSETSTG)) callconv(.C) HRESULT,
 };
 pub const struct_IPropertySetStorage = extern struct {
     lpVtbl: [*c]struct_IPropertySetStorageVtbl,
 };
 pub const ICreateTypeInfo = struct_ICreateTypeInfo;
 pub const struct_ICreateTypeInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ICreateTypeInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ICreateTypeInfo) ULONG,
-    Release: ?extern fn ([*c]ICreateTypeInfo) ULONG,
-    SetGuid: ?extern fn ([*c]ICreateTypeInfo, [*c]const GUID) HRESULT,
-    SetTypeFlags: ?extern fn ([*c]ICreateTypeInfo, UINT) HRESULT,
-    SetDocString: ?extern fn ([*c]ICreateTypeInfo, LPOLESTR) HRESULT,
-    SetHelpContext: ?extern fn ([*c]ICreateTypeInfo, DWORD) HRESULT,
-    SetVersion: ?extern fn ([*c]ICreateTypeInfo, WORD, WORD) HRESULT,
-    AddRefTypeInfo: ?extern fn ([*c]ICreateTypeInfo, [*c]ITypeInfo, [*c]HREFTYPE) HRESULT,
-    AddFuncDesc: ?extern fn ([*c]ICreateTypeInfo, UINT, [*c]FUNCDESC) HRESULT,
-    AddImplType: ?extern fn ([*c]ICreateTypeInfo, UINT, HREFTYPE) HRESULT,
-    SetImplTypeFlags: ?extern fn ([*c]ICreateTypeInfo, UINT, INT) HRESULT,
-    SetAlignment: ?extern fn ([*c]ICreateTypeInfo, WORD) HRESULT,
-    SetSchema: ?extern fn ([*c]ICreateTypeInfo, LPOLESTR) HRESULT,
-    AddVarDesc: ?extern fn ([*c]ICreateTypeInfo, UINT, [*c]VARDESC) HRESULT,
-    SetFuncAndParamNames: ?extern fn ([*c]ICreateTypeInfo, UINT, [*c]LPOLESTR, UINT) HRESULT,
-    SetVarName: ?extern fn ([*c]ICreateTypeInfo, UINT, LPOLESTR) HRESULT,
-    SetTypeDescAlias: ?extern fn ([*c]ICreateTypeInfo, [*c]TYPEDESC) HRESULT,
-    DefineFuncAsDllEntry: ?extern fn ([*c]ICreateTypeInfo, UINT, LPOLESTR, LPOLESTR) HRESULT,
-    SetFuncDocString: ?extern fn ([*c]ICreateTypeInfo, UINT, LPOLESTR) HRESULT,
-    SetVarDocString: ?extern fn ([*c]ICreateTypeInfo, UINT, LPOLESTR) HRESULT,
-    SetFuncHelpContext: ?extern fn ([*c]ICreateTypeInfo, UINT, DWORD) HRESULT,
-    SetVarHelpContext: ?extern fn ([*c]ICreateTypeInfo, UINT, DWORD) HRESULT,
-    SetMops: ?extern fn ([*c]ICreateTypeInfo, UINT, BSTR) HRESULT,
-    SetTypeIdldesc: ?extern fn ([*c]ICreateTypeInfo, [*c]IDLDESC) HRESULT,
-    LayOut: ?extern fn ([*c]ICreateTypeInfo) HRESULT,
+    QueryInterface: ?fn ([*c]ICreateTypeInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ICreateTypeInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]ICreateTypeInfo) callconv(.C) ULONG,
+    SetGuid: ?fn ([*c]ICreateTypeInfo, [*c]const GUID) callconv(.C) HRESULT,
+    SetTypeFlags: ?fn ([*c]ICreateTypeInfo, UINT) callconv(.C) HRESULT,
+    SetDocString: ?fn ([*c]ICreateTypeInfo, LPOLESTR) callconv(.C) HRESULT,
+    SetHelpContext: ?fn ([*c]ICreateTypeInfo, DWORD) callconv(.C) HRESULT,
+    SetVersion: ?fn ([*c]ICreateTypeInfo, WORD, WORD) callconv(.C) HRESULT,
+    AddRefTypeInfo: ?fn ([*c]ICreateTypeInfo, [*c]ITypeInfo, [*c]HREFTYPE) callconv(.C) HRESULT,
+    AddFuncDesc: ?fn ([*c]ICreateTypeInfo, UINT, [*c]FUNCDESC) callconv(.C) HRESULT,
+    AddImplType: ?fn ([*c]ICreateTypeInfo, UINT, HREFTYPE) callconv(.C) HRESULT,
+    SetImplTypeFlags: ?fn ([*c]ICreateTypeInfo, UINT, INT) callconv(.C) HRESULT,
+    SetAlignment: ?fn ([*c]ICreateTypeInfo, WORD) callconv(.C) HRESULT,
+    SetSchema: ?fn ([*c]ICreateTypeInfo, LPOLESTR) callconv(.C) HRESULT,
+    AddVarDesc: ?fn ([*c]ICreateTypeInfo, UINT, [*c]VARDESC) callconv(.C) HRESULT,
+    SetFuncAndParamNames: ?fn ([*c]ICreateTypeInfo, UINT, [*c]LPOLESTR, UINT) callconv(.C) HRESULT,
+    SetVarName: ?fn ([*c]ICreateTypeInfo, UINT, LPOLESTR) callconv(.C) HRESULT,
+    SetTypeDescAlias: ?fn ([*c]ICreateTypeInfo, [*c]TYPEDESC) callconv(.C) HRESULT,
+    DefineFuncAsDllEntry: ?fn ([*c]ICreateTypeInfo, UINT, LPOLESTR, LPOLESTR) callconv(.C) HRESULT,
+    SetFuncDocString: ?fn ([*c]ICreateTypeInfo, UINT, LPOLESTR) callconv(.C) HRESULT,
+    SetVarDocString: ?fn ([*c]ICreateTypeInfo, UINT, LPOLESTR) callconv(.C) HRESULT,
+    SetFuncHelpContext: ?fn ([*c]ICreateTypeInfo, UINT, DWORD) callconv(.C) HRESULT,
+    SetVarHelpContext: ?fn ([*c]ICreateTypeInfo, UINT, DWORD) callconv(.C) HRESULT,
+    SetMops: ?fn ([*c]ICreateTypeInfo, UINT, BSTR) callconv(.C) HRESULT,
+    SetTypeIdldesc: ?fn ([*c]ICreateTypeInfo, [*c]IDLDESC) callconv(.C) HRESULT,
+    LayOut: ?fn ([*c]ICreateTypeInfo) callconv(.C) HRESULT,
 };
 pub const struct_ICreateTypeInfo = extern struct {
     lpVtbl: [*c]struct_ICreateTypeInfoVtbl,
 };
 pub const ICreateTypeInfo2 = struct_ICreateTypeInfo2;
 pub const struct_ICreateTypeInfo2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ICreateTypeInfo2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ICreateTypeInfo2) ULONG,
-    Release: ?extern fn ([*c]ICreateTypeInfo2) ULONG,
-    SetGuid: ?extern fn ([*c]ICreateTypeInfo2, [*c]const GUID) HRESULT,
-    SetTypeFlags: ?extern fn ([*c]ICreateTypeInfo2, UINT) HRESULT,
-    SetDocString: ?extern fn ([*c]ICreateTypeInfo2, LPOLESTR) HRESULT,
-    SetHelpContext: ?extern fn ([*c]ICreateTypeInfo2, DWORD) HRESULT,
-    SetVersion: ?extern fn ([*c]ICreateTypeInfo2, WORD, WORD) HRESULT,
-    AddRefTypeInfo: ?extern fn ([*c]ICreateTypeInfo2, [*c]ITypeInfo, [*c]HREFTYPE) HRESULT,
-    AddFuncDesc: ?extern fn ([*c]ICreateTypeInfo2, UINT, [*c]FUNCDESC) HRESULT,
-    AddImplType: ?extern fn ([*c]ICreateTypeInfo2, UINT, HREFTYPE) HRESULT,
-    SetImplTypeFlags: ?extern fn ([*c]ICreateTypeInfo2, UINT, INT) HRESULT,
-    SetAlignment: ?extern fn ([*c]ICreateTypeInfo2, WORD) HRESULT,
-    SetSchema: ?extern fn ([*c]ICreateTypeInfo2, LPOLESTR) HRESULT,
-    AddVarDesc: ?extern fn ([*c]ICreateTypeInfo2, UINT, [*c]VARDESC) HRESULT,
-    SetFuncAndParamNames: ?extern fn ([*c]ICreateTypeInfo2, UINT, [*c]LPOLESTR, UINT) HRESULT,
-    SetVarName: ?extern fn ([*c]ICreateTypeInfo2, UINT, LPOLESTR) HRESULT,
-    SetTypeDescAlias: ?extern fn ([*c]ICreateTypeInfo2, [*c]TYPEDESC) HRESULT,
-    DefineFuncAsDllEntry: ?extern fn ([*c]ICreateTypeInfo2, UINT, LPOLESTR, LPOLESTR) HRESULT,
-    SetFuncDocString: ?extern fn ([*c]ICreateTypeInfo2, UINT, LPOLESTR) HRESULT,
-    SetVarDocString: ?extern fn ([*c]ICreateTypeInfo2, UINT, LPOLESTR) HRESULT,
-    SetFuncHelpContext: ?extern fn ([*c]ICreateTypeInfo2, UINT, DWORD) HRESULT,
-    SetVarHelpContext: ?extern fn ([*c]ICreateTypeInfo2, UINT, DWORD) HRESULT,
-    SetMops: ?extern fn ([*c]ICreateTypeInfo2, UINT, BSTR) HRESULT,
-    SetTypeIdldesc: ?extern fn ([*c]ICreateTypeInfo2, [*c]IDLDESC) HRESULT,
-    LayOut: ?extern fn ([*c]ICreateTypeInfo2) HRESULT,
-    DeleteFuncDesc: ?extern fn ([*c]ICreateTypeInfo2, UINT) HRESULT,
-    DeleteFuncDescByMemId: ?extern fn ([*c]ICreateTypeInfo2, MEMBERID, INVOKEKIND) HRESULT,
-    DeleteVarDesc: ?extern fn ([*c]ICreateTypeInfo2, UINT) HRESULT,
-    DeleteVarDescByMemId: ?extern fn ([*c]ICreateTypeInfo2, MEMBERID) HRESULT,
-    DeleteImplType: ?extern fn ([*c]ICreateTypeInfo2, UINT) HRESULT,
-    SetCustData: ?extern fn ([*c]ICreateTypeInfo2, [*c]const GUID, [*c]VARIANT) HRESULT,
-    SetFuncCustData: ?extern fn ([*c]ICreateTypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) HRESULT,
-    SetParamCustData: ?extern fn ([*c]ICreateTypeInfo2, UINT, UINT, [*c]const GUID, [*c]VARIANT) HRESULT,
-    SetVarCustData: ?extern fn ([*c]ICreateTypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) HRESULT,
-    SetImplTypeCustData: ?extern fn ([*c]ICreateTypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) HRESULT,
-    SetHelpStringContext: ?extern fn ([*c]ICreateTypeInfo2, ULONG) HRESULT,
-    SetFuncHelpStringContext: ?extern fn ([*c]ICreateTypeInfo2, UINT, ULONG) HRESULT,
-    SetVarHelpStringContext: ?extern fn ([*c]ICreateTypeInfo2, UINT, ULONG) HRESULT,
-    Invalidate: ?extern fn ([*c]ICreateTypeInfo2) HRESULT,
-    SetName: ?extern fn ([*c]ICreateTypeInfo2, LPOLESTR) HRESULT,
+    QueryInterface: ?fn ([*c]ICreateTypeInfo2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ICreateTypeInfo2) callconv(.C) ULONG,
+    Release: ?fn ([*c]ICreateTypeInfo2) callconv(.C) ULONG,
+    SetGuid: ?fn ([*c]ICreateTypeInfo2, [*c]const GUID) callconv(.C) HRESULT,
+    SetTypeFlags: ?fn ([*c]ICreateTypeInfo2, UINT) callconv(.C) HRESULT,
+    SetDocString: ?fn ([*c]ICreateTypeInfo2, LPOLESTR) callconv(.C) HRESULT,
+    SetHelpContext: ?fn ([*c]ICreateTypeInfo2, DWORD) callconv(.C) HRESULT,
+    SetVersion: ?fn ([*c]ICreateTypeInfo2, WORD, WORD) callconv(.C) HRESULT,
+    AddRefTypeInfo: ?fn ([*c]ICreateTypeInfo2, [*c]ITypeInfo, [*c]HREFTYPE) callconv(.C) HRESULT,
+    AddFuncDesc: ?fn ([*c]ICreateTypeInfo2, UINT, [*c]FUNCDESC) callconv(.C) HRESULT,
+    AddImplType: ?fn ([*c]ICreateTypeInfo2, UINT, HREFTYPE) callconv(.C) HRESULT,
+    SetImplTypeFlags: ?fn ([*c]ICreateTypeInfo2, UINT, INT) callconv(.C) HRESULT,
+    SetAlignment: ?fn ([*c]ICreateTypeInfo2, WORD) callconv(.C) HRESULT,
+    SetSchema: ?fn ([*c]ICreateTypeInfo2, LPOLESTR) callconv(.C) HRESULT,
+    AddVarDesc: ?fn ([*c]ICreateTypeInfo2, UINT, [*c]VARDESC) callconv(.C) HRESULT,
+    SetFuncAndParamNames: ?fn ([*c]ICreateTypeInfo2, UINT, [*c]LPOLESTR, UINT) callconv(.C) HRESULT,
+    SetVarName: ?fn ([*c]ICreateTypeInfo2, UINT, LPOLESTR) callconv(.C) HRESULT,
+    SetTypeDescAlias: ?fn ([*c]ICreateTypeInfo2, [*c]TYPEDESC) callconv(.C) HRESULT,
+    DefineFuncAsDllEntry: ?fn ([*c]ICreateTypeInfo2, UINT, LPOLESTR, LPOLESTR) callconv(.C) HRESULT,
+    SetFuncDocString: ?fn ([*c]ICreateTypeInfo2, UINT, LPOLESTR) callconv(.C) HRESULT,
+    SetVarDocString: ?fn ([*c]ICreateTypeInfo2, UINT, LPOLESTR) callconv(.C) HRESULT,
+    SetFuncHelpContext: ?fn ([*c]ICreateTypeInfo2, UINT, DWORD) callconv(.C) HRESULT,
+    SetVarHelpContext: ?fn ([*c]ICreateTypeInfo2, UINT, DWORD) callconv(.C) HRESULT,
+    SetMops: ?fn ([*c]ICreateTypeInfo2, UINT, BSTR) callconv(.C) HRESULT,
+    SetTypeIdldesc: ?fn ([*c]ICreateTypeInfo2, [*c]IDLDESC) callconv(.C) HRESULT,
+    LayOut: ?fn ([*c]ICreateTypeInfo2) callconv(.C) HRESULT,
+    DeleteFuncDesc: ?fn ([*c]ICreateTypeInfo2, UINT) callconv(.C) HRESULT,
+    DeleteFuncDescByMemId: ?fn ([*c]ICreateTypeInfo2, MEMBERID, INVOKEKIND) callconv(.C) HRESULT,
+    DeleteVarDesc: ?fn ([*c]ICreateTypeInfo2, UINT) callconv(.C) HRESULT,
+    DeleteVarDescByMemId: ?fn ([*c]ICreateTypeInfo2, MEMBERID) callconv(.C) HRESULT,
+    DeleteImplType: ?fn ([*c]ICreateTypeInfo2, UINT) callconv(.C) HRESULT,
+    SetCustData: ?fn ([*c]ICreateTypeInfo2, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    SetFuncCustData: ?fn ([*c]ICreateTypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    SetParamCustData: ?fn ([*c]ICreateTypeInfo2, UINT, UINT, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    SetVarCustData: ?fn ([*c]ICreateTypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    SetImplTypeCustData: ?fn ([*c]ICreateTypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    SetHelpStringContext: ?fn ([*c]ICreateTypeInfo2, ULONG) callconv(.C) HRESULT,
+    SetFuncHelpStringContext: ?fn ([*c]ICreateTypeInfo2, UINT, ULONG) callconv(.C) HRESULT,
+    SetVarHelpStringContext: ?fn ([*c]ICreateTypeInfo2, UINT, ULONG) callconv(.C) HRESULT,
+    Invalidate: ?fn ([*c]ICreateTypeInfo2) callconv(.C) HRESULT,
+    SetName: ?fn ([*c]ICreateTypeInfo2, LPOLESTR) callconv(.C) HRESULT,
 };
 pub const struct_ICreateTypeInfo2 = extern struct {
     lpVtbl: [*c]struct_ICreateTypeInfo2Vtbl,
 };
 pub const ICreateTypeLib = struct_ICreateTypeLib;
 pub const struct_ICreateTypeLibVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ICreateTypeLib, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ICreateTypeLib) ULONG,
-    Release: ?extern fn ([*c]ICreateTypeLib) ULONG,
-    CreateTypeInfo: ?extern fn ([*c]ICreateTypeLib, LPOLESTR, TYPEKIND, [*c]([*c]ICreateTypeInfo)) HRESULT,
-    SetName: ?extern fn ([*c]ICreateTypeLib, LPOLESTR) HRESULT,
-    SetVersion: ?extern fn ([*c]ICreateTypeLib, WORD, WORD) HRESULT,
-    SetGuid: ?extern fn ([*c]ICreateTypeLib, [*c]const GUID) HRESULT,
-    SetDocString: ?extern fn ([*c]ICreateTypeLib, LPOLESTR) HRESULT,
-    SetHelpFileName: ?extern fn ([*c]ICreateTypeLib, LPOLESTR) HRESULT,
-    SetHelpContext: ?extern fn ([*c]ICreateTypeLib, DWORD) HRESULT,
-    SetLcid: ?extern fn ([*c]ICreateTypeLib, LCID) HRESULT,
-    SetLibFlags: ?extern fn ([*c]ICreateTypeLib, UINT) HRESULT,
-    SaveAllChanges: ?extern fn ([*c]ICreateTypeLib) HRESULT,
+    QueryInterface: ?fn ([*c]ICreateTypeLib, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ICreateTypeLib) callconv(.C) ULONG,
+    Release: ?fn ([*c]ICreateTypeLib) callconv(.C) ULONG,
+    CreateTypeInfo: ?fn ([*c]ICreateTypeLib, LPOLESTR, TYPEKIND, [*c]([*c]ICreateTypeInfo)) callconv(.C) HRESULT,
+    SetName: ?fn ([*c]ICreateTypeLib, LPOLESTR) callconv(.C) HRESULT,
+    SetVersion: ?fn ([*c]ICreateTypeLib, WORD, WORD) callconv(.C) HRESULT,
+    SetGuid: ?fn ([*c]ICreateTypeLib, [*c]const GUID) callconv(.C) HRESULT,
+    SetDocString: ?fn ([*c]ICreateTypeLib, LPOLESTR) callconv(.C) HRESULT,
+    SetHelpFileName: ?fn ([*c]ICreateTypeLib, LPOLESTR) callconv(.C) HRESULT,
+    SetHelpContext: ?fn ([*c]ICreateTypeLib, DWORD) callconv(.C) HRESULT,
+    SetLcid: ?fn ([*c]ICreateTypeLib, LCID) callconv(.C) HRESULT,
+    SetLibFlags: ?fn ([*c]ICreateTypeLib, UINT) callconv(.C) HRESULT,
+    SaveAllChanges: ?fn ([*c]ICreateTypeLib) callconv(.C) HRESULT,
 };
 pub const struct_ICreateTypeLib = extern struct {
     lpVtbl: [*c]struct_ICreateTypeLibVtbl,
 };
 pub const ICreateTypeLib2 = struct_ICreateTypeLib2;
 pub const struct_ICreateTypeLib2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ICreateTypeLib2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ICreateTypeLib2) ULONG,
-    Release: ?extern fn ([*c]ICreateTypeLib2) ULONG,
-    CreateTypeInfo: ?extern fn ([*c]ICreateTypeLib2, LPOLESTR, TYPEKIND, [*c]([*c]ICreateTypeInfo)) HRESULT,
-    SetName: ?extern fn ([*c]ICreateTypeLib2, LPOLESTR) HRESULT,
-    SetVersion: ?extern fn ([*c]ICreateTypeLib2, WORD, WORD) HRESULT,
-    SetGuid: ?extern fn ([*c]ICreateTypeLib2, [*c]const GUID) HRESULT,
-    SetDocString: ?extern fn ([*c]ICreateTypeLib2, LPOLESTR) HRESULT,
-    SetHelpFileName: ?extern fn ([*c]ICreateTypeLib2, LPOLESTR) HRESULT,
-    SetHelpContext: ?extern fn ([*c]ICreateTypeLib2, DWORD) HRESULT,
-    SetLcid: ?extern fn ([*c]ICreateTypeLib2, LCID) HRESULT,
-    SetLibFlags: ?extern fn ([*c]ICreateTypeLib2, UINT) HRESULT,
-    SaveAllChanges: ?extern fn ([*c]ICreateTypeLib2) HRESULT,
-    DeleteTypeInfo: ?extern fn ([*c]ICreateTypeLib2, LPOLESTR) HRESULT,
-    SetCustData: ?extern fn ([*c]ICreateTypeLib2, [*c]const GUID, [*c]VARIANT) HRESULT,
-    SetHelpStringContext: ?extern fn ([*c]ICreateTypeLib2, ULONG) HRESULT,
-    SetHelpStringDll: ?extern fn ([*c]ICreateTypeLib2, LPOLESTR) HRESULT,
+    QueryInterface: ?fn ([*c]ICreateTypeLib2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ICreateTypeLib2) callconv(.C) ULONG,
+    Release: ?fn ([*c]ICreateTypeLib2) callconv(.C) ULONG,
+    CreateTypeInfo: ?fn ([*c]ICreateTypeLib2, LPOLESTR, TYPEKIND, [*c]([*c]ICreateTypeInfo)) callconv(.C) HRESULT,
+    SetName: ?fn ([*c]ICreateTypeLib2, LPOLESTR) callconv(.C) HRESULT,
+    SetVersion: ?fn ([*c]ICreateTypeLib2, WORD, WORD) callconv(.C) HRESULT,
+    SetGuid: ?fn ([*c]ICreateTypeLib2, [*c]const GUID) callconv(.C) HRESULT,
+    SetDocString: ?fn ([*c]ICreateTypeLib2, LPOLESTR) callconv(.C) HRESULT,
+    SetHelpFileName: ?fn ([*c]ICreateTypeLib2, LPOLESTR) callconv(.C) HRESULT,
+    SetHelpContext: ?fn ([*c]ICreateTypeLib2, DWORD) callconv(.C) HRESULT,
+    SetLcid: ?fn ([*c]ICreateTypeLib2, LCID) callconv(.C) HRESULT,
+    SetLibFlags: ?fn ([*c]ICreateTypeLib2, UINT) callconv(.C) HRESULT,
+    SaveAllChanges: ?fn ([*c]ICreateTypeLib2) callconv(.C) HRESULT,
+    DeleteTypeInfo: ?fn ([*c]ICreateTypeLib2, LPOLESTR) callconv(.C) HRESULT,
+    SetCustData: ?fn ([*c]ICreateTypeLib2, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    SetHelpStringContext: ?fn ([*c]ICreateTypeLib2, ULONG) callconv(.C) HRESULT,
+    SetHelpStringDll: ?fn ([*c]ICreateTypeLib2, LPOLESTR) callconv(.C) HRESULT,
 };
 pub const struct_ICreateTypeLib2 = extern struct {
     lpVtbl: [*c]struct_ICreateTypeLib2Vtbl,
 };
 pub const IEnumVARIANT = struct_IEnumVARIANT;
 pub const struct_IEnumVARIANTVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumVARIANT, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumVARIANT) ULONG,
-    Release: ?extern fn ([*c]IEnumVARIANT) ULONG,
-    Next: ?extern fn ([*c]IEnumVARIANT, ULONG, [*c]VARIANT, [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumVARIANT, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumVARIANT) HRESULT,
-    Clone: ?extern fn ([*c]IEnumVARIANT, [*c]([*c]IEnumVARIANT)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumVARIANT, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumVARIANT) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumVARIANT) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumVARIANT, ULONG, [*c]VARIANT, [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumVARIANT, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumVARIANT) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumVARIANT, [*c]([*c]IEnumVARIANT)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumVARIANT = extern struct {
     lpVtbl: [*c]struct_IEnumVARIANTVtbl,
@@ -36401,66 +36401,66 @@ pub const struct_tagCUSTDATA = extern struct {
 };
 pub const CUSTDATA = struct_tagCUSTDATA;
 pub const struct_ITypeInfo2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeInfo2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeInfo2) ULONG,
-    Release: ?extern fn ([*c]ITypeInfo2) ULONG,
-    GetTypeAttr: ?extern fn ([*c]ITypeInfo2, [*c]([*c]TYPEATTR)) HRESULT,
-    GetTypeComp: ?extern fn ([*c]ITypeInfo2, [*c]([*c]ITypeComp)) HRESULT,
-    GetFuncDesc: ?extern fn ([*c]ITypeInfo2, UINT, [*c]([*c]FUNCDESC)) HRESULT,
-    GetVarDesc: ?extern fn ([*c]ITypeInfo2, UINT, [*c]([*c]VARDESC)) HRESULT,
-    GetNames: ?extern fn ([*c]ITypeInfo2, MEMBERID, [*c]BSTR, UINT, [*c]UINT) HRESULT,
-    GetRefTypeOfImplType: ?extern fn ([*c]ITypeInfo2, UINT, [*c]HREFTYPE) HRESULT,
-    GetImplTypeFlags: ?extern fn ([*c]ITypeInfo2, UINT, [*c]INT) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]ITypeInfo2, [*c]LPOLESTR, UINT, [*c]MEMBERID) HRESULT,
-    Invoke: ?extern fn ([*c]ITypeInfo2, PVOID, MEMBERID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    GetDocumentation: ?extern fn ([*c]ITypeInfo2, MEMBERID, [*c]BSTR, [*c]BSTR, [*c]DWORD, [*c]BSTR) HRESULT,
-    GetDllEntry: ?extern fn ([*c]ITypeInfo2, MEMBERID, INVOKEKIND, [*c]BSTR, [*c]BSTR, [*c]WORD) HRESULT,
-    GetRefTypeInfo: ?extern fn ([*c]ITypeInfo2, HREFTYPE, [*c]([*c]ITypeInfo)) HRESULT,
-    AddressOfMember: ?extern fn ([*c]ITypeInfo2, MEMBERID, INVOKEKIND, [*c]PVOID) HRESULT,
-    CreateInstance: ?extern fn ([*c]ITypeInfo2, [*c]IUnknown, [*c]const IID, [*c]PVOID) HRESULT,
-    GetMops: ?extern fn ([*c]ITypeInfo2, MEMBERID, [*c]BSTR) HRESULT,
-    GetContainingTypeLib: ?extern fn ([*c]ITypeInfo2, [*c]([*c]ITypeLib), [*c]UINT) HRESULT,
-    ReleaseTypeAttr: ?extern fn ([*c]ITypeInfo2, [*c]TYPEATTR) void,
-    ReleaseFuncDesc: ?extern fn ([*c]ITypeInfo2, [*c]FUNCDESC) void,
-    ReleaseVarDesc: ?extern fn ([*c]ITypeInfo2, [*c]VARDESC) void,
-    GetTypeKind: ?extern fn ([*c]ITypeInfo2, [*c]TYPEKIND) HRESULT,
-    GetTypeFlags: ?extern fn ([*c]ITypeInfo2, [*c]ULONG) HRESULT,
-    GetFuncIndexOfMemId: ?extern fn ([*c]ITypeInfo2, MEMBERID, INVOKEKIND, [*c]UINT) HRESULT,
-    GetVarIndexOfMemId: ?extern fn ([*c]ITypeInfo2, MEMBERID, [*c]UINT) HRESULT,
-    GetCustData: ?extern fn ([*c]ITypeInfo2, [*c]const GUID, [*c]VARIANT) HRESULT,
-    GetFuncCustData: ?extern fn ([*c]ITypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) HRESULT,
-    GetParamCustData: ?extern fn ([*c]ITypeInfo2, UINT, UINT, [*c]const GUID, [*c]VARIANT) HRESULT,
-    GetVarCustData: ?extern fn ([*c]ITypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) HRESULT,
-    GetImplTypeCustData: ?extern fn ([*c]ITypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) HRESULT,
-    GetDocumentation2: ?extern fn ([*c]ITypeInfo2, MEMBERID, LCID, [*c]BSTR, [*c]DWORD, [*c]BSTR) HRESULT,
-    GetAllCustData: ?extern fn ([*c]ITypeInfo2, [*c]CUSTDATA) HRESULT,
-    GetAllFuncCustData: ?extern fn ([*c]ITypeInfo2, UINT, [*c]CUSTDATA) HRESULT,
-    GetAllParamCustData: ?extern fn ([*c]ITypeInfo2, UINT, UINT, [*c]CUSTDATA) HRESULT,
-    GetAllVarCustData: ?extern fn ([*c]ITypeInfo2, UINT, [*c]CUSTDATA) HRESULT,
-    GetAllImplTypeCustData: ?extern fn ([*c]ITypeInfo2, UINT, [*c]CUSTDATA) HRESULT,
+    QueryInterface: ?fn ([*c]ITypeInfo2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeInfo2) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeInfo2) callconv(.C) ULONG,
+    GetTypeAttr: ?fn ([*c]ITypeInfo2, [*c]([*c]TYPEATTR)) callconv(.C) HRESULT,
+    GetTypeComp: ?fn ([*c]ITypeInfo2, [*c]([*c]ITypeComp)) callconv(.C) HRESULT,
+    GetFuncDesc: ?fn ([*c]ITypeInfo2, UINT, [*c]([*c]FUNCDESC)) callconv(.C) HRESULT,
+    GetVarDesc: ?fn ([*c]ITypeInfo2, UINT, [*c]([*c]VARDESC)) callconv(.C) HRESULT,
+    GetNames: ?fn ([*c]ITypeInfo2, MEMBERID, [*c]BSTR, UINT, [*c]UINT) callconv(.C) HRESULT,
+    GetRefTypeOfImplType: ?fn ([*c]ITypeInfo2, UINT, [*c]HREFTYPE) callconv(.C) HRESULT,
+    GetImplTypeFlags: ?fn ([*c]ITypeInfo2, UINT, [*c]INT) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]ITypeInfo2, [*c]LPOLESTR, UINT, [*c]MEMBERID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]ITypeInfo2, PVOID, MEMBERID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    GetDocumentation: ?fn ([*c]ITypeInfo2, MEMBERID, [*c]BSTR, [*c]BSTR, [*c]DWORD, [*c]BSTR) callconv(.C) HRESULT,
+    GetDllEntry: ?fn ([*c]ITypeInfo2, MEMBERID, INVOKEKIND, [*c]BSTR, [*c]BSTR, [*c]WORD) callconv(.C) HRESULT,
+    GetRefTypeInfo: ?fn ([*c]ITypeInfo2, HREFTYPE, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    AddressOfMember: ?fn ([*c]ITypeInfo2, MEMBERID, INVOKEKIND, [*c]PVOID) callconv(.C) HRESULT,
+    CreateInstance: ?fn ([*c]ITypeInfo2, [*c]IUnknown, [*c]const IID, [*c]PVOID) callconv(.C) HRESULT,
+    GetMops: ?fn ([*c]ITypeInfo2, MEMBERID, [*c]BSTR) callconv(.C) HRESULT,
+    GetContainingTypeLib: ?fn ([*c]ITypeInfo2, [*c]([*c]ITypeLib), [*c]UINT) callconv(.C) HRESULT,
+    ReleaseTypeAttr: ?fn ([*c]ITypeInfo2, [*c]TYPEATTR) callconv(.C) void,
+    ReleaseFuncDesc: ?fn ([*c]ITypeInfo2, [*c]FUNCDESC) callconv(.C) void,
+    ReleaseVarDesc: ?fn ([*c]ITypeInfo2, [*c]VARDESC) callconv(.C) void,
+    GetTypeKind: ?fn ([*c]ITypeInfo2, [*c]TYPEKIND) callconv(.C) HRESULT,
+    GetTypeFlags: ?fn ([*c]ITypeInfo2, [*c]ULONG) callconv(.C) HRESULT,
+    GetFuncIndexOfMemId: ?fn ([*c]ITypeInfo2, MEMBERID, INVOKEKIND, [*c]UINT) callconv(.C) HRESULT,
+    GetVarIndexOfMemId: ?fn ([*c]ITypeInfo2, MEMBERID, [*c]UINT) callconv(.C) HRESULT,
+    GetCustData: ?fn ([*c]ITypeInfo2, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    GetFuncCustData: ?fn ([*c]ITypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    GetParamCustData: ?fn ([*c]ITypeInfo2, UINT, UINT, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    GetVarCustData: ?fn ([*c]ITypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    GetImplTypeCustData: ?fn ([*c]ITypeInfo2, UINT, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    GetDocumentation2: ?fn ([*c]ITypeInfo2, MEMBERID, LCID, [*c]BSTR, [*c]DWORD, [*c]BSTR) callconv(.C) HRESULT,
+    GetAllCustData: ?fn ([*c]ITypeInfo2, [*c]CUSTDATA) callconv(.C) HRESULT,
+    GetAllFuncCustData: ?fn ([*c]ITypeInfo2, UINT, [*c]CUSTDATA) callconv(.C) HRESULT,
+    GetAllParamCustData: ?fn ([*c]ITypeInfo2, UINT, UINT, [*c]CUSTDATA) callconv(.C) HRESULT,
+    GetAllVarCustData: ?fn ([*c]ITypeInfo2, UINT, [*c]CUSTDATA) callconv(.C) HRESULT,
+    GetAllImplTypeCustData: ?fn ([*c]ITypeInfo2, UINT, [*c]CUSTDATA) callconv(.C) HRESULT,
 };
 pub const struct_ITypeInfo2 = extern struct {
     lpVtbl: [*c]struct_ITypeInfo2Vtbl,
 };
 pub const ITypeLib2 = struct_ITypeLib2;
 pub const struct_ITypeLib2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeLib2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeLib2) ULONG,
-    Release: ?extern fn ([*c]ITypeLib2) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]ITypeLib2) UINT,
-    GetTypeInfo: ?extern fn ([*c]ITypeLib2, UINT, [*c]([*c]ITypeInfo)) HRESULT,
-    GetTypeInfoType: ?extern fn ([*c]ITypeLib2, UINT, [*c]TYPEKIND) HRESULT,
-    GetTypeInfoOfGuid: ?extern fn ([*c]ITypeLib2, [*c]const GUID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetLibAttr: ?extern fn ([*c]ITypeLib2, [*c]([*c]TLIBATTR)) HRESULT,
-    GetTypeComp: ?extern fn ([*c]ITypeLib2, [*c]([*c]ITypeComp)) HRESULT,
-    GetDocumentation: ?extern fn ([*c]ITypeLib2, INT, [*c]BSTR, [*c]BSTR, [*c]DWORD, [*c]BSTR) HRESULT,
-    IsName: ?extern fn ([*c]ITypeLib2, LPOLESTR, ULONG, [*c]BOOL) HRESULT,
-    FindName: ?extern fn ([*c]ITypeLib2, LPOLESTR, ULONG, [*c]([*c]ITypeInfo), [*c]MEMBERID, [*c]USHORT) HRESULT,
-    ReleaseTLibAttr: ?extern fn ([*c]ITypeLib2, [*c]TLIBATTR) void,
-    GetCustData: ?extern fn ([*c]ITypeLib2, [*c]const GUID, [*c]VARIANT) HRESULT,
-    GetLibStatistics: ?extern fn ([*c]ITypeLib2, [*c]ULONG, [*c]ULONG) HRESULT,
-    GetDocumentation2: ?extern fn ([*c]ITypeLib2, INT, LCID, [*c]BSTR, [*c]DWORD, [*c]BSTR) HRESULT,
-    GetAllCustData: ?extern fn ([*c]ITypeLib2, [*c]CUSTDATA) HRESULT,
+    QueryInterface: ?fn ([*c]ITypeLib2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeLib2) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeLib2) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]ITypeLib2) callconv(.C) UINT,
+    GetTypeInfo: ?fn ([*c]ITypeLib2, UINT, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetTypeInfoType: ?fn ([*c]ITypeLib2, UINT, [*c]TYPEKIND) callconv(.C) HRESULT,
+    GetTypeInfoOfGuid: ?fn ([*c]ITypeLib2, [*c]const GUID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetLibAttr: ?fn ([*c]ITypeLib2, [*c]([*c]TLIBATTR)) callconv(.C) HRESULT,
+    GetTypeComp: ?fn ([*c]ITypeLib2, [*c]([*c]ITypeComp)) callconv(.C) HRESULT,
+    GetDocumentation: ?fn ([*c]ITypeLib2, INT, [*c]BSTR, [*c]BSTR, [*c]DWORD, [*c]BSTR) callconv(.C) HRESULT,
+    IsName: ?fn ([*c]ITypeLib2, LPOLESTR, ULONG, [*c]BOOL) callconv(.C) HRESULT,
+    FindName: ?fn ([*c]ITypeLib2, LPOLESTR, ULONG, [*c]([*c]ITypeInfo), [*c]MEMBERID, [*c]USHORT) callconv(.C) HRESULT,
+    ReleaseTLibAttr: ?fn ([*c]ITypeLib2, [*c]TLIBATTR) callconv(.C) void,
+    GetCustData: ?fn ([*c]ITypeLib2, [*c]const GUID, [*c]VARIANT) callconv(.C) HRESULT,
+    GetLibStatistics: ?fn ([*c]ITypeLib2, [*c]ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    GetDocumentation2: ?fn ([*c]ITypeLib2, INT, LCID, [*c]BSTR, [*c]DWORD, [*c]BSTR) callconv(.C) HRESULT,
+    GetAllCustData: ?fn ([*c]ITypeLib2, [*c]CUSTDATA) callconv(.C) HRESULT,
 };
 pub const struct_ITypeLib2 = extern struct {
     lpVtbl: [*c]struct_ITypeLib2Vtbl,
@@ -36495,120 +36495,120 @@ pub const CHANGEKIND = extern enum {
     CHANGEKIND_MAX = 7,
 };
 pub const struct_ITypeChangeEventsVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeChangeEvents, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeChangeEvents) ULONG,
-    Release: ?extern fn ([*c]ITypeChangeEvents) ULONG,
-    RequestTypeChange: ?extern fn ([*c]ITypeChangeEvents, CHANGEKIND, [*c]ITypeInfo, LPOLESTR, [*c]INT) HRESULT,
-    AfterTypeChange: ?extern fn ([*c]ITypeChangeEvents, CHANGEKIND, [*c]ITypeInfo, LPOLESTR) HRESULT,
+    QueryInterface: ?fn ([*c]ITypeChangeEvents, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeChangeEvents) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeChangeEvents) callconv(.C) ULONG,
+    RequestTypeChange: ?fn ([*c]ITypeChangeEvents, CHANGEKIND, [*c]ITypeInfo, LPOLESTR, [*c]INT) callconv(.C) HRESULT,
+    AfterTypeChange: ?fn ([*c]ITypeChangeEvents, CHANGEKIND, [*c]ITypeInfo, LPOLESTR) callconv(.C) HRESULT,
 };
 pub const struct_ITypeChangeEvents = extern struct {
     lpVtbl: [*c]struct_ITypeChangeEventsVtbl,
 };
 pub const IErrorInfo = struct_IErrorInfo;
 pub const struct_IErrorInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IErrorInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IErrorInfo) ULONG,
-    Release: ?extern fn ([*c]IErrorInfo) ULONG,
-    GetGUID: ?extern fn ([*c]IErrorInfo, [*c]GUID) HRESULT,
-    GetSource: ?extern fn ([*c]IErrorInfo, [*c]BSTR) HRESULT,
-    GetDescription: ?extern fn ([*c]IErrorInfo, [*c]BSTR) HRESULT,
-    GetHelpFile: ?extern fn ([*c]IErrorInfo, [*c]BSTR) HRESULT,
-    GetHelpContext: ?extern fn ([*c]IErrorInfo, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IErrorInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IErrorInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]IErrorInfo) callconv(.C) ULONG,
+    GetGUID: ?fn ([*c]IErrorInfo, [*c]GUID) callconv(.C) HRESULT,
+    GetSource: ?fn ([*c]IErrorInfo, [*c]BSTR) callconv(.C) HRESULT,
+    GetDescription: ?fn ([*c]IErrorInfo, [*c]BSTR) callconv(.C) HRESULT,
+    GetHelpFile: ?fn ([*c]IErrorInfo, [*c]BSTR) callconv(.C) HRESULT,
+    GetHelpContext: ?fn ([*c]IErrorInfo, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IErrorInfo = extern struct {
     lpVtbl: [*c]struct_IErrorInfoVtbl,
 };
 pub const ICreateErrorInfo = struct_ICreateErrorInfo;
 pub const struct_ICreateErrorInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ICreateErrorInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ICreateErrorInfo) ULONG,
-    Release: ?extern fn ([*c]ICreateErrorInfo) ULONG,
-    SetGUID: ?extern fn ([*c]ICreateErrorInfo, [*c]const GUID) HRESULT,
-    SetSource: ?extern fn ([*c]ICreateErrorInfo, LPOLESTR) HRESULT,
-    SetDescription: ?extern fn ([*c]ICreateErrorInfo, LPOLESTR) HRESULT,
-    SetHelpFile: ?extern fn ([*c]ICreateErrorInfo, LPOLESTR) HRESULT,
-    SetHelpContext: ?extern fn ([*c]ICreateErrorInfo, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]ICreateErrorInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ICreateErrorInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]ICreateErrorInfo) callconv(.C) ULONG,
+    SetGUID: ?fn ([*c]ICreateErrorInfo, [*c]const GUID) callconv(.C) HRESULT,
+    SetSource: ?fn ([*c]ICreateErrorInfo, LPOLESTR) callconv(.C) HRESULT,
+    SetDescription: ?fn ([*c]ICreateErrorInfo, LPOLESTR) callconv(.C) HRESULT,
+    SetHelpFile: ?fn ([*c]ICreateErrorInfo, LPOLESTR) callconv(.C) HRESULT,
+    SetHelpContext: ?fn ([*c]ICreateErrorInfo, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_ICreateErrorInfo = extern struct {
     lpVtbl: [*c]struct_ICreateErrorInfoVtbl,
 };
 pub const ISupportErrorInfo = struct_ISupportErrorInfo;
 pub const struct_ISupportErrorInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISupportErrorInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISupportErrorInfo) ULONG,
-    Release: ?extern fn ([*c]ISupportErrorInfo) ULONG,
-    InterfaceSupportsErrorInfo: ?extern fn ([*c]ISupportErrorInfo, [*c]const IID) HRESULT,
+    QueryInterface: ?fn ([*c]ISupportErrorInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISupportErrorInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISupportErrorInfo) callconv(.C) ULONG,
+    InterfaceSupportsErrorInfo: ?fn ([*c]ISupportErrorInfo, [*c]const IID) callconv(.C) HRESULT,
 };
 pub const struct_ISupportErrorInfo = extern struct {
     lpVtbl: [*c]struct_ISupportErrorInfoVtbl,
 };
 pub const ITypeFactory = struct_ITypeFactory;
 pub const struct_ITypeFactoryVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeFactory, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeFactory) ULONG,
-    Release: ?extern fn ([*c]ITypeFactory) ULONG,
-    CreateFromTypeInfo: ?extern fn ([*c]ITypeFactory, [*c]ITypeInfo, [*c]const IID, [*c]([*c]IUnknown)) HRESULT,
+    QueryInterface: ?fn ([*c]ITypeFactory, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeFactory) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeFactory) callconv(.C) ULONG,
+    CreateFromTypeInfo: ?fn ([*c]ITypeFactory, [*c]ITypeInfo, [*c]const IID, [*c]([*c]IUnknown)) callconv(.C) HRESULT,
 };
 pub const struct_ITypeFactory = extern struct {
     lpVtbl: [*c]struct_ITypeFactoryVtbl,
 };
 pub const ITypeMarshal = struct_ITypeMarshal;
 pub const struct_ITypeMarshalVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeMarshal, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeMarshal) ULONG,
-    Release: ?extern fn ([*c]ITypeMarshal) ULONG,
-    Size: ?extern fn ([*c]ITypeMarshal, PVOID, DWORD, PVOID, [*c]ULONG) HRESULT,
-    Marshal: ?extern fn ([*c]ITypeMarshal, PVOID, DWORD, PVOID, ULONG, [*c]BYTE, [*c]ULONG) HRESULT,
-    Unmarshal: ?extern fn ([*c]ITypeMarshal, PVOID, DWORD, ULONG, [*c]BYTE, [*c]ULONG) HRESULT,
-    Free: ?extern fn ([*c]ITypeMarshal, PVOID) HRESULT,
+    QueryInterface: ?fn ([*c]ITypeMarshal, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeMarshal) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeMarshal) callconv(.C) ULONG,
+    Size: ?fn ([*c]ITypeMarshal, PVOID, DWORD, PVOID, [*c]ULONG) callconv(.C) HRESULT,
+    Marshal: ?fn ([*c]ITypeMarshal, PVOID, DWORD, PVOID, ULONG, [*c]BYTE, [*c]ULONG) callconv(.C) HRESULT,
+    Unmarshal: ?fn ([*c]ITypeMarshal, PVOID, DWORD, ULONG, [*c]BYTE, [*c]ULONG) callconv(.C) HRESULT,
+    Free: ?fn ([*c]ITypeMarshal, PVOID) callconv(.C) HRESULT,
 };
 pub const struct_ITypeMarshal = extern struct {
     lpVtbl: [*c]struct_ITypeMarshalVtbl,
 };
 pub const IErrorLog = struct_IErrorLog;
 pub const struct_IErrorLogVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IErrorLog, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IErrorLog) ULONG,
-    Release: ?extern fn ([*c]IErrorLog) ULONG,
-    AddError: ?extern fn ([*c]IErrorLog, LPCOLESTR, [*c]EXCEPINFO) HRESULT,
+    QueryInterface: ?fn ([*c]IErrorLog, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IErrorLog) callconv(.C) ULONG,
+    Release: ?fn ([*c]IErrorLog) callconv(.C) ULONG,
+    AddError: ?fn ([*c]IErrorLog, LPCOLESTR, [*c]EXCEPINFO) callconv(.C) HRESULT,
 };
 pub const struct_IErrorLog = extern struct {
     lpVtbl: [*c]struct_IErrorLogVtbl,
 };
 pub const IPropertyBag = struct_IPropertyBag;
 pub const struct_IPropertyBagVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPropertyBag, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPropertyBag) ULONG,
-    Release: ?extern fn ([*c]IPropertyBag) ULONG,
-    Read: ?extern fn ([*c]IPropertyBag, LPCOLESTR, [*c]VARIANT, [*c]IErrorLog) HRESULT,
-    Write: ?extern fn ([*c]IPropertyBag, LPCOLESTR, [*c]VARIANT) HRESULT,
+    QueryInterface: ?fn ([*c]IPropertyBag, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPropertyBag) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPropertyBag) callconv(.C) ULONG,
+    Read: ?fn ([*c]IPropertyBag, LPCOLESTR, [*c]VARIANT, [*c]IErrorLog) callconv(.C) HRESULT,
+    Write: ?fn ([*c]IPropertyBag, LPCOLESTR, [*c]VARIANT) callconv(.C) HRESULT,
 };
 pub const struct_IPropertyBag = extern struct {
     lpVtbl: [*c]struct_IPropertyBagVtbl,
 };
 pub const ITypeLibRegistrationReader = struct_ITypeLibRegistrationReader;
 pub const struct_ITypeLibRegistrationReaderVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeLibRegistrationReader, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeLibRegistrationReader) ULONG,
-    Release: ?extern fn ([*c]ITypeLibRegistrationReader) ULONG,
-    EnumTypeLibRegistrations: ?extern fn ([*c]ITypeLibRegistrationReader, [*c]([*c]IEnumUnknown)) HRESULT,
+    QueryInterface: ?fn ([*c]ITypeLibRegistrationReader, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeLibRegistrationReader) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeLibRegistrationReader) callconv(.C) ULONG,
+    EnumTypeLibRegistrations: ?fn ([*c]ITypeLibRegistrationReader, [*c]([*c]IEnumUnknown)) callconv(.C) HRESULT,
 };
 pub const struct_ITypeLibRegistrationReader = extern struct {
     lpVtbl: [*c]struct_ITypeLibRegistrationReaderVtbl,
 };
 pub const ITypeLibRegistration = struct_ITypeLibRegistration;
 pub const struct_ITypeLibRegistrationVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ITypeLibRegistration, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ITypeLibRegistration) ULONG,
-    Release: ?extern fn ([*c]ITypeLibRegistration) ULONG,
-    GetGuid: ?extern fn ([*c]ITypeLibRegistration, [*c]GUID) HRESULT,
-    GetVersion: ?extern fn ([*c]ITypeLibRegistration, [*c]BSTR) HRESULT,
-    GetLcid: ?extern fn ([*c]ITypeLibRegistration, [*c]LCID) HRESULT,
-    GetWin32Path: ?extern fn ([*c]ITypeLibRegistration, [*c]BSTR) HRESULT,
-    GetWin64Path: ?extern fn ([*c]ITypeLibRegistration, [*c]BSTR) HRESULT,
-    GetDisplayName: ?extern fn ([*c]ITypeLibRegistration, [*c]BSTR) HRESULT,
-    GetFlags: ?extern fn ([*c]ITypeLibRegistration, [*c]DWORD) HRESULT,
-    GetHelpDir: ?extern fn ([*c]ITypeLibRegistration, [*c]BSTR) HRESULT,
+    QueryInterface: ?fn ([*c]ITypeLibRegistration, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ITypeLibRegistration) callconv(.C) ULONG,
+    Release: ?fn ([*c]ITypeLibRegistration) callconv(.C) ULONG,
+    GetGuid: ?fn ([*c]ITypeLibRegistration, [*c]GUID) callconv(.C) HRESULT,
+    GetVersion: ?fn ([*c]ITypeLibRegistration, [*c]BSTR) callconv(.C) HRESULT,
+    GetLcid: ?fn ([*c]ITypeLibRegistration, [*c]LCID) callconv(.C) HRESULT,
+    GetWin32Path: ?fn ([*c]ITypeLibRegistration, [*c]BSTR) callconv(.C) HRESULT,
+    GetWin64Path: ?fn ([*c]ITypeLibRegistration, [*c]BSTR) callconv(.C) HRESULT,
+    GetDisplayName: ?fn ([*c]ITypeLibRegistration, [*c]BSTR) callconv(.C) HRESULT,
+    GetFlags: ?fn ([*c]ITypeLibRegistration, [*c]DWORD) callconv(.C) HRESULT,
+    GetHelpDir: ?fn ([*c]ITypeLibRegistration, [*c]BSTR) callconv(.C) HRESULT,
 };
 pub const struct_ITypeLibRegistration = extern struct {
     lpVtbl: [*c]struct_ITypeLibRegistrationVtbl,
@@ -37228,15 +37228,15 @@ pub extern "ole32" fn CreateObjrefMoniker(punk: LPUNKNOWN, ppmk: [*c]LPMONIKER) 
 pub extern "ole32" fn GetRunningObjectTable(reserved: DWORD, pprot: [*c]LPRUNNINGOBJECTTABLE) callconv(.Stdcall) HRESULT;
 pub const IPersistMoniker = struct_IPersistMoniker;
 pub const struct_IPersistMonikerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPersistMoniker, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPersistMoniker) ULONG,
-    Release: ?extern fn ([*c]IPersistMoniker) ULONG,
-    GetClassID: ?extern fn ([*c]IPersistMoniker, [*c]CLSID) HRESULT,
-    IsDirty: ?extern fn ([*c]IPersistMoniker) HRESULT,
-    Load: ?extern fn ([*c]IPersistMoniker, BOOL, [*c]IMoniker, LPBC, DWORD) HRESULT,
-    Save: ?extern fn ([*c]IPersistMoniker, [*c]IMoniker, LPBC, BOOL) HRESULT,
-    SaveCompleted: ?extern fn ([*c]IPersistMoniker, [*c]IMoniker, LPBC) HRESULT,
-    GetCurMoniker: ?extern fn ([*c]IPersistMoniker, [*c]([*c]IMoniker)) HRESULT,
+    QueryInterface: ?fn ([*c]IPersistMoniker, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPersistMoniker) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPersistMoniker) callconv(.C) ULONG,
+    GetClassID: ?fn ([*c]IPersistMoniker, [*c]CLSID) callconv(.C) HRESULT,
+    IsDirty: ?fn ([*c]IPersistMoniker) callconv(.C) HRESULT,
+    Load: ?fn ([*c]IPersistMoniker, BOOL, [*c]IMoniker, LPBC, DWORD) callconv(.C) HRESULT,
+    Save: ?fn ([*c]IPersistMoniker, [*c]IMoniker, LPBC, BOOL) callconv(.C) HRESULT,
+    SaveCompleted: ?fn ([*c]IPersistMoniker, [*c]IMoniker, LPBC) callconv(.C) HRESULT,
+    GetCurMoniker: ?fn ([*c]IPersistMoniker, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
 };
 pub const struct_IPersistMoniker = extern struct {
     lpVtbl: [*c]struct_IPersistMonikerVtbl,
@@ -37262,35 +37262,35 @@ pub const MONIKERPROPERTY = extern enum {
     POPUPLEVELPROP = 4,
 };
 pub const struct_IMonikerPropVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IMonikerProp, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IMonikerProp) ULONG,
-    Release: ?extern fn ([*c]IMonikerProp) ULONG,
-    PutProperty: ?extern fn ([*c]IMonikerProp, MONIKERPROPERTY, LPCWSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IMonikerProp, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IMonikerProp) callconv(.C) ULONG,
+    Release: ?fn ([*c]IMonikerProp) callconv(.C) ULONG,
+    PutProperty: ?fn ([*c]IMonikerProp, MONIKERPROPERTY, LPCWSTR) callconv(.C) HRESULT,
 };
 pub const struct_IMonikerProp = extern struct {
     lpVtbl: [*c]struct_IMonikerPropVtbl,
 };
 pub const IBindProtocol = struct_IBindProtocol;
 pub const struct_IBindingVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IBinding, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IBinding) ULONG,
-    Release: ?extern fn ([*c]IBinding) ULONG,
-    Abort: ?extern fn ([*c]IBinding) HRESULT,
-    Suspend: ?extern fn ([*c]IBinding) HRESULT,
-    Resume: ?extern fn ([*c]IBinding) HRESULT,
-    SetPriority: ?extern fn ([*c]IBinding, LONG) HRESULT,
-    GetPriority: ?extern fn ([*c]IBinding, [*c]LONG) HRESULT,
-    GetBindResult: ?extern fn ([*c]IBinding, [*c]CLSID, [*c]DWORD, [*c]LPOLESTR, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IBinding, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IBinding) callconv(.C) ULONG,
+    Release: ?fn ([*c]IBinding) callconv(.C) ULONG,
+    Abort: ?fn ([*c]IBinding) callconv(.C) HRESULT,
+    Suspend: ?fn ([*c]IBinding) callconv(.C) HRESULT,
+    Resume: ?fn ([*c]IBinding) callconv(.C) HRESULT,
+    SetPriority: ?fn ([*c]IBinding, LONG) callconv(.C) HRESULT,
+    GetPriority: ?fn ([*c]IBinding, [*c]LONG) callconv(.C) HRESULT,
+    GetBindResult: ?fn ([*c]IBinding, [*c]CLSID, [*c]DWORD, [*c]LPOLESTR, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IBinding = extern struct {
     lpVtbl: [*c]struct_IBindingVtbl,
 };
 pub const IBinding = struct_IBinding;
 pub const struct_IBindProtocolVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IBindProtocol, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IBindProtocol) ULONG,
-    Release: ?extern fn ([*c]IBindProtocol) ULONG,
-    CreateBinding: ?extern fn ([*c]IBindProtocol, LPCWSTR, [*c]IBindCtx, [*c]([*c]IBinding)) HRESULT,
+    QueryInterface: ?fn ([*c]IBindProtocol, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IBindProtocol) callconv(.C) ULONG,
+    Release: ?fn ([*c]IBindProtocol) callconv(.C) ULONG,
+    CreateBinding: ?fn ([*c]IBindProtocol, LPCWSTR, [*c]IBindCtx, [*c]([*c]IBinding)) callconv(.C) HRESULT,
 };
 pub const struct_IBindProtocol = extern struct {
     lpVtbl: [*c]struct_IBindProtocolVtbl,
@@ -37314,45 +37314,45 @@ pub const struct__tagBINDINFO = extern struct {
 };
 pub const BINDINFO = struct__tagBINDINFO;
 pub const struct_IBindStatusCallbackVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IBindStatusCallback, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IBindStatusCallback) ULONG,
-    Release: ?extern fn ([*c]IBindStatusCallback) ULONG,
-    OnStartBinding: ?extern fn ([*c]IBindStatusCallback, DWORD, [*c]IBinding) HRESULT,
-    GetPriority: ?extern fn ([*c]IBindStatusCallback, [*c]LONG) HRESULT,
-    OnLowResource: ?extern fn ([*c]IBindStatusCallback, DWORD) HRESULT,
-    OnProgress: ?extern fn ([*c]IBindStatusCallback, ULONG, ULONG, ULONG, LPCWSTR) HRESULT,
-    OnStopBinding: ?extern fn ([*c]IBindStatusCallback, HRESULT, LPCWSTR) HRESULT,
-    GetBindInfo: ?extern fn ([*c]IBindStatusCallback, [*c]DWORD, [*c]BINDINFO) HRESULT,
-    OnDataAvailable: ?extern fn ([*c]IBindStatusCallback, DWORD, DWORD, [*c]FORMATETC, [*c]STGMEDIUM) HRESULT,
-    OnObjectAvailable: ?extern fn ([*c]IBindStatusCallback, [*c]const IID, [*c]IUnknown) HRESULT,
+    QueryInterface: ?fn ([*c]IBindStatusCallback, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IBindStatusCallback) callconv(.C) ULONG,
+    Release: ?fn ([*c]IBindStatusCallback) callconv(.C) ULONG,
+    OnStartBinding: ?fn ([*c]IBindStatusCallback, DWORD, [*c]IBinding) callconv(.C) HRESULT,
+    GetPriority: ?fn ([*c]IBindStatusCallback, [*c]LONG) callconv(.C) HRESULT,
+    OnLowResource: ?fn ([*c]IBindStatusCallback, DWORD) callconv(.C) HRESULT,
+    OnProgress: ?fn ([*c]IBindStatusCallback, ULONG, ULONG, ULONG, LPCWSTR) callconv(.C) HRESULT,
+    OnStopBinding: ?fn ([*c]IBindStatusCallback, HRESULT, LPCWSTR) callconv(.C) HRESULT,
+    GetBindInfo: ?fn ([*c]IBindStatusCallback, [*c]DWORD, [*c]BINDINFO) callconv(.C) HRESULT,
+    OnDataAvailable: ?fn ([*c]IBindStatusCallback, DWORD, DWORD, [*c]FORMATETC, [*c]STGMEDIUM) callconv(.C) HRESULT,
+    OnObjectAvailable: ?fn ([*c]IBindStatusCallback, [*c]const IID, [*c]IUnknown) callconv(.C) HRESULT,
 };
 pub const struct_IBindStatusCallback = extern struct {
     lpVtbl: [*c]struct_IBindStatusCallbackVtbl,
 };
 pub const IBindStatusCallbackEx = struct_IBindStatusCallbackEx;
 pub const struct_IBindStatusCallbackExVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IBindStatusCallbackEx, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IBindStatusCallbackEx) ULONG,
-    Release: ?extern fn ([*c]IBindStatusCallbackEx) ULONG,
-    OnStartBinding: ?extern fn ([*c]IBindStatusCallbackEx, DWORD, [*c]IBinding) HRESULT,
-    GetPriority: ?extern fn ([*c]IBindStatusCallbackEx, [*c]LONG) HRESULT,
-    OnLowResource: ?extern fn ([*c]IBindStatusCallbackEx, DWORD) HRESULT,
-    OnProgress: ?extern fn ([*c]IBindStatusCallbackEx, ULONG, ULONG, ULONG, LPCWSTR) HRESULT,
-    OnStopBinding: ?extern fn ([*c]IBindStatusCallbackEx, HRESULT, LPCWSTR) HRESULT,
-    GetBindInfo: ?extern fn ([*c]IBindStatusCallbackEx, [*c]DWORD, [*c]BINDINFO) HRESULT,
-    OnDataAvailable: ?extern fn ([*c]IBindStatusCallbackEx, DWORD, DWORD, [*c]FORMATETC, [*c]STGMEDIUM) HRESULT,
-    OnObjectAvailable: ?extern fn ([*c]IBindStatusCallbackEx, [*c]const IID, [*c]IUnknown) HRESULT,
-    GetBindInfoEx: ?extern fn ([*c]IBindStatusCallbackEx, [*c]DWORD, [*c]BINDINFO, [*c]DWORD, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IBindStatusCallbackEx, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IBindStatusCallbackEx) callconv(.C) ULONG,
+    Release: ?fn ([*c]IBindStatusCallbackEx) callconv(.C) ULONG,
+    OnStartBinding: ?fn ([*c]IBindStatusCallbackEx, DWORD, [*c]IBinding) callconv(.C) HRESULT,
+    GetPriority: ?fn ([*c]IBindStatusCallbackEx, [*c]LONG) callconv(.C) HRESULT,
+    OnLowResource: ?fn ([*c]IBindStatusCallbackEx, DWORD) callconv(.C) HRESULT,
+    OnProgress: ?fn ([*c]IBindStatusCallbackEx, ULONG, ULONG, ULONG, LPCWSTR) callconv(.C) HRESULT,
+    OnStopBinding: ?fn ([*c]IBindStatusCallbackEx, HRESULT, LPCWSTR) callconv(.C) HRESULT,
+    GetBindInfo: ?fn ([*c]IBindStatusCallbackEx, [*c]DWORD, [*c]BINDINFO) callconv(.C) HRESULT,
+    OnDataAvailable: ?fn ([*c]IBindStatusCallbackEx, DWORD, DWORD, [*c]FORMATETC, [*c]STGMEDIUM) callconv(.C) HRESULT,
+    OnObjectAvailable: ?fn ([*c]IBindStatusCallbackEx, [*c]const IID, [*c]IUnknown) callconv(.C) HRESULT,
+    GetBindInfoEx: ?fn ([*c]IBindStatusCallbackEx, [*c]DWORD, [*c]BINDINFO, [*c]DWORD, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IBindStatusCallbackEx = extern struct {
     lpVtbl: [*c]struct_IBindStatusCallbackExVtbl,
 };
 pub const IAuthenticate = struct_IAuthenticate;
 pub const struct_IAuthenticateVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAuthenticate, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAuthenticate) ULONG,
-    Release: ?extern fn ([*c]IAuthenticate) ULONG,
-    Authenticate: ?extern fn ([*c]IAuthenticate, [*c]HWND, [*c]LPWSTR, [*c]LPWSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IAuthenticate, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAuthenticate) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAuthenticate) callconv(.C) ULONG,
+    Authenticate: ?fn ([*c]IAuthenticate, [*c]HWND, [*c]LPWSTR, [*c]LPWSTR) callconv(.C) HRESULT,
 };
 pub const struct_IAuthenticate = extern struct {
     lpVtbl: [*c]struct_IAuthenticateVtbl,
@@ -37364,79 +37364,79 @@ pub const struct__tagAUTHENTICATEINFO = extern struct {
 };
 pub const AUTHENTICATEINFO = struct__tagAUTHENTICATEINFO;
 pub const struct_IAuthenticateExVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IAuthenticateEx, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IAuthenticateEx) ULONG,
-    Release: ?extern fn ([*c]IAuthenticateEx) ULONG,
-    Authenticate: ?extern fn ([*c]IAuthenticateEx, [*c]HWND, [*c]LPWSTR, [*c]LPWSTR) HRESULT,
-    AuthenticateEx: ?extern fn ([*c]IAuthenticateEx, [*c]HWND, [*c]LPWSTR, [*c]LPWSTR, [*c]AUTHENTICATEINFO) HRESULT,
+    QueryInterface: ?fn ([*c]IAuthenticateEx, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IAuthenticateEx) callconv(.C) ULONG,
+    Release: ?fn ([*c]IAuthenticateEx) callconv(.C) ULONG,
+    Authenticate: ?fn ([*c]IAuthenticateEx, [*c]HWND, [*c]LPWSTR, [*c]LPWSTR) callconv(.C) HRESULT,
+    AuthenticateEx: ?fn ([*c]IAuthenticateEx, [*c]HWND, [*c]LPWSTR, [*c]LPWSTR, [*c]AUTHENTICATEINFO) callconv(.C) HRESULT,
 };
 pub const struct_IAuthenticateEx = extern struct {
     lpVtbl: [*c]struct_IAuthenticateExVtbl,
 };
 pub const IHttpNegotiate = struct_IHttpNegotiate;
 pub const struct_IHttpNegotiateVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IHttpNegotiate, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IHttpNegotiate) ULONG,
-    Release: ?extern fn ([*c]IHttpNegotiate) ULONG,
-    BeginningTransaction: ?extern fn ([*c]IHttpNegotiate, LPCWSTR, LPCWSTR, DWORD, [*c]LPWSTR) HRESULT,
-    OnResponse: ?extern fn ([*c]IHttpNegotiate, DWORD, LPCWSTR, LPCWSTR, [*c]LPWSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IHttpNegotiate, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IHttpNegotiate) callconv(.C) ULONG,
+    Release: ?fn ([*c]IHttpNegotiate) callconv(.C) ULONG,
+    BeginningTransaction: ?fn ([*c]IHttpNegotiate, LPCWSTR, LPCWSTR, DWORD, [*c]LPWSTR) callconv(.C) HRESULT,
+    OnResponse: ?fn ([*c]IHttpNegotiate, DWORD, LPCWSTR, LPCWSTR, [*c]LPWSTR) callconv(.C) HRESULT,
 };
 pub const struct_IHttpNegotiate = extern struct {
     lpVtbl: [*c]struct_IHttpNegotiateVtbl,
 };
 pub const IHttpNegotiate2 = struct_IHttpNegotiate2;
 pub const struct_IHttpNegotiate2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IHttpNegotiate2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IHttpNegotiate2) ULONG,
-    Release: ?extern fn ([*c]IHttpNegotiate2) ULONG,
-    BeginningTransaction: ?extern fn ([*c]IHttpNegotiate2, LPCWSTR, LPCWSTR, DWORD, [*c]LPWSTR) HRESULT,
-    OnResponse: ?extern fn ([*c]IHttpNegotiate2, DWORD, LPCWSTR, LPCWSTR, [*c]LPWSTR) HRESULT,
-    GetRootSecurityId: ?extern fn ([*c]IHttpNegotiate2, [*c]BYTE, [*c]DWORD, DWORD_PTR) HRESULT,
+    QueryInterface: ?fn ([*c]IHttpNegotiate2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IHttpNegotiate2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IHttpNegotiate2) callconv(.C) ULONG,
+    BeginningTransaction: ?fn ([*c]IHttpNegotiate2, LPCWSTR, LPCWSTR, DWORD, [*c]LPWSTR) callconv(.C) HRESULT,
+    OnResponse: ?fn ([*c]IHttpNegotiate2, DWORD, LPCWSTR, LPCWSTR, [*c]LPWSTR) callconv(.C) HRESULT,
+    GetRootSecurityId: ?fn ([*c]IHttpNegotiate2, [*c]BYTE, [*c]DWORD, DWORD_PTR) callconv(.C) HRESULT,
 };
 pub const struct_IHttpNegotiate2 = extern struct {
     lpVtbl: [*c]struct_IHttpNegotiate2Vtbl,
 };
 pub const IHttpNegotiate3 = struct_IHttpNegotiate3;
 pub const struct_IHttpNegotiate3Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IHttpNegotiate3, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IHttpNegotiate3) ULONG,
-    Release: ?extern fn ([*c]IHttpNegotiate3) ULONG,
-    BeginningTransaction: ?extern fn ([*c]IHttpNegotiate3, LPCWSTR, LPCWSTR, DWORD, [*c]LPWSTR) HRESULT,
-    OnResponse: ?extern fn ([*c]IHttpNegotiate3, DWORD, LPCWSTR, LPCWSTR, [*c]LPWSTR) HRESULT,
-    GetRootSecurityId: ?extern fn ([*c]IHttpNegotiate3, [*c]BYTE, [*c]DWORD, DWORD_PTR) HRESULT,
-    GetSerializedClientCertContext: ?extern fn ([*c]IHttpNegotiate3, [*c]([*c]BYTE), [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IHttpNegotiate3, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IHttpNegotiate3) callconv(.C) ULONG,
+    Release: ?fn ([*c]IHttpNegotiate3) callconv(.C) ULONG,
+    BeginningTransaction: ?fn ([*c]IHttpNegotiate3, LPCWSTR, LPCWSTR, DWORD, [*c]LPWSTR) callconv(.C) HRESULT,
+    OnResponse: ?fn ([*c]IHttpNegotiate3, DWORD, LPCWSTR, LPCWSTR, [*c]LPWSTR) callconv(.C) HRESULT,
+    GetRootSecurityId: ?fn ([*c]IHttpNegotiate3, [*c]BYTE, [*c]DWORD, DWORD_PTR) callconv(.C) HRESULT,
+    GetSerializedClientCertContext: ?fn ([*c]IHttpNegotiate3, [*c]([*c]BYTE), [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IHttpNegotiate3 = extern struct {
     lpVtbl: [*c]struct_IHttpNegotiate3Vtbl,
 };
 pub const IWinInetFileStream = struct_IWinInetFileStream;
 pub const struct_IWinInetFileStreamVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IWinInetFileStream, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IWinInetFileStream) ULONG,
-    Release: ?extern fn ([*c]IWinInetFileStream) ULONG,
-    SetHandleForUnlock: ?extern fn ([*c]IWinInetFileStream, DWORD_PTR, DWORD_PTR) HRESULT,
-    SetDeleteFile: ?extern fn ([*c]IWinInetFileStream, DWORD_PTR) HRESULT,
+    QueryInterface: ?fn ([*c]IWinInetFileStream, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IWinInetFileStream) callconv(.C) ULONG,
+    Release: ?fn ([*c]IWinInetFileStream) callconv(.C) ULONG,
+    SetHandleForUnlock: ?fn ([*c]IWinInetFileStream, DWORD_PTR, DWORD_PTR) callconv(.C) HRESULT,
+    SetDeleteFile: ?fn ([*c]IWinInetFileStream, DWORD_PTR) callconv(.C) HRESULT,
 };
 pub const struct_IWinInetFileStream = extern struct {
     lpVtbl: [*c]struct_IWinInetFileStreamVtbl,
 };
 pub const IWindowForBindingUI = struct_IWindowForBindingUI;
 pub const struct_IWindowForBindingUIVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IWindowForBindingUI, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IWindowForBindingUI) ULONG,
-    Release: ?extern fn ([*c]IWindowForBindingUI) ULONG,
-    GetWindow: ?extern fn ([*c]IWindowForBindingUI, [*c]const GUID, [*c]HWND) HRESULT,
+    QueryInterface: ?fn ([*c]IWindowForBindingUI, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IWindowForBindingUI) callconv(.C) ULONG,
+    Release: ?fn ([*c]IWindowForBindingUI) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]IWindowForBindingUI, [*c]const GUID, [*c]HWND) callconv(.C) HRESULT,
 };
 pub const struct_IWindowForBindingUI = extern struct {
     lpVtbl: [*c]struct_IWindowForBindingUIVtbl,
 };
 pub const ICodeInstall = struct_ICodeInstall;
 pub const struct_ICodeInstallVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ICodeInstall, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ICodeInstall) ULONG,
-    Release: ?extern fn ([*c]ICodeInstall) ULONG,
-    GetWindow: ?extern fn ([*c]ICodeInstall, [*c]const GUID, [*c]HWND) HRESULT,
-    OnCodeInstallProblem: ?extern fn ([*c]ICodeInstall, ULONG, LPCWSTR, LPCWSTR, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]ICodeInstall, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ICodeInstall) callconv(.C) ULONG,
+    Release: ?fn ([*c]ICodeInstall) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]ICodeInstall, [*c]const GUID, [*c]HWND) callconv(.C) HRESULT,
+    OnCodeInstallProblem: ?fn ([*c]ICodeInstall, ULONG, LPCWSTR, LPCWSTR, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_ICodeInstall = extern struct {
     lpVtbl: [*c]struct_ICodeInstallVtbl,
@@ -37516,194 +37516,194 @@ pub const Uri_PROPERTY = extern enum {
     Uri_PROPERTY_DWORD_LAST = 18,
 };
 pub const struct_IUriVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IUri, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IUri) ULONG,
-    Release: ?extern fn ([*c]IUri) ULONG,
-    GetPropertyBSTR: ?extern fn ([*c]IUri, Uri_PROPERTY, [*c]BSTR, DWORD) HRESULT,
-    GetPropertyLength: ?extern fn ([*c]IUri, Uri_PROPERTY, [*c]DWORD, DWORD) HRESULT,
-    GetPropertyDWORD: ?extern fn ([*c]IUri, Uri_PROPERTY, [*c]DWORD, DWORD) HRESULT,
-    HasProperty: ?extern fn ([*c]IUri, Uri_PROPERTY, [*c]BOOL) HRESULT,
-    GetAbsoluteUri: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetAuthority: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetDisplayUri: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetDomain: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetExtension: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetFragment: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetHost: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetPassword: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetPath: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetPathAndQuery: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetQuery: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetRawUri: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetSchemeName: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetUserInfo: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetUserNameA: ?extern fn ([*c]IUri, [*c]BSTR) HRESULT,
-    GetHostType: ?extern fn ([*c]IUri, [*c]DWORD) HRESULT,
-    GetPort: ?extern fn ([*c]IUri, [*c]DWORD) HRESULT,
-    GetScheme: ?extern fn ([*c]IUri, [*c]DWORD) HRESULT,
-    GetZone: ?extern fn ([*c]IUri, [*c]DWORD) HRESULT,
-    GetProperties: ?extern fn ([*c]IUri, LPDWORD) HRESULT,
-    IsEqual: ?extern fn ([*c]IUri, [*c]IUri, [*c]BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IUri, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IUri) callconv(.C) ULONG,
+    Release: ?fn ([*c]IUri) callconv(.C) ULONG,
+    GetPropertyBSTR: ?fn ([*c]IUri, Uri_PROPERTY, [*c]BSTR, DWORD) callconv(.C) HRESULT,
+    GetPropertyLength: ?fn ([*c]IUri, Uri_PROPERTY, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    GetPropertyDWORD: ?fn ([*c]IUri, Uri_PROPERTY, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    HasProperty: ?fn ([*c]IUri, Uri_PROPERTY, [*c]BOOL) callconv(.C) HRESULT,
+    GetAbsoluteUri: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetAuthority: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetDisplayUri: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetDomain: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetExtension: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetFragment: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetHost: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetPassword: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetPath: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetPathAndQuery: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetQuery: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetRawUri: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetSchemeName: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetUserInfo: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetUserNameA: ?fn ([*c]IUri, [*c]BSTR) callconv(.C) HRESULT,
+    GetHostType: ?fn ([*c]IUri, [*c]DWORD) callconv(.C) HRESULT,
+    GetPort: ?fn ([*c]IUri, [*c]DWORD) callconv(.C) HRESULT,
+    GetScheme: ?fn ([*c]IUri, [*c]DWORD) callconv(.C) HRESULT,
+    GetZone: ?fn ([*c]IUri, [*c]DWORD) callconv(.C) HRESULT,
+    GetProperties: ?fn ([*c]IUri, LPDWORD) callconv(.C) HRESULT,
+    IsEqual: ?fn ([*c]IUri, [*c]IUri, [*c]BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IUri = extern struct {
     lpVtbl: [*c]struct_IUriVtbl,
 };
 pub const IUriContainer = struct_IUriContainer;
 pub const struct_IUriContainerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IUriContainer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IUriContainer) ULONG,
-    Release: ?extern fn ([*c]IUriContainer) ULONG,
-    GetIUri: ?extern fn ([*c]IUriContainer, [*c]([*c]IUri)) HRESULT,
+    QueryInterface: ?fn ([*c]IUriContainer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IUriContainer) callconv(.C) ULONG,
+    Release: ?fn ([*c]IUriContainer) callconv(.C) ULONG,
+    GetIUri: ?fn ([*c]IUriContainer, [*c]([*c]IUri)) callconv(.C) HRESULT,
 };
 pub const struct_IUriContainer = extern struct {
     lpVtbl: [*c]struct_IUriContainerVtbl,
 };
 pub const IUriBuilder = struct_IUriBuilder;
 pub const struct_IUriBuilderVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IUriBuilder, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IUriBuilder) ULONG,
-    Release: ?extern fn ([*c]IUriBuilder) ULONG,
-    CreateUriSimple: ?extern fn ([*c]IUriBuilder, DWORD, DWORD_PTR, [*c]([*c]IUri)) HRESULT,
-    CreateUri: ?extern fn ([*c]IUriBuilder, DWORD, DWORD, DWORD_PTR, [*c]([*c]IUri)) HRESULT,
-    CreateUriWithFlags: ?extern fn ([*c]IUriBuilder, DWORD, DWORD, DWORD, DWORD_PTR, [*c]([*c]IUri)) HRESULT,
-    GetIUri: ?extern fn ([*c]IUriBuilder, [*c]([*c]IUri)) HRESULT,
-    SetIUri: ?extern fn ([*c]IUriBuilder, [*c]IUri) HRESULT,
-    GetFragment: ?extern fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) HRESULT,
-    GetHost: ?extern fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) HRESULT,
-    GetPassword: ?extern fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) HRESULT,
-    GetPath: ?extern fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) HRESULT,
-    GetPort: ?extern fn ([*c]IUriBuilder, [*c]BOOL, [*c]DWORD) HRESULT,
-    GetQuery: ?extern fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) HRESULT,
-    GetSchemeName: ?extern fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) HRESULT,
-    GetUserNameA: ?extern fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) HRESULT,
-    SetFragment: ?extern fn ([*c]IUriBuilder, LPCWSTR) HRESULT,
-    SetHost: ?extern fn ([*c]IUriBuilder, LPCWSTR) HRESULT,
-    SetPassword: ?extern fn ([*c]IUriBuilder, LPCWSTR) HRESULT,
-    SetPath: ?extern fn ([*c]IUriBuilder, LPCWSTR) HRESULT,
-    SetPortA: ?extern fn ([*c]IUriBuilder, BOOL, DWORD) HRESULT,
-    SetQuery: ?extern fn ([*c]IUriBuilder, LPCWSTR) HRESULT,
-    SetSchemeName: ?extern fn ([*c]IUriBuilder, LPCWSTR) HRESULT,
-    SetUserName: ?extern fn ([*c]IUriBuilder, LPCWSTR) HRESULT,
-    RemoveProperties: ?extern fn ([*c]IUriBuilder, DWORD) HRESULT,
-    HasBeenModified: ?extern fn ([*c]IUriBuilder, [*c]BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IUriBuilder, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IUriBuilder) callconv(.C) ULONG,
+    Release: ?fn ([*c]IUriBuilder) callconv(.C) ULONG,
+    CreateUriSimple: ?fn ([*c]IUriBuilder, DWORD, DWORD_PTR, [*c]([*c]IUri)) callconv(.C) HRESULT,
+    CreateUri: ?fn ([*c]IUriBuilder, DWORD, DWORD, DWORD_PTR, [*c]([*c]IUri)) callconv(.C) HRESULT,
+    CreateUriWithFlags: ?fn ([*c]IUriBuilder, DWORD, DWORD, DWORD, DWORD_PTR, [*c]([*c]IUri)) callconv(.C) HRESULT,
+    GetIUri: ?fn ([*c]IUriBuilder, [*c]([*c]IUri)) callconv(.C) HRESULT,
+    SetIUri: ?fn ([*c]IUriBuilder, [*c]IUri) callconv(.C) HRESULT,
+    GetFragment: ?fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) callconv(.C) HRESULT,
+    GetHost: ?fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) callconv(.C) HRESULT,
+    GetPassword: ?fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) callconv(.C) HRESULT,
+    GetPath: ?fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) callconv(.C) HRESULT,
+    GetPort: ?fn ([*c]IUriBuilder, [*c]BOOL, [*c]DWORD) callconv(.C) HRESULT,
+    GetQuery: ?fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) callconv(.C) HRESULT,
+    GetSchemeName: ?fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) callconv(.C) HRESULT,
+    GetUserNameA: ?fn ([*c]IUriBuilder, [*c]DWORD, [*c]LPCWSTR) callconv(.C) HRESULT,
+    SetFragment: ?fn ([*c]IUriBuilder, LPCWSTR) callconv(.C) HRESULT,
+    SetHost: ?fn ([*c]IUriBuilder, LPCWSTR) callconv(.C) HRESULT,
+    SetPassword: ?fn ([*c]IUriBuilder, LPCWSTR) callconv(.C) HRESULT,
+    SetPath: ?fn ([*c]IUriBuilder, LPCWSTR) callconv(.C) HRESULT,
+    SetPortA: ?fn ([*c]IUriBuilder, BOOL, DWORD) callconv(.C) HRESULT,
+    SetQuery: ?fn ([*c]IUriBuilder, LPCWSTR) callconv(.C) HRESULT,
+    SetSchemeName: ?fn ([*c]IUriBuilder, LPCWSTR) callconv(.C) HRESULT,
+    SetUserName: ?fn ([*c]IUriBuilder, LPCWSTR) callconv(.C) HRESULT,
+    RemoveProperties: ?fn ([*c]IUriBuilder, DWORD) callconv(.C) HRESULT,
+    HasBeenModified: ?fn ([*c]IUriBuilder, [*c]BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IUriBuilder = extern struct {
     lpVtbl: [*c]struct_IUriBuilderVtbl,
 };
 pub const IUriBuilderFactory = struct_IUriBuilderFactory;
 pub const struct_IUriBuilderFactoryVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IUriBuilderFactory, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IUriBuilderFactory) ULONG,
-    Release: ?extern fn ([*c]IUriBuilderFactory) ULONG,
-    CreateIUriBuilder: ?extern fn ([*c]IUriBuilderFactory, DWORD, DWORD_PTR, [*c]([*c]IUriBuilder)) HRESULT,
-    CreateInitializedIUriBuilder: ?extern fn ([*c]IUriBuilderFactory, DWORD, DWORD_PTR, [*c]([*c]IUriBuilder)) HRESULT,
+    QueryInterface: ?fn ([*c]IUriBuilderFactory, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IUriBuilderFactory) callconv(.C) ULONG,
+    Release: ?fn ([*c]IUriBuilderFactory) callconv(.C) ULONG,
+    CreateIUriBuilder: ?fn ([*c]IUriBuilderFactory, DWORD, DWORD_PTR, [*c]([*c]IUriBuilder)) callconv(.C) HRESULT,
+    CreateInitializedIUriBuilder: ?fn ([*c]IUriBuilderFactory, DWORD, DWORD_PTR, [*c]([*c]IUriBuilder)) callconv(.C) HRESULT,
 };
 pub const struct_IUriBuilderFactory = extern struct {
     lpVtbl: [*c]struct_IUriBuilderFactoryVtbl,
 };
 pub const IWinInetInfo = struct_IWinInetInfo;
 pub const struct_IWinInetInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IWinInetInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IWinInetInfo) ULONG,
-    Release: ?extern fn ([*c]IWinInetInfo) ULONG,
-    QueryOption: ?extern fn ([*c]IWinInetInfo, DWORD, LPVOID, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IWinInetInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IWinInetInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]IWinInetInfo) callconv(.C) ULONG,
+    QueryOption: ?fn ([*c]IWinInetInfo, DWORD, LPVOID, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IWinInetInfo = extern struct {
     lpVtbl: [*c]struct_IWinInetInfoVtbl,
 };
 pub const IHttpSecurity = struct_IHttpSecurity;
 pub const struct_IHttpSecurityVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IHttpSecurity, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IHttpSecurity) ULONG,
-    Release: ?extern fn ([*c]IHttpSecurity) ULONG,
-    GetWindow: ?extern fn ([*c]IHttpSecurity, [*c]const GUID, [*c]HWND) HRESULT,
-    OnSecurityProblem: ?extern fn ([*c]IHttpSecurity, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IHttpSecurity, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IHttpSecurity) callconv(.C) ULONG,
+    Release: ?fn ([*c]IHttpSecurity) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]IHttpSecurity, [*c]const GUID, [*c]HWND) callconv(.C) HRESULT,
+    OnSecurityProblem: ?fn ([*c]IHttpSecurity, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IHttpSecurity = extern struct {
     lpVtbl: [*c]struct_IHttpSecurityVtbl,
 };
 pub const IWinInetHttpInfo = struct_IWinInetHttpInfo;
 pub const struct_IWinInetHttpInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IWinInetHttpInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IWinInetHttpInfo) ULONG,
-    Release: ?extern fn ([*c]IWinInetHttpInfo) ULONG,
-    QueryOption: ?extern fn ([*c]IWinInetHttpInfo, DWORD, LPVOID, [*c]DWORD) HRESULT,
-    QueryInfo: ?extern fn ([*c]IWinInetHttpInfo, DWORD, LPVOID, [*c]DWORD, [*c]DWORD, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IWinInetHttpInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IWinInetHttpInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]IWinInetHttpInfo) callconv(.C) ULONG,
+    QueryOption: ?fn ([*c]IWinInetHttpInfo, DWORD, LPVOID, [*c]DWORD) callconv(.C) HRESULT,
+    QueryInfo: ?fn ([*c]IWinInetHttpInfo, DWORD, LPVOID, [*c]DWORD, [*c]DWORD, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IWinInetHttpInfo = extern struct {
     lpVtbl: [*c]struct_IWinInetHttpInfoVtbl,
 };
 pub const IWinInetHttpTimeouts = struct_IWinInetHttpTimeouts;
 pub const struct_IWinInetHttpTimeoutsVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IWinInetHttpTimeouts, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IWinInetHttpTimeouts) ULONG,
-    Release: ?extern fn ([*c]IWinInetHttpTimeouts) ULONG,
-    GetRequestTimeouts: ?extern fn ([*c]IWinInetHttpTimeouts, [*c]DWORD, [*c]DWORD, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IWinInetHttpTimeouts, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IWinInetHttpTimeouts) callconv(.C) ULONG,
+    Release: ?fn ([*c]IWinInetHttpTimeouts) callconv(.C) ULONG,
+    GetRequestTimeouts: ?fn ([*c]IWinInetHttpTimeouts, [*c]DWORD, [*c]DWORD, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IWinInetHttpTimeouts = extern struct {
     lpVtbl: [*c]struct_IWinInetHttpTimeoutsVtbl,
 };
 pub const IWinInetCacheHints = struct_IWinInetCacheHints;
 pub const struct_IWinInetCacheHintsVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IWinInetCacheHints, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IWinInetCacheHints) ULONG,
-    Release: ?extern fn ([*c]IWinInetCacheHints) ULONG,
-    SetCacheExtension: ?extern fn ([*c]IWinInetCacheHints, LPCWSTR, LPVOID, [*c]DWORD, [*c]DWORD, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IWinInetCacheHints, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IWinInetCacheHints) callconv(.C) ULONG,
+    Release: ?fn ([*c]IWinInetCacheHints) callconv(.C) ULONG,
+    SetCacheExtension: ?fn ([*c]IWinInetCacheHints, LPCWSTR, LPVOID, [*c]DWORD, [*c]DWORD, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IWinInetCacheHints = extern struct {
     lpVtbl: [*c]struct_IWinInetCacheHintsVtbl,
 };
 pub const IWinInetCacheHints2 = struct_IWinInetCacheHints2;
 pub const struct_IWinInetCacheHints2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IWinInetCacheHints2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IWinInetCacheHints2) ULONG,
-    Release: ?extern fn ([*c]IWinInetCacheHints2) ULONG,
-    SetCacheExtension: ?extern fn ([*c]IWinInetCacheHints2, LPCWSTR, LPVOID, [*c]DWORD, [*c]DWORD, [*c]DWORD) HRESULT,
-    SetCacheExtension2: ?extern fn ([*c]IWinInetCacheHints2, LPCWSTR, [*c]WCHAR, [*c]DWORD, [*c]DWORD, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IWinInetCacheHints2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IWinInetCacheHints2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IWinInetCacheHints2) callconv(.C) ULONG,
+    SetCacheExtension: ?fn ([*c]IWinInetCacheHints2, LPCWSTR, LPVOID, [*c]DWORD, [*c]DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    SetCacheExtension2: ?fn ([*c]IWinInetCacheHints2, LPCWSTR, [*c]WCHAR, [*c]DWORD, [*c]DWORD, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IWinInetCacheHints2 = extern struct {
     lpVtbl: [*c]struct_IWinInetCacheHints2Vtbl,
 };
 pub const IBindHost = struct_IBindHost;
 pub const struct_IBindHostVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IBindHost, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IBindHost) ULONG,
-    Release: ?extern fn ([*c]IBindHost) ULONG,
-    CreateMoniker: ?extern fn ([*c]IBindHost, LPOLESTR, [*c]IBindCtx, [*c]([*c]IMoniker), DWORD) HRESULT,
-    MonikerBindToStorage: ?extern fn ([*c]IBindHost, [*c]IMoniker, [*c]IBindCtx, [*c]IBindStatusCallback, [*c]const IID, [*c](?*c_void)) HRESULT,
-    MonikerBindToObject: ?extern fn ([*c]IBindHost, [*c]IMoniker, [*c]IBindCtx, [*c]IBindStatusCallback, [*c]const IID, [*c](?*c_void)) HRESULT,
+    QueryInterface: ?fn ([*c]IBindHost, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IBindHost) callconv(.C) ULONG,
+    Release: ?fn ([*c]IBindHost) callconv(.C) ULONG,
+    CreateMoniker: ?fn ([*c]IBindHost, LPOLESTR, [*c]IBindCtx, [*c]([*c]IMoniker), DWORD) callconv(.C) HRESULT,
+    MonikerBindToStorage: ?fn ([*c]IBindHost, [*c]IMoniker, [*c]IBindCtx, [*c]IBindStatusCallback, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    MonikerBindToObject: ?fn ([*c]IBindHost, [*c]IMoniker, [*c]IBindCtx, [*c]IBindStatusCallback, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
 };
 pub const struct_IBindHost = extern struct {
     lpVtbl: [*c]struct_IBindHostVtbl,
 };
 pub const IInternet = struct_IInternet;
 pub const struct_IInternetVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternet, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternet) ULONG,
-    Release: ?extern fn ([*c]IInternet) ULONG,
+    QueryInterface: ?fn ([*c]IInternet, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternet) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternet) callconv(.C) ULONG,
 };
 pub const struct_IInternet = extern struct {
     lpVtbl: [*c]struct_IInternetVtbl,
 };
 pub const IInternetBindInfo = struct_IInternetBindInfo;
 pub const struct_IInternetBindInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetBindInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetBindInfo) ULONG,
-    Release: ?extern fn ([*c]IInternetBindInfo) ULONG,
-    GetBindInfo: ?extern fn ([*c]IInternetBindInfo, [*c]DWORD, [*c]BINDINFO) HRESULT,
-    GetBindString: ?extern fn ([*c]IInternetBindInfo, ULONG, [*c]LPOLESTR, ULONG, [*c]ULONG) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetBindInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetBindInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetBindInfo) callconv(.C) ULONG,
+    GetBindInfo: ?fn ([*c]IInternetBindInfo, [*c]DWORD, [*c]BINDINFO) callconv(.C) HRESULT,
+    GetBindString: ?fn ([*c]IInternetBindInfo, ULONG, [*c]LPOLESTR, ULONG, [*c]ULONG) callconv(.C) HRESULT,
 };
 pub const struct_IInternetBindInfo = extern struct {
     lpVtbl: [*c]struct_IInternetBindInfoVtbl,
 };
 pub const IInternetBindInfoEx = struct_IInternetBindInfoEx;
 pub const struct_IInternetBindInfoExVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetBindInfoEx, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetBindInfoEx) ULONG,
-    Release: ?extern fn ([*c]IInternetBindInfoEx) ULONG,
-    GetBindInfo: ?extern fn ([*c]IInternetBindInfoEx, [*c]DWORD, [*c]BINDINFO) HRESULT,
-    GetBindString: ?extern fn ([*c]IInternetBindInfoEx, ULONG, [*c]LPOLESTR, ULONG, [*c]ULONG) HRESULT,
-    GetBindInfoEx: ?extern fn ([*c]IInternetBindInfoEx, [*c]DWORD, [*c]BINDINFO, [*c]DWORD, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetBindInfoEx, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetBindInfoEx) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetBindInfoEx) callconv(.C) ULONG,
+    GetBindInfo: ?fn ([*c]IInternetBindInfoEx, [*c]DWORD, [*c]BINDINFO) callconv(.C) HRESULT,
+    GetBindString: ?fn ([*c]IInternetBindInfoEx, ULONG, [*c]LPOLESTR, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    GetBindInfoEx: ?fn ([*c]IInternetBindInfoEx, [*c]DWORD, [*c]BINDINFO, [*c]DWORD, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IInternetBindInfoEx = extern struct {
     lpVtbl: [*c]struct_IInternetBindInfoExVtbl,
@@ -37717,117 +37717,117 @@ pub const struct__tagPROTOCOLDATA = extern struct {
 };
 pub const PROTOCOLDATA = struct__tagPROTOCOLDATA;
 pub const struct_IInternetProtocolSinkVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetProtocolSink, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetProtocolSink) ULONG,
-    Release: ?extern fn ([*c]IInternetProtocolSink) ULONG,
-    Switch: ?extern fn ([*c]IInternetProtocolSink, [*c]PROTOCOLDATA) HRESULT,
-    ReportProgress: ?extern fn ([*c]IInternetProtocolSink, ULONG, LPCWSTR) HRESULT,
-    ReportData: ?extern fn ([*c]IInternetProtocolSink, DWORD, ULONG, ULONG) HRESULT,
-    ReportResult: ?extern fn ([*c]IInternetProtocolSink, HRESULT, DWORD, LPCWSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetProtocolSink, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetProtocolSink) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetProtocolSink) callconv(.C) ULONG,
+    Switch: ?fn ([*c]IInternetProtocolSink, [*c]PROTOCOLDATA) callconv(.C) HRESULT,
+    ReportProgress: ?fn ([*c]IInternetProtocolSink, ULONG, LPCWSTR) callconv(.C) HRESULT,
+    ReportData: ?fn ([*c]IInternetProtocolSink, DWORD, ULONG, ULONG) callconv(.C) HRESULT,
+    ReportResult: ?fn ([*c]IInternetProtocolSink, HRESULT, DWORD, LPCWSTR) callconv(.C) HRESULT,
 };
 pub const struct_IInternetProtocolSink = extern struct {
     lpVtbl: [*c]struct_IInternetProtocolSinkVtbl,
 };
 pub const IInternetProtocolSink = struct_IInternetProtocolSink;
 pub const struct_IInternetProtocolRootVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetProtocolRoot, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetProtocolRoot) ULONG,
-    Release: ?extern fn ([*c]IInternetProtocolRoot) ULONG,
-    Start: ?extern fn ([*c]IInternetProtocolRoot, LPCWSTR, [*c]IInternetProtocolSink, [*c]IInternetBindInfo, DWORD, HANDLE_PTR) HRESULT,
-    Continue: ?extern fn ([*c]IInternetProtocolRoot, [*c]PROTOCOLDATA) HRESULT,
-    Abort: ?extern fn ([*c]IInternetProtocolRoot, HRESULT, DWORD) HRESULT,
-    Terminate: ?extern fn ([*c]IInternetProtocolRoot, DWORD) HRESULT,
-    Suspend: ?extern fn ([*c]IInternetProtocolRoot) HRESULT,
-    Resume: ?extern fn ([*c]IInternetProtocolRoot) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetProtocolRoot, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetProtocolRoot) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetProtocolRoot) callconv(.C) ULONG,
+    Start: ?fn ([*c]IInternetProtocolRoot, LPCWSTR, [*c]IInternetProtocolSink, [*c]IInternetBindInfo, DWORD, HANDLE_PTR) callconv(.C) HRESULT,
+    Continue: ?fn ([*c]IInternetProtocolRoot, [*c]PROTOCOLDATA) callconv(.C) HRESULT,
+    Abort: ?fn ([*c]IInternetProtocolRoot, HRESULT, DWORD) callconv(.C) HRESULT,
+    Terminate: ?fn ([*c]IInternetProtocolRoot, DWORD) callconv(.C) HRESULT,
+    Suspend: ?fn ([*c]IInternetProtocolRoot) callconv(.C) HRESULT,
+    Resume: ?fn ([*c]IInternetProtocolRoot) callconv(.C) HRESULT,
 };
 pub const struct_IInternetProtocolRoot = extern struct {
     lpVtbl: [*c]struct_IInternetProtocolRootVtbl,
 };
 pub const IInternetProtocol = struct_IInternetProtocol;
 pub const struct_IInternetProtocolVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetProtocol, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetProtocol) ULONG,
-    Release: ?extern fn ([*c]IInternetProtocol) ULONG,
-    Start: ?extern fn ([*c]IInternetProtocol, LPCWSTR, [*c]IInternetProtocolSink, [*c]IInternetBindInfo, DWORD, HANDLE_PTR) HRESULT,
-    Continue: ?extern fn ([*c]IInternetProtocol, [*c]PROTOCOLDATA) HRESULT,
-    Abort: ?extern fn ([*c]IInternetProtocol, HRESULT, DWORD) HRESULT,
-    Terminate: ?extern fn ([*c]IInternetProtocol, DWORD) HRESULT,
-    Suspend: ?extern fn ([*c]IInternetProtocol) HRESULT,
-    Resume: ?extern fn ([*c]IInternetProtocol) HRESULT,
-    Read: ?extern fn ([*c]IInternetProtocol, ?*c_void, ULONG, [*c]ULONG) HRESULT,
-    Seek: ?extern fn ([*c]IInternetProtocol, LARGE_INTEGER, DWORD, [*c]ULARGE_INTEGER) HRESULT,
-    LockRequest: ?extern fn ([*c]IInternetProtocol, DWORD) HRESULT,
-    UnlockRequest: ?extern fn ([*c]IInternetProtocol) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetProtocol, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetProtocol) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetProtocol) callconv(.C) ULONG,
+    Start: ?fn ([*c]IInternetProtocol, LPCWSTR, [*c]IInternetProtocolSink, [*c]IInternetBindInfo, DWORD, HANDLE_PTR) callconv(.C) HRESULT,
+    Continue: ?fn ([*c]IInternetProtocol, [*c]PROTOCOLDATA) callconv(.C) HRESULT,
+    Abort: ?fn ([*c]IInternetProtocol, HRESULT, DWORD) callconv(.C) HRESULT,
+    Terminate: ?fn ([*c]IInternetProtocol, DWORD) callconv(.C) HRESULT,
+    Suspend: ?fn ([*c]IInternetProtocol) callconv(.C) HRESULT,
+    Resume: ?fn ([*c]IInternetProtocol) callconv(.C) HRESULT,
+    Read: ?fn ([*c]IInternetProtocol, ?*c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Seek: ?fn ([*c]IInternetProtocol, LARGE_INTEGER, DWORD, [*c]ULARGE_INTEGER) callconv(.C) HRESULT,
+    LockRequest: ?fn ([*c]IInternetProtocol, DWORD) callconv(.C) HRESULT,
+    UnlockRequest: ?fn ([*c]IInternetProtocol) callconv(.C) HRESULT,
 };
 pub const struct_IInternetProtocol = extern struct {
     lpVtbl: [*c]struct_IInternetProtocolVtbl,
 };
 pub const IInternetProtocolEx = struct_IInternetProtocolEx;
 pub const struct_IInternetProtocolExVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetProtocolEx, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetProtocolEx) ULONG,
-    Release: ?extern fn ([*c]IInternetProtocolEx) ULONG,
-    Start: ?extern fn ([*c]IInternetProtocolEx, LPCWSTR, [*c]IInternetProtocolSink, [*c]IInternetBindInfo, DWORD, HANDLE_PTR) HRESULT,
-    Continue: ?extern fn ([*c]IInternetProtocolEx, [*c]PROTOCOLDATA) HRESULT,
-    Abort: ?extern fn ([*c]IInternetProtocolEx, HRESULT, DWORD) HRESULT,
-    Terminate: ?extern fn ([*c]IInternetProtocolEx, DWORD) HRESULT,
-    Suspend: ?extern fn ([*c]IInternetProtocolEx) HRESULT,
-    Resume: ?extern fn ([*c]IInternetProtocolEx) HRESULT,
-    Read: ?extern fn ([*c]IInternetProtocolEx, ?*c_void, ULONG, [*c]ULONG) HRESULT,
-    Seek: ?extern fn ([*c]IInternetProtocolEx, LARGE_INTEGER, DWORD, [*c]ULARGE_INTEGER) HRESULT,
-    LockRequest: ?extern fn ([*c]IInternetProtocolEx, DWORD) HRESULT,
-    UnlockRequest: ?extern fn ([*c]IInternetProtocolEx) HRESULT,
-    StartEx: ?extern fn ([*c]IInternetProtocolEx, [*c]IUri, [*c]IInternetProtocolSink, [*c]IInternetBindInfo, DWORD, HANDLE_PTR) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetProtocolEx, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetProtocolEx) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetProtocolEx) callconv(.C) ULONG,
+    Start: ?fn ([*c]IInternetProtocolEx, LPCWSTR, [*c]IInternetProtocolSink, [*c]IInternetBindInfo, DWORD, HANDLE_PTR) callconv(.C) HRESULT,
+    Continue: ?fn ([*c]IInternetProtocolEx, [*c]PROTOCOLDATA) callconv(.C) HRESULT,
+    Abort: ?fn ([*c]IInternetProtocolEx, HRESULT, DWORD) callconv(.C) HRESULT,
+    Terminate: ?fn ([*c]IInternetProtocolEx, DWORD) callconv(.C) HRESULT,
+    Suspend: ?fn ([*c]IInternetProtocolEx) callconv(.C) HRESULT,
+    Resume: ?fn ([*c]IInternetProtocolEx) callconv(.C) HRESULT,
+    Read: ?fn ([*c]IInternetProtocolEx, ?*c_void, ULONG, [*c]ULONG) callconv(.C) HRESULT,
+    Seek: ?fn ([*c]IInternetProtocolEx, LARGE_INTEGER, DWORD, [*c]ULARGE_INTEGER) callconv(.C) HRESULT,
+    LockRequest: ?fn ([*c]IInternetProtocolEx, DWORD) callconv(.C) HRESULT,
+    UnlockRequest: ?fn ([*c]IInternetProtocolEx) callconv(.C) HRESULT,
+    StartEx: ?fn ([*c]IInternetProtocolEx, [*c]IUri, [*c]IInternetProtocolSink, [*c]IInternetBindInfo, DWORD, HANDLE_PTR) callconv(.C) HRESULT,
 };
 pub const struct_IInternetProtocolEx = extern struct {
     lpVtbl: [*c]struct_IInternetProtocolExVtbl,
 };
 pub const IInternetProtocolSinkStackable = struct_IInternetProtocolSinkStackable;
 pub const struct_IInternetProtocolSinkStackableVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetProtocolSinkStackable, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetProtocolSinkStackable) ULONG,
-    Release: ?extern fn ([*c]IInternetProtocolSinkStackable) ULONG,
-    SwitchSink: ?extern fn ([*c]IInternetProtocolSinkStackable, [*c]IInternetProtocolSink) HRESULT,
-    CommitSwitch: ?extern fn ([*c]IInternetProtocolSinkStackable) HRESULT,
-    RollbackSwitch: ?extern fn ([*c]IInternetProtocolSinkStackable) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetProtocolSinkStackable, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetProtocolSinkStackable) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetProtocolSinkStackable) callconv(.C) ULONG,
+    SwitchSink: ?fn ([*c]IInternetProtocolSinkStackable, [*c]IInternetProtocolSink) callconv(.C) HRESULT,
+    CommitSwitch: ?fn ([*c]IInternetProtocolSinkStackable) callconv(.C) HRESULT,
+    RollbackSwitch: ?fn ([*c]IInternetProtocolSinkStackable) callconv(.C) HRESULT,
 };
 pub const struct_IInternetProtocolSinkStackable = extern struct {
     lpVtbl: [*c]struct_IInternetProtocolSinkStackableVtbl,
 };
 pub const IInternetSession = struct_IInternetSession;
 pub const struct_IInternetSessionVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetSession, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetSession) ULONG,
-    Release: ?extern fn ([*c]IInternetSession) ULONG,
-    RegisterNameSpace: ?extern fn ([*c]IInternetSession, [*c]IClassFactory, [*c]const IID, LPCWSTR, ULONG, [*c]const LPCWSTR, DWORD) HRESULT,
-    UnregisterNameSpace: ?extern fn ([*c]IInternetSession, [*c]IClassFactory, LPCWSTR) HRESULT,
-    RegisterMimeFilter: ?extern fn ([*c]IInternetSession, [*c]IClassFactory, [*c]const IID, LPCWSTR) HRESULT,
-    UnregisterMimeFilter: ?extern fn ([*c]IInternetSession, [*c]IClassFactory, LPCWSTR) HRESULT,
-    CreateBinding: ?extern fn ([*c]IInternetSession, LPBC, LPCWSTR, [*c]IUnknown, [*c]([*c]IUnknown), [*c]([*c]IInternetProtocol), DWORD) HRESULT,
-    SetSessionOption: ?extern fn ([*c]IInternetSession, DWORD, LPVOID, DWORD, DWORD) HRESULT,
-    GetSessionOption: ?extern fn ([*c]IInternetSession, DWORD, LPVOID, [*c]DWORD, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetSession, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetSession) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetSession) callconv(.C) ULONG,
+    RegisterNameSpace: ?fn ([*c]IInternetSession, [*c]IClassFactory, [*c]const IID, LPCWSTR, ULONG, [*c]const LPCWSTR, DWORD) callconv(.C) HRESULT,
+    UnregisterNameSpace: ?fn ([*c]IInternetSession, [*c]IClassFactory, LPCWSTR) callconv(.C) HRESULT,
+    RegisterMimeFilter: ?fn ([*c]IInternetSession, [*c]IClassFactory, [*c]const IID, LPCWSTR) callconv(.C) HRESULT,
+    UnregisterMimeFilter: ?fn ([*c]IInternetSession, [*c]IClassFactory, LPCWSTR) callconv(.C) HRESULT,
+    CreateBinding: ?fn ([*c]IInternetSession, LPBC, LPCWSTR, [*c]IUnknown, [*c]([*c]IUnknown), [*c]([*c]IInternetProtocol), DWORD) callconv(.C) HRESULT,
+    SetSessionOption: ?fn ([*c]IInternetSession, DWORD, LPVOID, DWORD, DWORD) callconv(.C) HRESULT,
+    GetSessionOption: ?fn ([*c]IInternetSession, DWORD, LPVOID, [*c]DWORD, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IInternetSession = extern struct {
     lpVtbl: [*c]struct_IInternetSessionVtbl,
 };
 pub const IInternetThreadSwitch = struct_IInternetThreadSwitch;
 pub const struct_IInternetThreadSwitchVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetThreadSwitch, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetThreadSwitch) ULONG,
-    Release: ?extern fn ([*c]IInternetThreadSwitch) ULONG,
-    Prepare: ?extern fn ([*c]IInternetThreadSwitch) HRESULT,
-    Continue: ?extern fn ([*c]IInternetThreadSwitch) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetThreadSwitch, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetThreadSwitch) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetThreadSwitch) callconv(.C) ULONG,
+    Prepare: ?fn ([*c]IInternetThreadSwitch) callconv(.C) HRESULT,
+    Continue: ?fn ([*c]IInternetThreadSwitch) callconv(.C) HRESULT,
 };
 pub const struct_IInternetThreadSwitch = extern struct {
     lpVtbl: [*c]struct_IInternetThreadSwitchVtbl,
 };
 pub const IInternetPriority = struct_IInternetPriority;
 pub const struct_IInternetPriorityVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetPriority, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetPriority) ULONG,
-    Release: ?extern fn ([*c]IInternetPriority) ULONG,
-    SetPriority: ?extern fn ([*c]IInternetPriority, LONG) HRESULT,
-    GetPriority: ?extern fn ([*c]IInternetPriority, [*c]LONG) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetPriority, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetPriority) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetPriority) callconv(.C) ULONG,
+    SetPriority: ?fn ([*c]IInternetPriority, LONG) callconv(.C) HRESULT,
+    GetPriority: ?fn ([*c]IInternetPriority, [*c]LONG) callconv(.C) HRESULT,
 };
 pub const struct_IInternetPriority = extern struct {
     lpVtbl: [*c]struct_IInternetPriorityVtbl,
@@ -37947,123 +37947,123 @@ pub const QUERYOPTION = extern enum {
     QUERY_IS_CACHED_AND_USABLE_OFFLINE = 16,
 };
 pub const struct_IInternetProtocolInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetProtocolInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetProtocolInfo) ULONG,
-    Release: ?extern fn ([*c]IInternetProtocolInfo) ULONG,
-    ParseUrl: ?extern fn ([*c]IInternetProtocolInfo, LPCWSTR, PARSEACTION, DWORD, LPWSTR, DWORD, [*c]DWORD, DWORD) HRESULT,
-    CombineUrl: ?extern fn ([*c]IInternetProtocolInfo, LPCWSTR, LPCWSTR, DWORD, LPWSTR, DWORD, [*c]DWORD, DWORD) HRESULT,
-    CompareUrl: ?extern fn ([*c]IInternetProtocolInfo, LPCWSTR, LPCWSTR, DWORD) HRESULT,
-    QueryInfo: ?extern fn ([*c]IInternetProtocolInfo, LPCWSTR, QUERYOPTION, DWORD, LPVOID, DWORD, [*c]DWORD, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetProtocolInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetProtocolInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetProtocolInfo) callconv(.C) ULONG,
+    ParseUrl: ?fn ([*c]IInternetProtocolInfo, LPCWSTR, PARSEACTION, DWORD, LPWSTR, DWORD, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    CombineUrl: ?fn ([*c]IInternetProtocolInfo, LPCWSTR, LPCWSTR, DWORD, LPWSTR, DWORD, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    CompareUrl: ?fn ([*c]IInternetProtocolInfo, LPCWSTR, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    QueryInfo: ?fn ([*c]IInternetProtocolInfo, LPCWSTR, QUERYOPTION, DWORD, LPVOID, DWORD, [*c]DWORD, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IInternetProtocolInfo = extern struct {
     lpVtbl: [*c]struct_IInternetProtocolInfoVtbl,
 };
 pub const IInternetSecurityMgrSite = struct_IInternetSecurityMgrSite;
 pub const struct_IInternetSecurityMgrSiteVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetSecurityMgrSite, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetSecurityMgrSite) ULONG,
-    Release: ?extern fn ([*c]IInternetSecurityMgrSite) ULONG,
-    GetWindow: ?extern fn ([*c]IInternetSecurityMgrSite, [*c]HWND) HRESULT,
-    EnableModeless: ?extern fn ([*c]IInternetSecurityMgrSite, BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetSecurityMgrSite, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetSecurityMgrSite) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetSecurityMgrSite) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]IInternetSecurityMgrSite, [*c]HWND) callconv(.C) HRESULT,
+    EnableModeless: ?fn ([*c]IInternetSecurityMgrSite, BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IInternetSecurityMgrSite = extern struct {
     lpVtbl: [*c]struct_IInternetSecurityMgrSiteVtbl,
 };
 pub const IInternetSecurityManager = struct_IInternetSecurityManager;
 pub const struct_IInternetSecurityManagerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetSecurityManager, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetSecurityManager) ULONG,
-    Release: ?extern fn ([*c]IInternetSecurityManager) ULONG,
-    SetSecuritySite: ?extern fn ([*c]IInternetSecurityManager, [*c]IInternetSecurityMgrSite) HRESULT,
-    GetSecuritySite: ?extern fn ([*c]IInternetSecurityManager, [*c]([*c]IInternetSecurityMgrSite)) HRESULT,
-    MapUrlToZone: ?extern fn ([*c]IInternetSecurityManager, LPCWSTR, [*c]DWORD, DWORD) HRESULT,
-    GetSecurityId: ?extern fn ([*c]IInternetSecurityManager, LPCWSTR, [*c]BYTE, [*c]DWORD, DWORD_PTR) HRESULT,
-    ProcessUrlAction: ?extern fn ([*c]IInternetSecurityManager, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD) HRESULT,
-    QueryCustomPolicy: ?extern fn ([*c]IInternetSecurityManager, LPCWSTR, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD) HRESULT,
-    SetZoneMapping: ?extern fn ([*c]IInternetSecurityManager, DWORD, LPCWSTR, DWORD) HRESULT,
-    GetZoneMappings: ?extern fn ([*c]IInternetSecurityManager, DWORD, [*c]([*c]IEnumString), DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetSecurityManager, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetSecurityManager) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetSecurityManager) callconv(.C) ULONG,
+    SetSecuritySite: ?fn ([*c]IInternetSecurityManager, [*c]IInternetSecurityMgrSite) callconv(.C) HRESULT,
+    GetSecuritySite: ?fn ([*c]IInternetSecurityManager, [*c]([*c]IInternetSecurityMgrSite)) callconv(.C) HRESULT,
+    MapUrlToZone: ?fn ([*c]IInternetSecurityManager, LPCWSTR, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    GetSecurityId: ?fn ([*c]IInternetSecurityManager, LPCWSTR, [*c]BYTE, [*c]DWORD, DWORD_PTR) callconv(.C) HRESULT,
+    ProcessUrlAction: ?fn ([*c]IInternetSecurityManager, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD) callconv(.C) HRESULT,
+    QueryCustomPolicy: ?fn ([*c]IInternetSecurityManager, LPCWSTR, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD) callconv(.C) HRESULT,
+    SetZoneMapping: ?fn ([*c]IInternetSecurityManager, DWORD, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    GetZoneMappings: ?fn ([*c]IInternetSecurityManager, DWORD, [*c]([*c]IEnumString), DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IInternetSecurityManager = extern struct {
     lpVtbl: [*c]struct_IInternetSecurityManagerVtbl,
 };
 pub const IInternetSecurityManagerEx = struct_IInternetSecurityManagerEx;
 pub const struct_IInternetSecurityManagerExVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetSecurityManagerEx, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetSecurityManagerEx) ULONG,
-    Release: ?extern fn ([*c]IInternetSecurityManagerEx) ULONG,
-    SetSecuritySite: ?extern fn ([*c]IInternetSecurityManagerEx, [*c]IInternetSecurityMgrSite) HRESULT,
-    GetSecuritySite: ?extern fn ([*c]IInternetSecurityManagerEx, [*c]([*c]IInternetSecurityMgrSite)) HRESULT,
-    MapUrlToZone: ?extern fn ([*c]IInternetSecurityManagerEx, LPCWSTR, [*c]DWORD, DWORD) HRESULT,
-    GetSecurityId: ?extern fn ([*c]IInternetSecurityManagerEx, LPCWSTR, [*c]BYTE, [*c]DWORD, DWORD_PTR) HRESULT,
-    ProcessUrlAction: ?extern fn ([*c]IInternetSecurityManagerEx, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD) HRESULT,
-    QueryCustomPolicy: ?extern fn ([*c]IInternetSecurityManagerEx, LPCWSTR, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD) HRESULT,
-    SetZoneMapping: ?extern fn ([*c]IInternetSecurityManagerEx, DWORD, LPCWSTR, DWORD) HRESULT,
-    GetZoneMappings: ?extern fn ([*c]IInternetSecurityManagerEx, DWORD, [*c]([*c]IEnumString), DWORD) HRESULT,
-    ProcessUrlActionEx: ?extern fn ([*c]IInternetSecurityManagerEx, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetSecurityManagerEx, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetSecurityManagerEx) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetSecurityManagerEx) callconv(.C) ULONG,
+    SetSecuritySite: ?fn ([*c]IInternetSecurityManagerEx, [*c]IInternetSecurityMgrSite) callconv(.C) HRESULT,
+    GetSecuritySite: ?fn ([*c]IInternetSecurityManagerEx, [*c]([*c]IInternetSecurityMgrSite)) callconv(.C) HRESULT,
+    MapUrlToZone: ?fn ([*c]IInternetSecurityManagerEx, LPCWSTR, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    GetSecurityId: ?fn ([*c]IInternetSecurityManagerEx, LPCWSTR, [*c]BYTE, [*c]DWORD, DWORD_PTR) callconv(.C) HRESULT,
+    ProcessUrlAction: ?fn ([*c]IInternetSecurityManagerEx, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD) callconv(.C) HRESULT,
+    QueryCustomPolicy: ?fn ([*c]IInternetSecurityManagerEx, LPCWSTR, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD) callconv(.C) HRESULT,
+    SetZoneMapping: ?fn ([*c]IInternetSecurityManagerEx, DWORD, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    GetZoneMappings: ?fn ([*c]IInternetSecurityManagerEx, DWORD, [*c]([*c]IEnumString), DWORD) callconv(.C) HRESULT,
+    ProcessUrlActionEx: ?fn ([*c]IInternetSecurityManagerEx, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IInternetSecurityManagerEx = extern struct {
     lpVtbl: [*c]struct_IInternetSecurityManagerExVtbl,
 };
 pub const IInternetSecurityManagerEx2 = struct_IInternetSecurityManagerEx2;
 pub const struct_IInternetSecurityManagerEx2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetSecurityManagerEx2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetSecurityManagerEx2) ULONG,
-    Release: ?extern fn ([*c]IInternetSecurityManagerEx2) ULONG,
-    SetSecuritySite: ?extern fn ([*c]IInternetSecurityManagerEx2, [*c]IInternetSecurityMgrSite) HRESULT,
-    GetSecuritySite: ?extern fn ([*c]IInternetSecurityManagerEx2, [*c]([*c]IInternetSecurityMgrSite)) HRESULT,
-    MapUrlToZone: ?extern fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, [*c]DWORD, DWORD) HRESULT,
-    GetSecurityId: ?extern fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, [*c]BYTE, [*c]DWORD, DWORD_PTR) HRESULT,
-    ProcessUrlAction: ?extern fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD) HRESULT,
-    QueryCustomPolicy: ?extern fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD) HRESULT,
-    SetZoneMapping: ?extern fn ([*c]IInternetSecurityManagerEx2, DWORD, LPCWSTR, DWORD) HRESULT,
-    GetZoneMappings: ?extern fn ([*c]IInternetSecurityManagerEx2, DWORD, [*c]([*c]IEnumString), DWORD) HRESULT,
-    ProcessUrlActionEx: ?extern fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD, [*c]DWORD) HRESULT,
-    MapUrlToZoneEx2: ?extern fn ([*c]IInternetSecurityManagerEx2, [*c]IUri, [*c]DWORD, DWORD, [*c]LPWSTR, [*c]DWORD) HRESULT,
-    ProcessUrlActionEx2: ?extern fn ([*c]IInternetSecurityManagerEx2, [*c]IUri, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD_PTR, [*c]DWORD) HRESULT,
-    GetSecurityIdEx2: ?extern fn ([*c]IInternetSecurityManagerEx2, [*c]IUri, [*c]BYTE, [*c]DWORD, DWORD_PTR) HRESULT,
-    QueryCustomPolicyEx2: ?extern fn ([*c]IInternetSecurityManagerEx2, [*c]IUri, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD_PTR) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetSecurityManagerEx2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetSecurityManagerEx2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetSecurityManagerEx2) callconv(.C) ULONG,
+    SetSecuritySite: ?fn ([*c]IInternetSecurityManagerEx2, [*c]IInternetSecurityMgrSite) callconv(.C) HRESULT,
+    GetSecuritySite: ?fn ([*c]IInternetSecurityManagerEx2, [*c]([*c]IInternetSecurityMgrSite)) callconv(.C) HRESULT,
+    MapUrlToZone: ?fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    GetSecurityId: ?fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, [*c]BYTE, [*c]DWORD, DWORD_PTR) callconv(.C) HRESULT,
+    ProcessUrlAction: ?fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD) callconv(.C) HRESULT,
+    QueryCustomPolicy: ?fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD) callconv(.C) HRESULT,
+    SetZoneMapping: ?fn ([*c]IInternetSecurityManagerEx2, DWORD, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    GetZoneMappings: ?fn ([*c]IInternetSecurityManagerEx2, DWORD, [*c]([*c]IEnumString), DWORD) callconv(.C) HRESULT,
+    ProcessUrlActionEx: ?fn ([*c]IInternetSecurityManagerEx2, LPCWSTR, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    MapUrlToZoneEx2: ?fn ([*c]IInternetSecurityManagerEx2, [*c]IUri, [*c]DWORD, DWORD, [*c]LPWSTR, [*c]DWORD) callconv(.C) HRESULT,
+    ProcessUrlActionEx2: ?fn ([*c]IInternetSecurityManagerEx2, [*c]IUri, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD_PTR, [*c]DWORD) callconv(.C) HRESULT,
+    GetSecurityIdEx2: ?fn ([*c]IInternetSecurityManagerEx2, [*c]IUri, [*c]BYTE, [*c]DWORD, DWORD_PTR) callconv(.C) HRESULT,
+    QueryCustomPolicyEx2: ?fn ([*c]IInternetSecurityManagerEx2, [*c]IUri, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD_PTR) callconv(.C) HRESULT,
 };
 pub const struct_IInternetSecurityManagerEx2 = extern struct {
     lpVtbl: [*c]struct_IInternetSecurityManagerEx2Vtbl,
 };
 pub const IZoneIdentifier = struct_IZoneIdentifier;
 pub const struct_IZoneIdentifierVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IZoneIdentifier, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IZoneIdentifier) ULONG,
-    Release: ?extern fn ([*c]IZoneIdentifier) ULONG,
-    GetId: ?extern fn ([*c]IZoneIdentifier, [*c]DWORD) HRESULT,
-    SetId: ?extern fn ([*c]IZoneIdentifier, DWORD) HRESULT,
-    Remove: ?extern fn ([*c]IZoneIdentifier) HRESULT,
+    QueryInterface: ?fn ([*c]IZoneIdentifier, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IZoneIdentifier) callconv(.C) ULONG,
+    Release: ?fn ([*c]IZoneIdentifier) callconv(.C) ULONG,
+    GetId: ?fn ([*c]IZoneIdentifier, [*c]DWORD) callconv(.C) HRESULT,
+    SetId: ?fn ([*c]IZoneIdentifier, DWORD) callconv(.C) HRESULT,
+    Remove: ?fn ([*c]IZoneIdentifier) callconv(.C) HRESULT,
 };
 pub const struct_IZoneIdentifier = extern struct {
     lpVtbl: [*c]struct_IZoneIdentifierVtbl,
 };
 pub const IZoneIdentifier2 = struct_IZoneIdentifier2;
 pub const struct_IZoneIdentifier2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IZoneIdentifier2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IZoneIdentifier2) ULONG,
-    Release: ?extern fn ([*c]IZoneIdentifier2) ULONG,
-    GetId: ?extern fn ([*c]IZoneIdentifier2, [*c]DWORD) HRESULT,
-    SetId: ?extern fn ([*c]IZoneIdentifier2, DWORD) HRESULT,
-    Remove: ?extern fn ([*c]IZoneIdentifier2) HRESULT,
-    GetLastWriterPackageFamilyName: ?extern fn ([*c]IZoneIdentifier2, [*c]LPWSTR) HRESULT,
-    SetLastWriterPackageFamilyName: ?extern fn ([*c]IZoneIdentifier2, LPCWSTR) HRESULT,
-    RemoveLastWriterPackageFamilyName: ?extern fn ([*c]IZoneIdentifier2) HRESULT,
-    GetAppZoneId: ?extern fn ([*c]IZoneIdentifier2, [*c]DWORD) HRESULT,
-    SetAppZoneId: ?extern fn ([*c]IZoneIdentifier2, DWORD) HRESULT,
-    RemoveAppZoneId: ?extern fn ([*c]IZoneIdentifier2) HRESULT,
+    QueryInterface: ?fn ([*c]IZoneIdentifier2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IZoneIdentifier2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IZoneIdentifier2) callconv(.C) ULONG,
+    GetId: ?fn ([*c]IZoneIdentifier2, [*c]DWORD) callconv(.C) HRESULT,
+    SetId: ?fn ([*c]IZoneIdentifier2, DWORD) callconv(.C) HRESULT,
+    Remove: ?fn ([*c]IZoneIdentifier2) callconv(.C) HRESULT,
+    GetLastWriterPackageFamilyName: ?fn ([*c]IZoneIdentifier2, [*c]LPWSTR) callconv(.C) HRESULT,
+    SetLastWriterPackageFamilyName: ?fn ([*c]IZoneIdentifier2, LPCWSTR) callconv(.C) HRESULT,
+    RemoveLastWriterPackageFamilyName: ?fn ([*c]IZoneIdentifier2) callconv(.C) HRESULT,
+    GetAppZoneId: ?fn ([*c]IZoneIdentifier2, [*c]DWORD) callconv(.C) HRESULT,
+    SetAppZoneId: ?fn ([*c]IZoneIdentifier2, DWORD) callconv(.C) HRESULT,
+    RemoveAppZoneId: ?fn ([*c]IZoneIdentifier2) callconv(.C) HRESULT,
 };
 pub const struct_IZoneIdentifier2 = extern struct {
     lpVtbl: [*c]struct_IZoneIdentifier2Vtbl,
 };
 pub const IInternetHostSecurityManager = struct_IInternetHostSecurityManager;
 pub const struct_IInternetHostSecurityManagerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetHostSecurityManager, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetHostSecurityManager) ULONG,
-    Release: ?extern fn ([*c]IInternetHostSecurityManager) ULONG,
-    GetSecurityId: ?extern fn ([*c]IInternetHostSecurityManager, [*c]BYTE, [*c]DWORD, DWORD_PTR) HRESULT,
-    ProcessUrlAction: ?extern fn ([*c]IInternetHostSecurityManager, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD) HRESULT,
-    QueryCustomPolicy: ?extern fn ([*c]IInternetHostSecurityManager, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetHostSecurityManager, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetHostSecurityManager) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetHostSecurityManager) callconv(.C) ULONG,
+    GetSecurityId: ?fn ([*c]IInternetHostSecurityManager, [*c]BYTE, [*c]DWORD, DWORD_PTR) callconv(.C) HRESULT,
+    ProcessUrlAction: ?fn ([*c]IInternetHostSecurityManager, DWORD, [*c]BYTE, DWORD, [*c]BYTE, DWORD, DWORD, DWORD) callconv(.C) HRESULT,
+    QueryCustomPolicy: ?fn ([*c]IInternetHostSecurityManager, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, [*c]BYTE, DWORD, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IInternetHostSecurityManager = extern struct {
     lpVtbl: [*c]struct_IInternetHostSecurityManagerVtbl,
@@ -38094,113 +38094,113 @@ pub const URLZONEREG = extern enum {
     URLZONEREG_HKCU = 2,
 };
 pub const struct_IInternetZoneManagerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetZoneManager, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetZoneManager) ULONG,
-    Release: ?extern fn ([*c]IInternetZoneManager) ULONG,
-    GetZoneAttributes: ?extern fn ([*c]IInternetZoneManager, DWORD, [*c]ZONEATTRIBUTES) HRESULT,
-    SetZoneAttributes: ?extern fn ([*c]IInternetZoneManager, DWORD, [*c]ZONEATTRIBUTES) HRESULT,
-    GetZoneCustomPolicy: ?extern fn ([*c]IInternetZoneManager, DWORD, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, URLZONEREG) HRESULT,
-    SetZoneCustomPolicy: ?extern fn ([*c]IInternetZoneManager, DWORD, [*c]const GUID, [*c]BYTE, DWORD, URLZONEREG) HRESULT,
-    GetZoneActionPolicy: ?extern fn ([*c]IInternetZoneManager, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) HRESULT,
-    SetZoneActionPolicy: ?extern fn ([*c]IInternetZoneManager, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) HRESULT,
-    PromptAction: ?extern fn ([*c]IInternetZoneManager, DWORD, HWND, LPCWSTR, LPCWSTR, DWORD) HRESULT,
-    LogAction: ?extern fn ([*c]IInternetZoneManager, DWORD, LPCWSTR, LPCWSTR, DWORD) HRESULT,
-    CreateZoneEnumerator: ?extern fn ([*c]IInternetZoneManager, [*c]DWORD, [*c]DWORD, DWORD) HRESULT,
-    GetZoneAt: ?extern fn ([*c]IInternetZoneManager, DWORD, DWORD, [*c]DWORD) HRESULT,
-    DestroyZoneEnumerator: ?extern fn ([*c]IInternetZoneManager, DWORD) HRESULT,
-    CopyTemplatePoliciesToZone: ?extern fn ([*c]IInternetZoneManager, DWORD, DWORD, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetZoneManager, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetZoneManager) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetZoneManager) callconv(.C) ULONG,
+    GetZoneAttributes: ?fn ([*c]IInternetZoneManager, DWORD, [*c]ZONEATTRIBUTES) callconv(.C) HRESULT,
+    SetZoneAttributes: ?fn ([*c]IInternetZoneManager, DWORD, [*c]ZONEATTRIBUTES) callconv(.C) HRESULT,
+    GetZoneCustomPolicy: ?fn ([*c]IInternetZoneManager, DWORD, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, URLZONEREG) callconv(.C) HRESULT,
+    SetZoneCustomPolicy: ?fn ([*c]IInternetZoneManager, DWORD, [*c]const GUID, [*c]BYTE, DWORD, URLZONEREG) callconv(.C) HRESULT,
+    GetZoneActionPolicy: ?fn ([*c]IInternetZoneManager, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) callconv(.C) HRESULT,
+    SetZoneActionPolicy: ?fn ([*c]IInternetZoneManager, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) callconv(.C) HRESULT,
+    PromptAction: ?fn ([*c]IInternetZoneManager, DWORD, HWND, LPCWSTR, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    LogAction: ?fn ([*c]IInternetZoneManager, DWORD, LPCWSTR, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    CreateZoneEnumerator: ?fn ([*c]IInternetZoneManager, [*c]DWORD, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    GetZoneAt: ?fn ([*c]IInternetZoneManager, DWORD, DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    DestroyZoneEnumerator: ?fn ([*c]IInternetZoneManager, DWORD) callconv(.C) HRESULT,
+    CopyTemplatePoliciesToZone: ?fn ([*c]IInternetZoneManager, DWORD, DWORD, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IInternetZoneManager = extern struct {
     lpVtbl: [*c]struct_IInternetZoneManagerVtbl,
 };
 pub const IInternetZoneManagerEx = struct_IInternetZoneManagerEx;
 pub const struct_IInternetZoneManagerExVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetZoneManagerEx, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetZoneManagerEx) ULONG,
-    Release: ?extern fn ([*c]IInternetZoneManagerEx) ULONG,
-    GetZoneAttributes: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, [*c]ZONEATTRIBUTES) HRESULT,
-    SetZoneAttributes: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, [*c]ZONEATTRIBUTES) HRESULT,
-    GetZoneCustomPolicy: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, URLZONEREG) HRESULT,
-    SetZoneCustomPolicy: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, [*c]const GUID, [*c]BYTE, DWORD, URLZONEREG) HRESULT,
-    GetZoneActionPolicy: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) HRESULT,
-    SetZoneActionPolicy: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) HRESULT,
-    PromptAction: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, HWND, LPCWSTR, LPCWSTR, DWORD) HRESULT,
-    LogAction: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, LPCWSTR, LPCWSTR, DWORD) HRESULT,
-    CreateZoneEnumerator: ?extern fn ([*c]IInternetZoneManagerEx, [*c]DWORD, [*c]DWORD, DWORD) HRESULT,
-    GetZoneAt: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]DWORD) HRESULT,
-    DestroyZoneEnumerator: ?extern fn ([*c]IInternetZoneManagerEx, DWORD) HRESULT,
-    CopyTemplatePoliciesToZone: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, DWORD) HRESULT,
-    GetZoneActionPolicyEx: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG, DWORD) HRESULT,
-    SetZoneActionPolicyEx: ?extern fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetZoneManagerEx, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetZoneManagerEx) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetZoneManagerEx) callconv(.C) ULONG,
+    GetZoneAttributes: ?fn ([*c]IInternetZoneManagerEx, DWORD, [*c]ZONEATTRIBUTES) callconv(.C) HRESULT,
+    SetZoneAttributes: ?fn ([*c]IInternetZoneManagerEx, DWORD, [*c]ZONEATTRIBUTES) callconv(.C) HRESULT,
+    GetZoneCustomPolicy: ?fn ([*c]IInternetZoneManagerEx, DWORD, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, URLZONEREG) callconv(.C) HRESULT,
+    SetZoneCustomPolicy: ?fn ([*c]IInternetZoneManagerEx, DWORD, [*c]const GUID, [*c]BYTE, DWORD, URLZONEREG) callconv(.C) HRESULT,
+    GetZoneActionPolicy: ?fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) callconv(.C) HRESULT,
+    SetZoneActionPolicy: ?fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) callconv(.C) HRESULT,
+    PromptAction: ?fn ([*c]IInternetZoneManagerEx, DWORD, HWND, LPCWSTR, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    LogAction: ?fn ([*c]IInternetZoneManagerEx, DWORD, LPCWSTR, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    CreateZoneEnumerator: ?fn ([*c]IInternetZoneManagerEx, [*c]DWORD, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    GetZoneAt: ?fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    DestroyZoneEnumerator: ?fn ([*c]IInternetZoneManagerEx, DWORD) callconv(.C) HRESULT,
+    CopyTemplatePoliciesToZone: ?fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, DWORD) callconv(.C) HRESULT,
+    GetZoneActionPolicyEx: ?fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG, DWORD) callconv(.C) HRESULT,
+    SetZoneActionPolicyEx: ?fn ([*c]IInternetZoneManagerEx, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IInternetZoneManagerEx = extern struct {
     lpVtbl: [*c]struct_IInternetZoneManagerExVtbl,
 };
 pub const IInternetZoneManagerEx2 = struct_IInternetZoneManagerEx2;
 pub const struct_IInternetZoneManagerEx2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IInternetZoneManagerEx2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IInternetZoneManagerEx2) ULONG,
-    Release: ?extern fn ([*c]IInternetZoneManagerEx2) ULONG,
-    GetZoneAttributes: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]ZONEATTRIBUTES) HRESULT,
-    SetZoneAttributes: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]ZONEATTRIBUTES) HRESULT,
-    GetZoneCustomPolicy: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, URLZONEREG) HRESULT,
-    SetZoneCustomPolicy: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]const GUID, [*c]BYTE, DWORD, URLZONEREG) HRESULT,
-    GetZoneActionPolicy: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) HRESULT,
-    SetZoneActionPolicy: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) HRESULT,
-    PromptAction: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, HWND, LPCWSTR, LPCWSTR, DWORD) HRESULT,
-    LogAction: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, LPCWSTR, LPCWSTR, DWORD) HRESULT,
-    CreateZoneEnumerator: ?extern fn ([*c]IInternetZoneManagerEx2, [*c]DWORD, [*c]DWORD, DWORD) HRESULT,
-    GetZoneAt: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]DWORD) HRESULT,
-    DestroyZoneEnumerator: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD) HRESULT,
-    CopyTemplatePoliciesToZone: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, DWORD) HRESULT,
-    GetZoneActionPolicyEx: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG, DWORD) HRESULT,
-    SetZoneActionPolicyEx: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG, DWORD) HRESULT,
-    GetZoneAttributesEx: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]ZONEATTRIBUTES, DWORD) HRESULT,
-    GetZoneSecurityState: ?extern fn ([*c]IInternetZoneManagerEx2, DWORD, BOOL, LPDWORD, [*c]BOOL) HRESULT,
-    GetIESecurityState: ?extern fn ([*c]IInternetZoneManagerEx2, BOOL, LPDWORD, [*c]BOOL, BOOL) HRESULT,
-    FixUnsecureSettings: ?extern fn ([*c]IInternetZoneManagerEx2) HRESULT,
+    QueryInterface: ?fn ([*c]IInternetZoneManagerEx2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IInternetZoneManagerEx2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IInternetZoneManagerEx2) callconv(.C) ULONG,
+    GetZoneAttributes: ?fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]ZONEATTRIBUTES) callconv(.C) HRESULT,
+    SetZoneAttributes: ?fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]ZONEATTRIBUTES) callconv(.C) HRESULT,
+    GetZoneCustomPolicy: ?fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]const GUID, [*c]([*c]BYTE), [*c]DWORD, URLZONEREG) callconv(.C) HRESULT,
+    SetZoneCustomPolicy: ?fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]const GUID, [*c]BYTE, DWORD, URLZONEREG) callconv(.C) HRESULT,
+    GetZoneActionPolicy: ?fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) callconv(.C) HRESULT,
+    SetZoneActionPolicy: ?fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG) callconv(.C) HRESULT,
+    PromptAction: ?fn ([*c]IInternetZoneManagerEx2, DWORD, HWND, LPCWSTR, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    LogAction: ?fn ([*c]IInternetZoneManagerEx2, DWORD, LPCWSTR, LPCWSTR, DWORD) callconv(.C) HRESULT,
+    CreateZoneEnumerator: ?fn ([*c]IInternetZoneManagerEx2, [*c]DWORD, [*c]DWORD, DWORD) callconv(.C) HRESULT,
+    GetZoneAt: ?fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    DestroyZoneEnumerator: ?fn ([*c]IInternetZoneManagerEx2, DWORD) callconv(.C) HRESULT,
+    CopyTemplatePoliciesToZone: ?fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, DWORD) callconv(.C) HRESULT,
+    GetZoneActionPolicyEx: ?fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG, DWORD) callconv(.C) HRESULT,
+    SetZoneActionPolicyEx: ?fn ([*c]IInternetZoneManagerEx2, DWORD, DWORD, [*c]BYTE, DWORD, URLZONEREG, DWORD) callconv(.C) HRESULT,
+    GetZoneAttributesEx: ?fn ([*c]IInternetZoneManagerEx2, DWORD, [*c]ZONEATTRIBUTES, DWORD) callconv(.C) HRESULT,
+    GetZoneSecurityState: ?fn ([*c]IInternetZoneManagerEx2, DWORD, BOOL, LPDWORD, [*c]BOOL) callconv(.C) HRESULT,
+    GetIESecurityState: ?fn ([*c]IInternetZoneManagerEx2, BOOL, LPDWORD, [*c]BOOL, BOOL) callconv(.C) HRESULT,
+    FixUnsecureSettings: ?fn ([*c]IInternetZoneManagerEx2) callconv(.C) HRESULT,
 };
 pub const struct_IInternetZoneManagerEx2 = extern struct {
     lpVtbl: [*c]struct_IInternetZoneManagerEx2Vtbl,
 };
 pub const ISoftDistExt = struct_ISoftDistExt;
 pub const struct_IXMLElementCollectionVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLElementCollection, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLElementCollection) ULONG,
-    Release: ?extern fn ([*c]IXMLElementCollection) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLElementCollection, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLElementCollection, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLElementCollection, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLElementCollection, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    put_length: ?extern fn ([*c]IXMLElementCollection, c_long) HRESULT,
-    get_length: ?extern fn ([*c]IXMLElementCollection, [*c]c_long) HRESULT,
-    get__newEnum: ?extern fn ([*c]IXMLElementCollection, [*c]([*c]IUnknown)) HRESULT,
-    item: ?extern fn ([*c]IXMLElementCollection, VARIANT, VARIANT, [*c]([*c]IDispatch)) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLElementCollection, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLElementCollection) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLElementCollection) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLElementCollection, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLElementCollection, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLElementCollection, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLElementCollection, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    put_length: ?fn ([*c]IXMLElementCollection, c_long) callconv(.C) HRESULT,
+    get_length: ?fn ([*c]IXMLElementCollection, [*c]c_long) callconv(.C) HRESULT,
+    get__newEnum: ?fn ([*c]IXMLElementCollection, [*c]([*c]IUnknown)) callconv(.C) HRESULT,
+    item: ?fn ([*c]IXMLElementCollection, VARIANT, VARIANT, [*c]([*c]IDispatch)) callconv(.C) HRESULT,
 };
 pub const struct_IXMLElementCollection = extern struct {
     lpVtbl: [*c]struct_IXMLElementCollectionVtbl,
 };
 pub const IXMLElementCollection = struct_IXMLElementCollection;
 pub const struct_IXMLElementVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLElement, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLElement) ULONG,
-    Release: ?extern fn ([*c]IXMLElement) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLElement, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLElement, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLElement, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLElement, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_tagName: ?extern fn ([*c]IXMLElement, [*c]BSTR) HRESULT,
-    put_tagName: ?extern fn ([*c]IXMLElement, BSTR) HRESULT,
-    get_parent: ?extern fn ([*c]IXMLElement, [*c]([*c]IXMLElement)) HRESULT,
-    setAttribute: ?extern fn ([*c]IXMLElement, BSTR, VARIANT) HRESULT,
-    getAttribute: ?extern fn ([*c]IXMLElement, BSTR, [*c]VARIANT) HRESULT,
-    removeAttribute: ?extern fn ([*c]IXMLElement, BSTR) HRESULT,
-    get_children: ?extern fn ([*c]IXMLElement, [*c]([*c]IXMLElementCollection)) HRESULT,
-    get_type: ?extern fn ([*c]IXMLElement, [*c]c_long) HRESULT,
-    get_text: ?extern fn ([*c]IXMLElement, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLElement, BSTR) HRESULT,
-    addChild: ?extern fn ([*c]IXMLElement, [*c]IXMLElement, c_long, c_long) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLElement, [*c]IXMLElement) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLElement, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLElement) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLElement) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLElement, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLElement, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLElement, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLElement, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_tagName: ?fn ([*c]IXMLElement, [*c]BSTR) callconv(.C) HRESULT,
+    put_tagName: ?fn ([*c]IXMLElement, BSTR) callconv(.C) HRESULT,
+    get_parent: ?fn ([*c]IXMLElement, [*c]([*c]IXMLElement)) callconv(.C) HRESULT,
+    setAttribute: ?fn ([*c]IXMLElement, BSTR, VARIANT) callconv(.C) HRESULT,
+    getAttribute: ?fn ([*c]IXMLElement, BSTR, [*c]VARIANT) callconv(.C) HRESULT,
+    removeAttribute: ?fn ([*c]IXMLElement, BSTR) callconv(.C) HRESULT,
+    get_children: ?fn ([*c]IXMLElement, [*c]([*c]IXMLElementCollection)) callconv(.C) HRESULT,
+    get_type: ?fn ([*c]IXMLElement, [*c]c_long) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLElement, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLElement, BSTR) callconv(.C) HRESULT,
+    addChild: ?fn ([*c]IXMLElement, [*c]IXMLElement, c_long, c_long) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLElement, [*c]IXMLElement) callconv(.C) HRESULT,
 };
 pub const struct_IXMLElement = extern struct {
     lpVtbl: [*c]struct_IXMLElementVtbl,
@@ -38232,36 +38232,36 @@ pub const struct__tagCODEBASEHOLD = extern struct {
 };
 pub const LPCODEBASEHOLD = [*c]struct__tagCODEBASEHOLD;
 pub const struct_ISoftDistExtVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ISoftDistExt, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ISoftDistExt) ULONG,
-    Release: ?extern fn ([*c]ISoftDistExt) ULONG,
-    ProcessSoftDist: ?extern fn ([*c]ISoftDistExt, LPCWSTR, [*c]IXMLElement, LPSOFTDISTINFO) HRESULT,
-    GetFirstCodeBase: ?extern fn ([*c]ISoftDistExt, [*c]LPWSTR, LPDWORD) HRESULT,
-    GetNextCodeBase: ?extern fn ([*c]ISoftDistExt, [*c]LPWSTR, LPDWORD) HRESULT,
-    AsyncInstallDistributionUnit: ?extern fn ([*c]ISoftDistExt, [*c]IBindCtx, LPVOID, DWORD, LPCODEBASEHOLD) HRESULT,
+    QueryInterface: ?fn ([*c]ISoftDistExt, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ISoftDistExt) callconv(.C) ULONG,
+    Release: ?fn ([*c]ISoftDistExt) callconv(.C) ULONG,
+    ProcessSoftDist: ?fn ([*c]ISoftDistExt, LPCWSTR, [*c]IXMLElement, LPSOFTDISTINFO) callconv(.C) HRESULT,
+    GetFirstCodeBase: ?fn ([*c]ISoftDistExt, [*c]LPWSTR, LPDWORD) callconv(.C) HRESULT,
+    GetNextCodeBase: ?fn ([*c]ISoftDistExt, [*c]LPWSTR, LPDWORD) callconv(.C) HRESULT,
+    AsyncInstallDistributionUnit: ?fn ([*c]ISoftDistExt, [*c]IBindCtx, LPVOID, DWORD, LPCODEBASEHOLD) callconv(.C) HRESULT,
 };
 pub const struct_ISoftDistExt = extern struct {
     lpVtbl: [*c]struct_ISoftDistExtVtbl,
 };
 pub const ICatalogFileInfo = struct_ICatalogFileInfo;
 pub const struct_ICatalogFileInfoVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]ICatalogFileInfo, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]ICatalogFileInfo) ULONG,
-    Release: ?extern fn ([*c]ICatalogFileInfo) ULONG,
-    GetCatalogFile: ?extern fn ([*c]ICatalogFileInfo, [*c]LPSTR) HRESULT,
-    GetJavaTrust: ?extern fn ([*c]ICatalogFileInfo, [*c](?*c_void)) HRESULT,
+    QueryInterface: ?fn ([*c]ICatalogFileInfo, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]ICatalogFileInfo) callconv(.C) ULONG,
+    Release: ?fn ([*c]ICatalogFileInfo) callconv(.C) ULONG,
+    GetCatalogFile: ?fn ([*c]ICatalogFileInfo, [*c]LPSTR) callconv(.C) HRESULT,
+    GetJavaTrust: ?fn ([*c]ICatalogFileInfo, [*c](?*c_void)) callconv(.C) HRESULT,
 };
 pub const struct_ICatalogFileInfo = extern struct {
     lpVtbl: [*c]struct_ICatalogFileInfoVtbl,
 };
 pub const IDataFilter = struct_IDataFilter;
 pub const struct_IDataFilterVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IDataFilter, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IDataFilter) ULONG,
-    Release: ?extern fn ([*c]IDataFilter) ULONG,
-    DoEncode: ?extern fn ([*c]IDataFilter, DWORD, LONG, [*c]BYTE, LONG, [*c]BYTE, LONG, [*c]LONG, [*c]LONG, DWORD) HRESULT,
-    DoDecode: ?extern fn ([*c]IDataFilter, DWORD, LONG, [*c]BYTE, LONG, [*c]BYTE, LONG, [*c]LONG, [*c]LONG, DWORD) HRESULT,
-    SetEncodingLevel: ?extern fn ([*c]IDataFilter, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IDataFilter, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IDataFilter) callconv(.C) ULONG,
+    Release: ?fn ([*c]IDataFilter) callconv(.C) ULONG,
+    DoEncode: ?fn ([*c]IDataFilter, DWORD, LONG, [*c]BYTE, LONG, [*c]BYTE, LONG, [*c]LONG, [*c]LONG, DWORD) callconv(.C) HRESULT,
+    DoDecode: ?fn ([*c]IDataFilter, DWORD, LONG, [*c]BYTE, LONG, [*c]BYTE, LONG, [*c]LONG, [*c]LONG, DWORD) callconv(.C) HRESULT,
+    SetEncodingLevel: ?fn ([*c]IDataFilter, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IDataFilter = extern struct {
     lpVtbl: [*c]struct_IDataFilterVtbl,
@@ -38275,21 +38275,21 @@ pub const struct__tagDATAINFO = extern struct {
 };
 pub const DATAINFO = struct__tagDATAINFO;
 pub const struct_IEncodingFilterFactoryVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEncodingFilterFactory, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEncodingFilterFactory) ULONG,
-    Release: ?extern fn ([*c]IEncodingFilterFactory) ULONG,
-    FindBestFilter: ?extern fn ([*c]IEncodingFilterFactory, LPCWSTR, LPCWSTR, DATAINFO, [*c]([*c]IDataFilter)) HRESULT,
-    GetDefaultFilter: ?extern fn ([*c]IEncodingFilterFactory, LPCWSTR, LPCWSTR, [*c]([*c]IDataFilter)) HRESULT,
+    QueryInterface: ?fn ([*c]IEncodingFilterFactory, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEncodingFilterFactory) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEncodingFilterFactory) callconv(.C) ULONG,
+    FindBestFilter: ?fn ([*c]IEncodingFilterFactory, LPCWSTR, LPCWSTR, DATAINFO, [*c]([*c]IDataFilter)) callconv(.C) HRESULT,
+    GetDefaultFilter: ?fn ([*c]IEncodingFilterFactory, LPCWSTR, LPCWSTR, [*c]([*c]IDataFilter)) callconv(.C) HRESULT,
 };
 pub const struct_IEncodingFilterFactory = extern struct {
     lpVtbl: [*c]struct_IEncodingFilterFactoryVtbl,
 };
 pub const IWrappedProtocol = struct_IWrappedProtocol;
 pub const struct_IWrappedProtocolVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IWrappedProtocol, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IWrappedProtocol) ULONG,
-    Release: ?extern fn ([*c]IWrappedProtocol) ULONG,
-    GetWrapperCode: ?extern fn ([*c]IWrappedProtocol, [*c]LONG, DWORD_PTR) HRESULT,
+    QueryInterface: ?fn ([*c]IWrappedProtocol, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IWrappedProtocol) callconv(.C) ULONG,
+    Release: ?fn ([*c]IWrappedProtocol) callconv(.C) ULONG,
+    GetWrapperCode: ?fn ([*c]IWrappedProtocol, [*c]LONG, DWORD_PTR) callconv(.C) HRESULT,
 };
 pub const struct_IWrappedProtocol = extern struct {
     lpVtbl: [*c]struct_IWrappedProtocolVtbl,
@@ -38309,123 +38309,123 @@ pub const BINDHANDLETYPES = extern enum {
     BINDHANDLETYPES_COUNT = 2,
 };
 pub const struct_IGetBindHandleVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IGetBindHandle, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IGetBindHandle) ULONG,
-    Release: ?extern fn ([*c]IGetBindHandle) ULONG,
-    GetBindHandle: ?extern fn ([*c]IGetBindHandle, BINDHANDLETYPES, [*c]HANDLE) HRESULT,
+    QueryInterface: ?fn ([*c]IGetBindHandle, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IGetBindHandle) callconv(.C) ULONG,
+    Release: ?fn ([*c]IGetBindHandle) callconv(.C) ULONG,
+    GetBindHandle: ?fn ([*c]IGetBindHandle, BINDHANDLETYPES, [*c]HANDLE) callconv(.C) HRESULT,
 };
 pub const struct_IGetBindHandle = extern struct {
     lpVtbl: [*c]struct_IGetBindHandleVtbl,
 };
 pub const IBindCallbackRedirect = struct_IBindCallbackRedirect;
 pub const struct_IBindCallbackRedirectVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IBindCallbackRedirect, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IBindCallbackRedirect) ULONG,
-    Release: ?extern fn ([*c]IBindCallbackRedirect) ULONG,
-    Redirect: ?extern fn ([*c]IBindCallbackRedirect, LPCWSTR, [*c]VARIANT_BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IBindCallbackRedirect, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IBindCallbackRedirect) callconv(.C) ULONG,
+    Release: ?fn ([*c]IBindCallbackRedirect) callconv(.C) ULONG,
+    Redirect: ?fn ([*c]IBindCallbackRedirect, LPCWSTR, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IBindCallbackRedirect = extern struct {
     lpVtbl: [*c]struct_IBindCallbackRedirectVtbl,
 };
 pub const IBindHttpSecurity = struct_IBindHttpSecurity;
 pub const struct_IBindHttpSecurityVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IBindHttpSecurity, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IBindHttpSecurity) ULONG,
-    Release: ?extern fn ([*c]IBindHttpSecurity) ULONG,
-    GetIgnoreCertMask: ?extern fn ([*c]IBindHttpSecurity, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IBindHttpSecurity, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IBindHttpSecurity) callconv(.C) ULONG,
+    Release: ?fn ([*c]IBindHttpSecurity) callconv(.C) ULONG,
+    GetIgnoreCertMask: ?fn ([*c]IBindHttpSecurity, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IBindHttpSecurity = extern struct {
     lpVtbl: [*c]struct_IBindHttpSecurityVtbl,
 };
 pub const IOleAdviseHolder = struct_IOleAdviseHolder;
 pub const struct_IOleAdviseHolderVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleAdviseHolder, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleAdviseHolder) ULONG,
-    Release: ?extern fn ([*c]IOleAdviseHolder) ULONG,
-    Advise: ?extern fn ([*c]IOleAdviseHolder, [*c]IAdviseSink, [*c]DWORD) HRESULT,
-    Unadvise: ?extern fn ([*c]IOleAdviseHolder, DWORD) HRESULT,
-    EnumAdvise: ?extern fn ([*c]IOleAdviseHolder, [*c]([*c]IEnumSTATDATA)) HRESULT,
-    SendOnRename: ?extern fn ([*c]IOleAdviseHolder, [*c]IMoniker) HRESULT,
-    SendOnSave: ?extern fn ([*c]IOleAdviseHolder) HRESULT,
-    SendOnClose: ?extern fn ([*c]IOleAdviseHolder) HRESULT,
+    QueryInterface: ?fn ([*c]IOleAdviseHolder, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleAdviseHolder) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleAdviseHolder) callconv(.C) ULONG,
+    Advise: ?fn ([*c]IOleAdviseHolder, [*c]IAdviseSink, [*c]DWORD) callconv(.C) HRESULT,
+    Unadvise: ?fn ([*c]IOleAdviseHolder, DWORD) callconv(.C) HRESULT,
+    EnumAdvise: ?fn ([*c]IOleAdviseHolder, [*c]([*c]IEnumSTATDATA)) callconv(.C) HRESULT,
+    SendOnRename: ?fn ([*c]IOleAdviseHolder, [*c]IMoniker) callconv(.C) HRESULT,
+    SendOnSave: ?fn ([*c]IOleAdviseHolder) callconv(.C) HRESULT,
+    SendOnClose: ?fn ([*c]IOleAdviseHolder) callconv(.C) HRESULT,
 };
 pub const struct_IOleAdviseHolder = extern struct {
     lpVtbl: [*c]struct_IOleAdviseHolderVtbl,
 };
 pub const IOleCache = struct_IOleCache;
 pub const struct_IOleCacheVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleCache, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleCache) ULONG,
-    Release: ?extern fn ([*c]IOleCache) ULONG,
-    Cache: ?extern fn ([*c]IOleCache, [*c]FORMATETC, DWORD, [*c]DWORD) HRESULT,
-    Uncache: ?extern fn ([*c]IOleCache, DWORD) HRESULT,
-    EnumCache: ?extern fn ([*c]IOleCache, [*c]([*c]IEnumSTATDATA)) HRESULT,
-    InitCache: ?extern fn ([*c]IOleCache, [*c]IDataObject) HRESULT,
-    SetData: ?extern fn ([*c]IOleCache, [*c]FORMATETC, [*c]STGMEDIUM, BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IOleCache, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleCache) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleCache) callconv(.C) ULONG,
+    Cache: ?fn ([*c]IOleCache, [*c]FORMATETC, DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    Uncache: ?fn ([*c]IOleCache, DWORD) callconv(.C) HRESULT,
+    EnumCache: ?fn ([*c]IOleCache, [*c]([*c]IEnumSTATDATA)) callconv(.C) HRESULT,
+    InitCache: ?fn ([*c]IOleCache, [*c]IDataObject) callconv(.C) HRESULT,
+    SetData: ?fn ([*c]IOleCache, [*c]FORMATETC, [*c]STGMEDIUM, BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IOleCache = extern struct {
     lpVtbl: [*c]struct_IOleCacheVtbl,
 };
 pub const IOleCache2 = struct_IOleCache2;
 pub const struct_IOleCache2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleCache2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleCache2) ULONG,
-    Release: ?extern fn ([*c]IOleCache2) ULONG,
-    Cache: ?extern fn ([*c]IOleCache2, [*c]FORMATETC, DWORD, [*c]DWORD) HRESULT,
-    Uncache: ?extern fn ([*c]IOleCache2, DWORD) HRESULT,
-    EnumCache: ?extern fn ([*c]IOleCache2, [*c]([*c]IEnumSTATDATA)) HRESULT,
-    InitCache: ?extern fn ([*c]IOleCache2, [*c]IDataObject) HRESULT,
-    SetData: ?extern fn ([*c]IOleCache2, [*c]FORMATETC, [*c]STGMEDIUM, BOOL) HRESULT,
-    UpdateCache: ?extern fn ([*c]IOleCache2, LPDATAOBJECT, DWORD, LPVOID) HRESULT,
-    DiscardCache: ?extern fn ([*c]IOleCache2, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IOleCache2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleCache2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleCache2) callconv(.C) ULONG,
+    Cache: ?fn ([*c]IOleCache2, [*c]FORMATETC, DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    Uncache: ?fn ([*c]IOleCache2, DWORD) callconv(.C) HRESULT,
+    EnumCache: ?fn ([*c]IOleCache2, [*c]([*c]IEnumSTATDATA)) callconv(.C) HRESULT,
+    InitCache: ?fn ([*c]IOleCache2, [*c]IDataObject) callconv(.C) HRESULT,
+    SetData: ?fn ([*c]IOleCache2, [*c]FORMATETC, [*c]STGMEDIUM, BOOL) callconv(.C) HRESULT,
+    UpdateCache: ?fn ([*c]IOleCache2, LPDATAOBJECT, DWORD, LPVOID) callconv(.C) HRESULT,
+    DiscardCache: ?fn ([*c]IOleCache2, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IOleCache2 = extern struct {
     lpVtbl: [*c]struct_IOleCache2Vtbl,
 };
 pub const IOleCacheControl = struct_IOleCacheControl;
 pub const struct_IOleCacheControlVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleCacheControl, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleCacheControl) ULONG,
-    Release: ?extern fn ([*c]IOleCacheControl) ULONG,
-    OnRun: ?extern fn ([*c]IOleCacheControl, LPDATAOBJECT) HRESULT,
-    OnStop: ?extern fn ([*c]IOleCacheControl) HRESULT,
+    QueryInterface: ?fn ([*c]IOleCacheControl, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleCacheControl) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleCacheControl) callconv(.C) ULONG,
+    OnRun: ?fn ([*c]IOleCacheControl, LPDATAOBJECT) callconv(.C) HRESULT,
+    OnStop: ?fn ([*c]IOleCacheControl) callconv(.C) HRESULT,
 };
 pub const struct_IOleCacheControl = extern struct {
     lpVtbl: [*c]struct_IOleCacheControlVtbl,
 };
 pub const IParseDisplayName = struct_IParseDisplayName;
 pub const struct_IParseDisplayNameVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IParseDisplayName, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IParseDisplayName) ULONG,
-    Release: ?extern fn ([*c]IParseDisplayName) ULONG,
-    ParseDisplayName: ?extern fn ([*c]IParseDisplayName, [*c]IBindCtx, LPOLESTR, [*c]ULONG, [*c]([*c]IMoniker)) HRESULT,
+    QueryInterface: ?fn ([*c]IParseDisplayName, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IParseDisplayName) callconv(.C) ULONG,
+    Release: ?fn ([*c]IParseDisplayName) callconv(.C) ULONG,
+    ParseDisplayName: ?fn ([*c]IParseDisplayName, [*c]IBindCtx, LPOLESTR, [*c]ULONG, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
 };
 pub const struct_IParseDisplayName = extern struct {
     lpVtbl: [*c]struct_IParseDisplayNameVtbl,
 };
 pub const IOleContainer = struct_IOleContainer;
 pub const struct_IOleContainerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleContainer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleContainer) ULONG,
-    Release: ?extern fn ([*c]IOleContainer) ULONG,
-    ParseDisplayName: ?extern fn ([*c]IOleContainer, [*c]IBindCtx, LPOLESTR, [*c]ULONG, [*c]([*c]IMoniker)) HRESULT,
-    EnumObjects: ?extern fn ([*c]IOleContainer, DWORD, [*c]([*c]IEnumUnknown)) HRESULT,
-    LockContainer: ?extern fn ([*c]IOleContainer, BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IOleContainer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleContainer) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleContainer) callconv(.C) ULONG,
+    ParseDisplayName: ?fn ([*c]IOleContainer, [*c]IBindCtx, LPOLESTR, [*c]ULONG, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    EnumObjects: ?fn ([*c]IOleContainer, DWORD, [*c]([*c]IEnumUnknown)) callconv(.C) HRESULT,
+    LockContainer: ?fn ([*c]IOleContainer, BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IOleContainer = extern struct {
     lpVtbl: [*c]struct_IOleContainerVtbl,
 };
 pub const IOleClientSite = struct_IOleClientSite;
 pub const struct_IOleClientSiteVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleClientSite, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleClientSite) ULONG,
-    Release: ?extern fn ([*c]IOleClientSite) ULONG,
-    SaveObject: ?extern fn ([*c]IOleClientSite) HRESULT,
-    GetMoniker: ?extern fn ([*c]IOleClientSite, DWORD, DWORD, [*c]([*c]IMoniker)) HRESULT,
-    GetContainer: ?extern fn ([*c]IOleClientSite, [*c]([*c]IOleContainer)) HRESULT,
-    ShowObject: ?extern fn ([*c]IOleClientSite) HRESULT,
-    OnShowWindow: ?extern fn ([*c]IOleClientSite, BOOL) HRESULT,
-    RequestNewObjectLayout: ?extern fn ([*c]IOleClientSite) HRESULT,
+    QueryInterface: ?fn ([*c]IOleClientSite, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleClientSite) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleClientSite) callconv(.C) ULONG,
+    SaveObject: ?fn ([*c]IOleClientSite) callconv(.C) HRESULT,
+    GetMoniker: ?fn ([*c]IOleClientSite, DWORD, DWORD, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    GetContainer: ?fn ([*c]IOleClientSite, [*c]([*c]IOleContainer)) callconv(.C) HRESULT,
+    ShowObject: ?fn ([*c]IOleClientSite) callconv(.C) HRESULT,
+    OnShowWindow: ?fn ([*c]IOleClientSite, BOOL) callconv(.C) HRESULT,
+    RequestNewObjectLayout: ?fn ([*c]IOleClientSite) callconv(.C) HRESULT,
 };
 pub const struct_IOleClientSite = extern struct {
     lpVtbl: [*c]struct_IOleClientSiteVtbl,
@@ -38439,89 +38439,89 @@ pub const struct_tagOLEVERB = extern struct {
 };
 pub const LPOLEVERB = [*c]struct_tagOLEVERB;
 pub const struct_IEnumOLEVERBVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnumOLEVERB, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnumOLEVERB) ULONG,
-    Release: ?extern fn ([*c]IEnumOLEVERB) ULONG,
-    Next: ?extern fn ([*c]IEnumOLEVERB, ULONG, LPOLEVERB, [*c]ULONG) HRESULT,
-    Skip: ?extern fn ([*c]IEnumOLEVERB, ULONG) HRESULT,
-    Reset: ?extern fn ([*c]IEnumOLEVERB) HRESULT,
-    Clone: ?extern fn ([*c]IEnumOLEVERB, [*c]([*c]IEnumOLEVERB)) HRESULT,
+    QueryInterface: ?fn ([*c]IEnumOLEVERB, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnumOLEVERB) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnumOLEVERB) callconv(.C) ULONG,
+    Next: ?fn ([*c]IEnumOLEVERB, ULONG, LPOLEVERB, [*c]ULONG) callconv(.C) HRESULT,
+    Skip: ?fn ([*c]IEnumOLEVERB, ULONG) callconv(.C) HRESULT,
+    Reset: ?fn ([*c]IEnumOLEVERB) callconv(.C) HRESULT,
+    Clone: ?fn ([*c]IEnumOLEVERB, [*c]([*c]IEnumOLEVERB)) callconv(.C) HRESULT,
 };
 pub const struct_IEnumOLEVERB = extern struct {
     lpVtbl: [*c]struct_IEnumOLEVERBVtbl,
 };
 pub const IEnumOLEVERB = struct_IEnumOLEVERB;
 pub const struct_IOleObjectVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleObject, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleObject) ULONG,
-    Release: ?extern fn ([*c]IOleObject) ULONG,
-    SetClientSite: ?extern fn ([*c]IOleObject, [*c]IOleClientSite) HRESULT,
-    GetClientSite: ?extern fn ([*c]IOleObject, [*c]([*c]IOleClientSite)) HRESULT,
-    SetHostNames: ?extern fn ([*c]IOleObject, LPCOLESTR, LPCOLESTR) HRESULT,
-    Close: ?extern fn ([*c]IOleObject, DWORD) HRESULT,
-    SetMoniker: ?extern fn ([*c]IOleObject, DWORD, [*c]IMoniker) HRESULT,
-    GetMoniker: ?extern fn ([*c]IOleObject, DWORD, DWORD, [*c]([*c]IMoniker)) HRESULT,
-    InitFromData: ?extern fn ([*c]IOleObject, [*c]IDataObject, BOOL, DWORD) HRESULT,
-    GetClipboardData: ?extern fn ([*c]IOleObject, DWORD, [*c]([*c]IDataObject)) HRESULT,
-    DoVerb: ?extern fn ([*c]IOleObject, LONG, LPMSG, [*c]IOleClientSite, LONG, HWND, LPCRECT) HRESULT,
-    EnumVerbs: ?extern fn ([*c]IOleObject, [*c]([*c]IEnumOLEVERB)) HRESULT,
-    Update: ?extern fn ([*c]IOleObject) HRESULT,
-    IsUpToDate: ?extern fn ([*c]IOleObject) HRESULT,
-    GetUserClassID: ?extern fn ([*c]IOleObject, [*c]CLSID) HRESULT,
-    GetUserType: ?extern fn ([*c]IOleObject, DWORD, [*c]LPOLESTR) HRESULT,
-    SetExtent: ?extern fn ([*c]IOleObject, DWORD, [*c]SIZEL) HRESULT,
-    GetExtent: ?extern fn ([*c]IOleObject, DWORD, [*c]SIZEL) HRESULT,
-    Advise: ?extern fn ([*c]IOleObject, [*c]IAdviseSink, [*c]DWORD) HRESULT,
-    Unadvise: ?extern fn ([*c]IOleObject, DWORD) HRESULT,
-    EnumAdvise: ?extern fn ([*c]IOleObject, [*c]([*c]IEnumSTATDATA)) HRESULT,
-    GetMiscStatus: ?extern fn ([*c]IOleObject, DWORD, [*c]DWORD) HRESULT,
-    SetColorScheme: ?extern fn ([*c]IOleObject, [*c]LOGPALETTE) HRESULT,
+    QueryInterface: ?fn ([*c]IOleObject, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleObject) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleObject) callconv(.C) ULONG,
+    SetClientSite: ?fn ([*c]IOleObject, [*c]IOleClientSite) callconv(.C) HRESULT,
+    GetClientSite: ?fn ([*c]IOleObject, [*c]([*c]IOleClientSite)) callconv(.C) HRESULT,
+    SetHostNames: ?fn ([*c]IOleObject, LPCOLESTR, LPCOLESTR) callconv(.C) HRESULT,
+    Close: ?fn ([*c]IOleObject, DWORD) callconv(.C) HRESULT,
+    SetMoniker: ?fn ([*c]IOleObject, DWORD, [*c]IMoniker) callconv(.C) HRESULT,
+    GetMoniker: ?fn ([*c]IOleObject, DWORD, DWORD, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    InitFromData: ?fn ([*c]IOleObject, [*c]IDataObject, BOOL, DWORD) callconv(.C) HRESULT,
+    GetClipboardData: ?fn ([*c]IOleObject, DWORD, [*c]([*c]IDataObject)) callconv(.C) HRESULT,
+    DoVerb: ?fn ([*c]IOleObject, LONG, LPMSG, [*c]IOleClientSite, LONG, HWND, LPCRECT) callconv(.C) HRESULT,
+    EnumVerbs: ?fn ([*c]IOleObject, [*c]([*c]IEnumOLEVERB)) callconv(.C) HRESULT,
+    Update: ?fn ([*c]IOleObject) callconv(.C) HRESULT,
+    IsUpToDate: ?fn ([*c]IOleObject) callconv(.C) HRESULT,
+    GetUserClassID: ?fn ([*c]IOleObject, [*c]CLSID) callconv(.C) HRESULT,
+    GetUserType: ?fn ([*c]IOleObject, DWORD, [*c]LPOLESTR) callconv(.C) HRESULT,
+    SetExtent: ?fn ([*c]IOleObject, DWORD, [*c]SIZEL) callconv(.C) HRESULT,
+    GetExtent: ?fn ([*c]IOleObject, DWORD, [*c]SIZEL) callconv(.C) HRESULT,
+    Advise: ?fn ([*c]IOleObject, [*c]IAdviseSink, [*c]DWORD) callconv(.C) HRESULT,
+    Unadvise: ?fn ([*c]IOleObject, DWORD) callconv(.C) HRESULT,
+    EnumAdvise: ?fn ([*c]IOleObject, [*c]([*c]IEnumSTATDATA)) callconv(.C) HRESULT,
+    GetMiscStatus: ?fn ([*c]IOleObject, DWORD, [*c]DWORD) callconv(.C) HRESULT,
+    SetColorScheme: ?fn ([*c]IOleObject, [*c]LOGPALETTE) callconv(.C) HRESULT,
 };
 pub const struct_IOleObject = extern struct {
     lpVtbl: [*c]struct_IOleObjectVtbl,
 };
 pub const IOleWindow = struct_IOleWindow;
 pub const struct_IOleWindowVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleWindow, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleWindow) ULONG,
-    Release: ?extern fn ([*c]IOleWindow) ULONG,
-    GetWindow: ?extern fn ([*c]IOleWindow, [*c]HWND) HRESULT,
-    ContextSensitiveHelp: ?extern fn ([*c]IOleWindow, BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IOleWindow, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleWindow) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleWindow) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]IOleWindow, [*c]HWND) callconv(.C) HRESULT,
+    ContextSensitiveHelp: ?fn ([*c]IOleWindow, BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IOleWindow = extern struct {
     lpVtbl: [*c]struct_IOleWindowVtbl,
 };
 pub const IOleLink = struct_IOleLink;
 pub const struct_IOleLinkVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleLink, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleLink) ULONG,
-    Release: ?extern fn ([*c]IOleLink) ULONG,
-    SetUpdateOptions: ?extern fn ([*c]IOleLink, DWORD) HRESULT,
-    GetUpdateOptions: ?extern fn ([*c]IOleLink, [*c]DWORD) HRESULT,
-    SetSourceMoniker: ?extern fn ([*c]IOleLink, [*c]IMoniker, [*c]const IID) HRESULT,
-    GetSourceMoniker: ?extern fn ([*c]IOleLink, [*c]([*c]IMoniker)) HRESULT,
-    SetSourceDisplayName: ?extern fn ([*c]IOleLink, LPCOLESTR) HRESULT,
-    GetSourceDisplayName: ?extern fn ([*c]IOleLink, [*c]LPOLESTR) HRESULT,
-    BindToSource: ?extern fn ([*c]IOleLink, DWORD, [*c]IBindCtx) HRESULT,
-    BindIfRunning: ?extern fn ([*c]IOleLink) HRESULT,
-    GetBoundSource: ?extern fn ([*c]IOleLink, [*c]([*c]IUnknown)) HRESULT,
-    UnbindSource: ?extern fn ([*c]IOleLink) HRESULT,
-    Update: ?extern fn ([*c]IOleLink, [*c]IBindCtx) HRESULT,
+    QueryInterface: ?fn ([*c]IOleLink, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleLink) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleLink) callconv(.C) ULONG,
+    SetUpdateOptions: ?fn ([*c]IOleLink, DWORD) callconv(.C) HRESULT,
+    GetUpdateOptions: ?fn ([*c]IOleLink, [*c]DWORD) callconv(.C) HRESULT,
+    SetSourceMoniker: ?fn ([*c]IOleLink, [*c]IMoniker, [*c]const IID) callconv(.C) HRESULT,
+    GetSourceMoniker: ?fn ([*c]IOleLink, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    SetSourceDisplayName: ?fn ([*c]IOleLink, LPCOLESTR) callconv(.C) HRESULT,
+    GetSourceDisplayName: ?fn ([*c]IOleLink, [*c]LPOLESTR) callconv(.C) HRESULT,
+    BindToSource: ?fn ([*c]IOleLink, DWORD, [*c]IBindCtx) callconv(.C) HRESULT,
+    BindIfRunning: ?fn ([*c]IOleLink) callconv(.C) HRESULT,
+    GetBoundSource: ?fn ([*c]IOleLink, [*c]([*c]IUnknown)) callconv(.C) HRESULT,
+    UnbindSource: ?fn ([*c]IOleLink) callconv(.C) HRESULT,
+    Update: ?fn ([*c]IOleLink, [*c]IBindCtx) callconv(.C) HRESULT,
 };
 pub const struct_IOleLink = extern struct {
     lpVtbl: [*c]struct_IOleLinkVtbl,
 };
 pub const IOleItemContainer = struct_IOleItemContainer;
 pub const struct_IOleItemContainerVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleItemContainer, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleItemContainer) ULONG,
-    Release: ?extern fn ([*c]IOleItemContainer) ULONG,
-    ParseDisplayName: ?extern fn ([*c]IOleItemContainer, [*c]IBindCtx, LPOLESTR, [*c]ULONG, [*c]([*c]IMoniker)) HRESULT,
-    EnumObjects: ?extern fn ([*c]IOleItemContainer, DWORD, [*c]([*c]IEnumUnknown)) HRESULT,
-    LockContainer: ?extern fn ([*c]IOleItemContainer, BOOL) HRESULT,
-    GetObjectA: ?extern fn ([*c]IOleItemContainer, LPOLESTR, DWORD, [*c]IBindCtx, [*c]const IID, [*c](?*c_void)) HRESULT,
-    GetObjectStorage: ?extern fn ([*c]IOleItemContainer, LPOLESTR, [*c]IBindCtx, [*c]const IID, [*c](?*c_void)) HRESULT,
-    IsRunning: ?extern fn ([*c]IOleItemContainer, LPOLESTR) HRESULT,
+    QueryInterface: ?fn ([*c]IOleItemContainer, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleItemContainer) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleItemContainer) callconv(.C) ULONG,
+    ParseDisplayName: ?fn ([*c]IOleItemContainer, [*c]IBindCtx, LPOLESTR, [*c]ULONG, [*c]([*c]IMoniker)) callconv(.C) HRESULT,
+    EnumObjects: ?fn ([*c]IOleItemContainer, DWORD, [*c]([*c]IEnumUnknown)) callconv(.C) HRESULT,
+    LockContainer: ?fn ([*c]IOleItemContainer, BOOL) callconv(.C) HRESULT,
+    GetObjectA: ?fn ([*c]IOleItemContainer, LPOLESTR, DWORD, [*c]IBindCtx, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    GetObjectStorage: ?fn ([*c]IOleItemContainer, LPOLESTR, [*c]IBindCtx, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    IsRunning: ?fn ([*c]IOleItemContainer, LPOLESTR) callconv(.C) HRESULT,
 };
 pub const struct_IOleItemContainer = extern struct {
     lpVtbl: [*c]struct_IOleItemContainerVtbl,
@@ -38529,31 +38529,31 @@ pub const struct_IOleItemContainer = extern struct {
 pub const IOleInPlaceUIWindow = struct_IOleInPlaceUIWindow;
 pub const LPCBORDERWIDTHS = LPCRECT;
 pub const struct_IOleInPlaceActiveObjectVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleInPlaceActiveObject, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleInPlaceActiveObject) ULONG,
-    Release: ?extern fn ([*c]IOleInPlaceActiveObject) ULONG,
-    GetWindow: ?extern fn ([*c]IOleInPlaceActiveObject, [*c]HWND) HRESULT,
-    ContextSensitiveHelp: ?extern fn ([*c]IOleInPlaceActiveObject, BOOL) HRESULT,
-    TranslateAcceleratorA: ?extern fn ([*c]IOleInPlaceActiveObject, LPMSG) HRESULT,
-    OnFrameWindowActivate: ?extern fn ([*c]IOleInPlaceActiveObject, BOOL) HRESULT,
-    OnDocWindowActivate: ?extern fn ([*c]IOleInPlaceActiveObject, BOOL) HRESULT,
-    ResizeBorder: ?extern fn ([*c]IOleInPlaceActiveObject, LPCRECT, [*c]IOleInPlaceUIWindow, BOOL) HRESULT,
-    EnableModeless: ?extern fn ([*c]IOleInPlaceActiveObject, BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IOleInPlaceActiveObject, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleInPlaceActiveObject) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleInPlaceActiveObject) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]IOleInPlaceActiveObject, [*c]HWND) callconv(.C) HRESULT,
+    ContextSensitiveHelp: ?fn ([*c]IOleInPlaceActiveObject, BOOL) callconv(.C) HRESULT,
+    TranslateAcceleratorA: ?fn ([*c]IOleInPlaceActiveObject, LPMSG) callconv(.C) HRESULT,
+    OnFrameWindowActivate: ?fn ([*c]IOleInPlaceActiveObject, BOOL) callconv(.C) HRESULT,
+    OnDocWindowActivate: ?fn ([*c]IOleInPlaceActiveObject, BOOL) callconv(.C) HRESULT,
+    ResizeBorder: ?fn ([*c]IOleInPlaceActiveObject, LPCRECT, [*c]IOleInPlaceUIWindow, BOOL) callconv(.C) HRESULT,
+    EnableModeless: ?fn ([*c]IOleInPlaceActiveObject, BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IOleInPlaceActiveObject = extern struct {
     lpVtbl: [*c]struct_IOleInPlaceActiveObjectVtbl,
 };
 pub const IOleInPlaceActiveObject = struct_IOleInPlaceActiveObject;
 pub const struct_IOleInPlaceUIWindowVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleInPlaceUIWindow, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleInPlaceUIWindow) ULONG,
-    Release: ?extern fn ([*c]IOleInPlaceUIWindow) ULONG,
-    GetWindow: ?extern fn ([*c]IOleInPlaceUIWindow, [*c]HWND) HRESULT,
-    ContextSensitiveHelp: ?extern fn ([*c]IOleInPlaceUIWindow, BOOL) HRESULT,
-    GetBorder: ?extern fn ([*c]IOleInPlaceUIWindow, LPRECT) HRESULT,
-    RequestBorderSpace: ?extern fn ([*c]IOleInPlaceUIWindow, LPCBORDERWIDTHS) HRESULT,
-    SetBorderSpace: ?extern fn ([*c]IOleInPlaceUIWindow, LPCBORDERWIDTHS) HRESULT,
-    SetActiveObject: ?extern fn ([*c]IOleInPlaceUIWindow, [*c]IOleInPlaceActiveObject, LPCOLESTR) HRESULT,
+    QueryInterface: ?fn ([*c]IOleInPlaceUIWindow, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleInPlaceUIWindow) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleInPlaceUIWindow) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]IOleInPlaceUIWindow, [*c]HWND) callconv(.C) HRESULT,
+    ContextSensitiveHelp: ?fn ([*c]IOleInPlaceUIWindow, BOOL) callconv(.C) HRESULT,
+    GetBorder: ?fn ([*c]IOleInPlaceUIWindow, LPRECT) callconv(.C) HRESULT,
+    RequestBorderSpace: ?fn ([*c]IOleInPlaceUIWindow, LPCBORDERWIDTHS) callconv(.C) HRESULT,
+    SetBorderSpace: ?fn ([*c]IOleInPlaceUIWindow, LPCBORDERWIDTHS) callconv(.C) HRESULT,
+    SetActiveObject: ?fn ([*c]IOleInPlaceUIWindow, [*c]IOleInPlaceActiveObject, LPCOLESTR) callconv(.C) HRESULT,
 };
 pub const struct_IOleInPlaceUIWindow = extern struct {
     lpVtbl: [*c]struct_IOleInPlaceUIWindowVtbl,
@@ -38565,36 +38565,36 @@ pub const struct_tagOleMenuGroupWidths = extern struct {
 pub const LPOLEMENUGROUPWIDTHS = [*c]struct_tagOleMenuGroupWidths;
 pub const HOLEMENU = HGLOBAL;
 pub const struct_IOleInPlaceFrameVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleInPlaceFrame, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleInPlaceFrame) ULONG,
-    Release: ?extern fn ([*c]IOleInPlaceFrame) ULONG,
-    GetWindow: ?extern fn ([*c]IOleInPlaceFrame, [*c]HWND) HRESULT,
-    ContextSensitiveHelp: ?extern fn ([*c]IOleInPlaceFrame, BOOL) HRESULT,
-    GetBorder: ?extern fn ([*c]IOleInPlaceFrame, LPRECT) HRESULT,
-    RequestBorderSpace: ?extern fn ([*c]IOleInPlaceFrame, LPCBORDERWIDTHS) HRESULT,
-    SetBorderSpace: ?extern fn ([*c]IOleInPlaceFrame, LPCBORDERWIDTHS) HRESULT,
-    SetActiveObject: ?extern fn ([*c]IOleInPlaceFrame, [*c]IOleInPlaceActiveObject, LPCOLESTR) HRESULT,
-    InsertMenus: ?extern fn ([*c]IOleInPlaceFrame, HMENU, LPOLEMENUGROUPWIDTHS) HRESULT,
-    SetMenu: ?extern fn ([*c]IOleInPlaceFrame, HMENU, HOLEMENU, HWND) HRESULT,
-    RemoveMenus: ?extern fn ([*c]IOleInPlaceFrame, HMENU) HRESULT,
-    SetStatusText: ?extern fn ([*c]IOleInPlaceFrame, LPCOLESTR) HRESULT,
-    EnableModeless: ?extern fn ([*c]IOleInPlaceFrame, BOOL) HRESULT,
-    TranslateAcceleratorA: ?extern fn ([*c]IOleInPlaceFrame, LPMSG, WORD) HRESULT,
+    QueryInterface: ?fn ([*c]IOleInPlaceFrame, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleInPlaceFrame) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleInPlaceFrame) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]IOleInPlaceFrame, [*c]HWND) callconv(.C) HRESULT,
+    ContextSensitiveHelp: ?fn ([*c]IOleInPlaceFrame, BOOL) callconv(.C) HRESULT,
+    GetBorder: ?fn ([*c]IOleInPlaceFrame, LPRECT) callconv(.C) HRESULT,
+    RequestBorderSpace: ?fn ([*c]IOleInPlaceFrame, LPCBORDERWIDTHS) callconv(.C) HRESULT,
+    SetBorderSpace: ?fn ([*c]IOleInPlaceFrame, LPCBORDERWIDTHS) callconv(.C) HRESULT,
+    SetActiveObject: ?fn ([*c]IOleInPlaceFrame, [*c]IOleInPlaceActiveObject, LPCOLESTR) callconv(.C) HRESULT,
+    InsertMenus: ?fn ([*c]IOleInPlaceFrame, HMENU, LPOLEMENUGROUPWIDTHS) callconv(.C) HRESULT,
+    SetMenu: ?fn ([*c]IOleInPlaceFrame, HMENU, HOLEMENU, HWND) callconv(.C) HRESULT,
+    RemoveMenus: ?fn ([*c]IOleInPlaceFrame, HMENU) callconv(.C) HRESULT,
+    SetStatusText: ?fn ([*c]IOleInPlaceFrame, LPCOLESTR) callconv(.C) HRESULT,
+    EnableModeless: ?fn ([*c]IOleInPlaceFrame, BOOL) callconv(.C) HRESULT,
+    TranslateAcceleratorA: ?fn ([*c]IOleInPlaceFrame, LPMSG, WORD) callconv(.C) HRESULT,
 };
 pub const struct_IOleInPlaceFrame = extern struct {
     lpVtbl: [*c]struct_IOleInPlaceFrameVtbl,
 };
 pub const IOleInPlaceObject = struct_IOleInPlaceObject;
 pub const struct_IOleInPlaceObjectVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleInPlaceObject, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleInPlaceObject) ULONG,
-    Release: ?extern fn ([*c]IOleInPlaceObject) ULONG,
-    GetWindow: ?extern fn ([*c]IOleInPlaceObject, [*c]HWND) HRESULT,
-    ContextSensitiveHelp: ?extern fn ([*c]IOleInPlaceObject, BOOL) HRESULT,
-    InPlaceDeactivate: ?extern fn ([*c]IOleInPlaceObject) HRESULT,
-    UIDeactivate: ?extern fn ([*c]IOleInPlaceObject) HRESULT,
-    SetObjectRects: ?extern fn ([*c]IOleInPlaceObject, LPCRECT, LPCRECT) HRESULT,
-    ReactivateAndUndo: ?extern fn ([*c]IOleInPlaceObject) HRESULT,
+    QueryInterface: ?fn ([*c]IOleInPlaceObject, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleInPlaceObject) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleInPlaceObject) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]IOleInPlaceObject, [*c]HWND) callconv(.C) HRESULT,
+    ContextSensitiveHelp: ?fn ([*c]IOleInPlaceObject, BOOL) callconv(.C) HRESULT,
+    InPlaceDeactivate: ?fn ([*c]IOleInPlaceObject) callconv(.C) HRESULT,
+    UIDeactivate: ?fn ([*c]IOleInPlaceObject) callconv(.C) HRESULT,
+    SetObjectRects: ?fn ([*c]IOleInPlaceObject, LPCRECT, LPCRECT) callconv(.C) HRESULT,
+    ReactivateAndUndo: ?fn ([*c]IOleInPlaceObject) callconv(.C) HRESULT,
 };
 pub const struct_IOleInPlaceObject = extern struct {
     lpVtbl: [*c]struct_IOleInPlaceObjectVtbl,
@@ -38609,108 +38609,108 @@ pub const struct_tagOIFI = extern struct {
 };
 pub const LPOLEINPLACEFRAMEINFO = [*c]struct_tagOIFI;
 pub const struct_IOleInPlaceSiteVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IOleInPlaceSite, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IOleInPlaceSite) ULONG,
-    Release: ?extern fn ([*c]IOleInPlaceSite) ULONG,
-    GetWindow: ?extern fn ([*c]IOleInPlaceSite, [*c]HWND) HRESULT,
-    ContextSensitiveHelp: ?extern fn ([*c]IOleInPlaceSite, BOOL) HRESULT,
-    CanInPlaceActivate: ?extern fn ([*c]IOleInPlaceSite) HRESULT,
-    OnInPlaceActivate: ?extern fn ([*c]IOleInPlaceSite) HRESULT,
-    OnUIActivate: ?extern fn ([*c]IOleInPlaceSite) HRESULT,
-    GetWindowContext: ?extern fn ([*c]IOleInPlaceSite, [*c]([*c]IOleInPlaceFrame), [*c]([*c]IOleInPlaceUIWindow), LPRECT, LPRECT, LPOLEINPLACEFRAMEINFO) HRESULT,
-    Scroll: ?extern fn ([*c]IOleInPlaceSite, SIZE) HRESULT,
-    OnUIDeactivate: ?extern fn ([*c]IOleInPlaceSite, BOOL) HRESULT,
-    OnInPlaceDeactivate: ?extern fn ([*c]IOleInPlaceSite) HRESULT,
-    DiscardUndoState: ?extern fn ([*c]IOleInPlaceSite) HRESULT,
-    DeactivateAndUndo: ?extern fn ([*c]IOleInPlaceSite) HRESULT,
-    OnPosRectChange: ?extern fn ([*c]IOleInPlaceSite, LPCRECT) HRESULT,
+    QueryInterface: ?fn ([*c]IOleInPlaceSite, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IOleInPlaceSite) callconv(.C) ULONG,
+    Release: ?fn ([*c]IOleInPlaceSite) callconv(.C) ULONG,
+    GetWindow: ?fn ([*c]IOleInPlaceSite, [*c]HWND) callconv(.C) HRESULT,
+    ContextSensitiveHelp: ?fn ([*c]IOleInPlaceSite, BOOL) callconv(.C) HRESULT,
+    CanInPlaceActivate: ?fn ([*c]IOleInPlaceSite) callconv(.C) HRESULT,
+    OnInPlaceActivate: ?fn ([*c]IOleInPlaceSite) callconv(.C) HRESULT,
+    OnUIActivate: ?fn ([*c]IOleInPlaceSite) callconv(.C) HRESULT,
+    GetWindowContext: ?fn ([*c]IOleInPlaceSite, [*c]([*c]IOleInPlaceFrame), [*c]([*c]IOleInPlaceUIWindow), LPRECT, LPRECT, LPOLEINPLACEFRAMEINFO) callconv(.C) HRESULT,
+    Scroll: ?fn ([*c]IOleInPlaceSite, SIZE) callconv(.C) HRESULT,
+    OnUIDeactivate: ?fn ([*c]IOleInPlaceSite, BOOL) callconv(.C) HRESULT,
+    OnInPlaceDeactivate: ?fn ([*c]IOleInPlaceSite) callconv(.C) HRESULT,
+    DiscardUndoState: ?fn ([*c]IOleInPlaceSite) callconv(.C) HRESULT,
+    DeactivateAndUndo: ?fn ([*c]IOleInPlaceSite) callconv(.C) HRESULT,
+    OnPosRectChange: ?fn ([*c]IOleInPlaceSite, LPCRECT) callconv(.C) HRESULT,
 };
 pub const struct_IOleInPlaceSite = extern struct {
     lpVtbl: [*c]struct_IOleInPlaceSiteVtbl,
 };
 pub const IContinue = struct_IContinue;
 pub const struct_IContinueVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IContinue, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IContinue) ULONG,
-    Release: ?extern fn ([*c]IContinue) ULONG,
-    FContinue: ?extern fn ([*c]IContinue) HRESULT,
+    QueryInterface: ?fn ([*c]IContinue, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IContinue) callconv(.C) ULONG,
+    Release: ?fn ([*c]IContinue) callconv(.C) ULONG,
+    FContinue: ?fn ([*c]IContinue) callconv(.C) HRESULT,
 };
 pub const struct_IContinue = extern struct {
     lpVtbl: [*c]struct_IContinueVtbl,
 };
 pub const IViewObject = struct_IViewObject;
 pub const struct_IViewObjectVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IViewObject, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IViewObject) ULONG,
-    Release: ?extern fn ([*c]IViewObject) ULONG,
-    Draw: ?extern fn ([*c]IViewObject, DWORD, LONG, ?*c_void, [*c]DVTARGETDEVICE, HDC, HDC, LPCRECTL, LPCRECTL, ?extern fn (ULONG_PTR) BOOL, ULONG_PTR) HRESULT,
-    GetColorSet: ?extern fn ([*c]IViewObject, DWORD, LONG, ?*c_void, [*c]DVTARGETDEVICE, HDC, [*c]([*c]LOGPALETTE)) HRESULT,
-    Freeze: ?extern fn ([*c]IViewObject, DWORD, LONG, ?*c_void, [*c]DWORD) HRESULT,
-    Unfreeze: ?extern fn ([*c]IViewObject, DWORD) HRESULT,
-    SetAdvise: ?extern fn ([*c]IViewObject, DWORD, DWORD, [*c]IAdviseSink) HRESULT,
-    GetAdvise: ?extern fn ([*c]IViewObject, [*c]DWORD, [*c]DWORD, [*c]([*c]IAdviseSink)) HRESULT,
+    QueryInterface: ?fn ([*c]IViewObject, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IViewObject) callconv(.C) ULONG,
+    Release: ?fn ([*c]IViewObject) callconv(.C) ULONG,
+    Draw: ?fn ([*c]IViewObject, DWORD, LONG, ?*c_void, [*c]DVTARGETDEVICE, HDC, HDC, LPCRECTL, LPCRECTL, ?fn (ULONG_PTR) callconv(.C) BOOL, ULONG_PTR) callconv(.C) HRESULT,
+    GetColorSet: ?fn ([*c]IViewObject, DWORD, LONG, ?*c_void, [*c]DVTARGETDEVICE, HDC, [*c]([*c]LOGPALETTE)) callconv(.C) HRESULT,
+    Freeze: ?fn ([*c]IViewObject, DWORD, LONG, ?*c_void, [*c]DWORD) callconv(.C) HRESULT,
+    Unfreeze: ?fn ([*c]IViewObject, DWORD) callconv(.C) HRESULT,
+    SetAdvise: ?fn ([*c]IViewObject, DWORD, DWORD, [*c]IAdviseSink) callconv(.C) HRESULT,
+    GetAdvise: ?fn ([*c]IViewObject, [*c]DWORD, [*c]DWORD, [*c]([*c]IAdviseSink)) callconv(.C) HRESULT,
 };
 pub const struct_IViewObject = extern struct {
     lpVtbl: [*c]struct_IViewObjectVtbl,
 };
 pub const IViewObject2 = struct_IViewObject2;
 pub const struct_IViewObject2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IViewObject2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IViewObject2) ULONG,
-    Release: ?extern fn ([*c]IViewObject2) ULONG,
-    Draw: ?extern fn ([*c]IViewObject2, DWORD, LONG, ?*c_void, [*c]DVTARGETDEVICE, HDC, HDC, LPCRECTL, LPCRECTL, ?extern fn (ULONG_PTR) BOOL, ULONG_PTR) HRESULT,
-    GetColorSet: ?extern fn ([*c]IViewObject2, DWORD, LONG, ?*c_void, [*c]DVTARGETDEVICE, HDC, [*c]([*c]LOGPALETTE)) HRESULT,
-    Freeze: ?extern fn ([*c]IViewObject2, DWORD, LONG, ?*c_void, [*c]DWORD) HRESULT,
-    Unfreeze: ?extern fn ([*c]IViewObject2, DWORD) HRESULT,
-    SetAdvise: ?extern fn ([*c]IViewObject2, DWORD, DWORD, [*c]IAdviseSink) HRESULT,
-    GetAdvise: ?extern fn ([*c]IViewObject2, [*c]DWORD, [*c]DWORD, [*c]([*c]IAdviseSink)) HRESULT,
-    GetExtent: ?extern fn ([*c]IViewObject2, DWORD, LONG, [*c]DVTARGETDEVICE, LPSIZEL) HRESULT,
+    QueryInterface: ?fn ([*c]IViewObject2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IViewObject2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IViewObject2) callconv(.C) ULONG,
+    Draw: ?fn ([*c]IViewObject2, DWORD, LONG, ?*c_void, [*c]DVTARGETDEVICE, HDC, HDC, LPCRECTL, LPCRECTL, ?fn (ULONG_PTR) callconv(.C) BOOL, ULONG_PTR) callconv(.C) HRESULT,
+    GetColorSet: ?fn ([*c]IViewObject2, DWORD, LONG, ?*c_void, [*c]DVTARGETDEVICE, HDC, [*c]([*c]LOGPALETTE)) callconv(.C) HRESULT,
+    Freeze: ?fn ([*c]IViewObject2, DWORD, LONG, ?*c_void, [*c]DWORD) callconv(.C) HRESULT,
+    Unfreeze: ?fn ([*c]IViewObject2, DWORD) callconv(.C) HRESULT,
+    SetAdvise: ?fn ([*c]IViewObject2, DWORD, DWORD, [*c]IAdviseSink) callconv(.C) HRESULT,
+    GetAdvise: ?fn ([*c]IViewObject2, [*c]DWORD, [*c]DWORD, [*c]([*c]IAdviseSink)) callconv(.C) HRESULT,
+    GetExtent: ?fn ([*c]IViewObject2, DWORD, LONG, [*c]DVTARGETDEVICE, LPSIZEL) callconv(.C) HRESULT,
 };
 pub const struct_IViewObject2 = extern struct {
     lpVtbl: [*c]struct_IViewObject2Vtbl,
 };
 pub const IDropSource = struct_IDropSource;
 pub const struct_IDropSourceVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IDropSource, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IDropSource) ULONG,
-    Release: ?extern fn ([*c]IDropSource) ULONG,
-    QueryContinueDrag: ?extern fn ([*c]IDropSource, BOOL, DWORD) HRESULT,
-    GiveFeedback: ?extern fn ([*c]IDropSource, DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IDropSource, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IDropSource) callconv(.C) ULONG,
+    Release: ?fn ([*c]IDropSource) callconv(.C) ULONG,
+    QueryContinueDrag: ?fn ([*c]IDropSource, BOOL, DWORD) callconv(.C) HRESULT,
+    GiveFeedback: ?fn ([*c]IDropSource, DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IDropSource = extern struct {
     lpVtbl: [*c]struct_IDropSourceVtbl,
 };
 pub const IDropTarget = struct_IDropTarget;
 pub const struct_IDropTargetVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IDropTarget, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IDropTarget) ULONG,
-    Release: ?extern fn ([*c]IDropTarget) ULONG,
-    DragEnter: ?extern fn ([*c]IDropTarget, [*c]IDataObject, DWORD, POINTL, [*c]DWORD) HRESULT,
-    DragOver: ?extern fn ([*c]IDropTarget, DWORD, POINTL, [*c]DWORD) HRESULT,
-    DragLeave: ?extern fn ([*c]IDropTarget) HRESULT,
-    Drop: ?extern fn ([*c]IDropTarget, [*c]IDataObject, DWORD, POINTL, [*c]DWORD) HRESULT,
+    QueryInterface: ?fn ([*c]IDropTarget, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IDropTarget) callconv(.C) ULONG,
+    Release: ?fn ([*c]IDropTarget) callconv(.C) ULONG,
+    DragEnter: ?fn ([*c]IDropTarget, [*c]IDataObject, DWORD, POINTL, [*c]DWORD) callconv(.C) HRESULT,
+    DragOver: ?fn ([*c]IDropTarget, DWORD, POINTL, [*c]DWORD) callconv(.C) HRESULT,
+    DragLeave: ?fn ([*c]IDropTarget) callconv(.C) HRESULT,
+    Drop: ?fn ([*c]IDropTarget, [*c]IDataObject, DWORD, POINTL, [*c]DWORD) callconv(.C) HRESULT,
 };
 pub const struct_IDropTarget = extern struct {
     lpVtbl: [*c]struct_IDropTargetVtbl,
 };
 pub const IDropSourceNotify = struct_IDropSourceNotify;
 pub const struct_IDropSourceNotifyVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IDropSourceNotify, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IDropSourceNotify) ULONG,
-    Release: ?extern fn ([*c]IDropSourceNotify) ULONG,
-    DragEnterTarget: ?extern fn ([*c]IDropSourceNotify, HWND) HRESULT,
-    DragLeaveTarget: ?extern fn ([*c]IDropSourceNotify) HRESULT,
+    QueryInterface: ?fn ([*c]IDropSourceNotify, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IDropSourceNotify) callconv(.C) ULONG,
+    Release: ?fn ([*c]IDropSourceNotify) callconv(.C) ULONG,
+    DragEnterTarget: ?fn ([*c]IDropSourceNotify, HWND) callconv(.C) HRESULT,
+    DragLeaveTarget: ?fn ([*c]IDropSourceNotify) callconv(.C) HRESULT,
 };
 pub const struct_IDropSourceNotify = extern struct {
     lpVtbl: [*c]struct_IDropSourceNotifyVtbl,
 };
 pub const IEnterpriseDropTarget = struct_IEnterpriseDropTarget;
 pub const struct_IEnterpriseDropTargetVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IEnterpriseDropTarget, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IEnterpriseDropTarget) ULONG,
-    Release: ?extern fn ([*c]IEnterpriseDropTarget) ULONG,
-    SetDropSourceEnterpriseId: ?extern fn ([*c]IEnterpriseDropTarget, LPCWSTR) HRESULT,
-    IsEvaluatingEdpPolicy: ?extern fn ([*c]IEnterpriseDropTarget, [*c]BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IEnterpriseDropTarget, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IEnterpriseDropTarget) callconv(.C) ULONG,
+    Release: ?fn ([*c]IEnterpriseDropTarget) callconv(.C) ULONG,
+    SetDropSourceEnterpriseId: ?fn ([*c]IEnterpriseDropTarget, LPCWSTR) callconv(.C) HRESULT,
+    IsEvaluatingEdpPolicy: ?fn ([*c]IEnterpriseDropTarget, [*c]BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IEnterpriseDropTarget = extern struct {
     lpVtbl: [*c]struct_IEnterpriseDropTargetVtbl,
@@ -39018,7 +39018,7 @@ pub extern fn IOleInPlaceActiveObject_TranslateAccelerator_Proxy(This: [*c]IOleI
 pub extern fn IOleInPlaceActiveObject_TranslateAccelerator_Stub(This: [*c]IOleInPlaceActiveObject) HRESULT;
 pub extern fn IOleInPlaceActiveObject_ResizeBorder_Proxy(This: [*c]IOleInPlaceActiveObject, prcBorder: LPCRECT, pUIWindow: [*c]IOleInPlaceUIWindow, fFrameWindow: BOOL) HRESULT;
 pub extern fn IOleInPlaceActiveObject_ResizeBorder_Stub(This: [*c]IOleInPlaceActiveObject, prcBorder: LPCRECT, riid: [*c]const IID, pUIWindow: [*c]IOleInPlaceUIWindow, fFrameWindow: BOOL) HRESULT;
-pub extern fn IViewObject_Draw_Proxy(This: [*c]IViewObject, dwDrawAspect: DWORD, lindex: LONG, pvAspect: ?*c_void, ptd: [*c]DVTARGETDEVICE, hdcTargetDev: HDC, hdcDraw: HDC, lprcBounds: LPCRECTL, lprcWBounds: LPCRECTL, pfnContinue: ?extern fn (ULONG_PTR) BOOL, dwContinue: ULONG_PTR) HRESULT;
+pub extern fn IViewObject_Draw_Proxy(This: [*c]IViewObject, dwDrawAspect: DWORD, lindex: LONG, pvAspect: ?*c_void, ptd: [*c]DVTARGETDEVICE, hdcTargetDev: HDC, hdcDraw: HDC, lprcBounds: LPCRECTL, lprcWBounds: LPCRECTL, pfnContinue: ?fn (ULONG_PTR) callconv(.C) BOOL, dwContinue: ULONG_PTR) HRESULT;
 pub extern fn IViewObject_Draw_Stub(This: [*c]IViewObject, dwDrawAspect: DWORD, lindex: LONG, pvAspect: ULONG_PTR, ptd: [*c]DVTARGETDEVICE, hdcTargetDev: HDC, hdcDraw: HDC, lprcBounds: LPCRECTL, lprcWBounds: LPCRECTL, pContinue: [*c]IContinue) HRESULT;
 pub extern fn IViewObject_GetColorSet_Proxy(This: [*c]IViewObject, dwDrawAspect: DWORD, lindex: LONG, pvAspect: ?*c_void, ptd: [*c]DVTARGETDEVICE, hicTargetDev: HDC, ppColorSet: [*c]([*c]LOGPALETTE)) HRESULT;
 pub extern fn IViewObject_GetColorSet_Stub(This: [*c]IViewObject, dwDrawAspect: DWORD, lindex: LONG, pvAspect: ULONG_PTR, ptd: [*c]DVTARGETDEVICE, hicTargetDev: ULONG_PTR, ppColorSet: [*c]([*c]LOGPALETTE)) HRESULT;
@@ -39030,10 +39030,10 @@ pub extern fn IEnumOLEVERB_Next_Proxy(This: [*c]IEnumOLEVERB, celt: ULONG, rgelt
 pub extern fn IEnumOLEVERB_Next_Stub(This: [*c]IEnumOLEVERB, celt: ULONG, rgelt: LPOLEVERB, pceltFetched: [*c]ULONG) HRESULT;
 pub const IServiceProvider = struct_IServiceProvider;
 pub const struct_IServiceProviderVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IServiceProvider, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IServiceProvider) ULONG,
-    Release: ?extern fn ([*c]IServiceProvider) ULONG,
-    QueryService: ?extern fn ([*c]IServiceProvider, [*c]const GUID, [*c]const IID, [*c](?*c_void)) HRESULT,
+    QueryInterface: ?fn ([*c]IServiceProvider, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IServiceProvider) callconv(.C) ULONG,
+    Release: ?fn ([*c]IServiceProvider) callconv(.C) ULONG,
+    QueryService: ?fn ([*c]IServiceProvider, [*c]const GUID, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
 };
 pub const struct_IServiceProvider = extern struct {
     lpVtbl: [*c]struct_IServiceProviderVtbl,
@@ -39051,14 +39051,14 @@ pub extern fn IServiceProvider_QueryService_Proxy(This: [*c]IServiceProvider, gu
 pub extern fn IServiceProvider_QueryService_Stub(This: [*c]IServiceProvider, guidService: [*c]const GUID, riid: [*c]const IID, ppvObject: [*c]([*c]IUnknown)) HRESULT;
 pub const IXMLDOMImplementation = struct_IXMLDOMImplementation;
 pub const struct_IXMLDOMImplementationVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMImplementation, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMImplementation) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMImplementation) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMImplementation, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMImplementation, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMImplementation, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMImplementation, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    hasFeature: ?extern fn ([*c]IXMLDOMImplementation, BSTR, BSTR, [*c]VARIANT_BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMImplementation, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMImplementation) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMImplementation) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMImplementation, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMImplementation, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMImplementation, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMImplementation, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    hasFeature: ?fn ([*c]IXMLDOMImplementation, BSTR, BSTR, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMImplementation = extern struct {
     lpVtbl: [*c]struct_IXMLDOMImplementationVtbl,
@@ -39108,908 +39108,908 @@ pub const DOMNodeType = extern enum {
     NODE_NOTATION = 12,
 };
 pub const struct_IXMLDOMNodeListVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMNodeList, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMNodeList) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMNodeList) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMNodeList, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMNodeList, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMNodeList, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMNodeList, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_item: ?extern fn ([*c]IXMLDOMNodeList, c_long, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_length: ?extern fn ([*c]IXMLDOMNodeList, [*c]c_long) HRESULT,
-    nextNode: ?extern fn ([*c]IXMLDOMNodeList, [*c]([*c]IXMLDOMNode)) HRESULT,
-    reset: ?extern fn ([*c]IXMLDOMNodeList) HRESULT,
-    get__newEnum: ?extern fn ([*c]IXMLDOMNodeList, [*c]([*c]IUnknown)) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMNodeList, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMNodeList) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMNodeList) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMNodeList, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMNodeList, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMNodeList, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMNodeList, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_item: ?fn ([*c]IXMLDOMNodeList, c_long, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_length: ?fn ([*c]IXMLDOMNodeList, [*c]c_long) callconv(.C) HRESULT,
+    nextNode: ?fn ([*c]IXMLDOMNodeList, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    reset: ?fn ([*c]IXMLDOMNodeList) callconv(.C) HRESULT,
+    get__newEnum: ?fn ([*c]IXMLDOMNodeList, [*c]([*c]IUnknown)) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMNodeList = extern struct {
     lpVtbl: [*c]struct_IXMLDOMNodeListVtbl,
 };
 pub const IXMLDOMNodeList = struct_IXMLDOMNodeList;
 pub const struct_IXMLDOMNamedNodeMapVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMNamedNodeMap, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMNamedNodeMap) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMNamedNodeMap) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMNamedNodeMap, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMNamedNodeMap, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMNamedNodeMap, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMNamedNodeMap, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    getNamedItem: ?extern fn ([*c]IXMLDOMNamedNodeMap, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    setNamedItem: ?extern fn ([*c]IXMLDOMNamedNodeMap, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeNamedItem: ?extern fn ([*c]IXMLDOMNamedNodeMap, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_item: ?extern fn ([*c]IXMLDOMNamedNodeMap, c_long, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_length: ?extern fn ([*c]IXMLDOMNamedNodeMap, [*c]c_long) HRESULT,
-    getQualifiedItem: ?extern fn ([*c]IXMLDOMNamedNodeMap, BSTR, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeQualifiedItem: ?extern fn ([*c]IXMLDOMNamedNodeMap, BSTR, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    nextNode: ?extern fn ([*c]IXMLDOMNamedNodeMap, [*c]([*c]IXMLDOMNode)) HRESULT,
-    reset: ?extern fn ([*c]IXMLDOMNamedNodeMap) HRESULT,
-    get__newEnum: ?extern fn ([*c]IXMLDOMNamedNodeMap, [*c]([*c]IUnknown)) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMNamedNodeMap, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMNamedNodeMap) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMNamedNodeMap) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMNamedNodeMap, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMNamedNodeMap, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMNamedNodeMap, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMNamedNodeMap, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    getNamedItem: ?fn ([*c]IXMLDOMNamedNodeMap, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    setNamedItem: ?fn ([*c]IXMLDOMNamedNodeMap, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeNamedItem: ?fn ([*c]IXMLDOMNamedNodeMap, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_item: ?fn ([*c]IXMLDOMNamedNodeMap, c_long, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_length: ?fn ([*c]IXMLDOMNamedNodeMap, [*c]c_long) callconv(.C) HRESULT,
+    getQualifiedItem: ?fn ([*c]IXMLDOMNamedNodeMap, BSTR, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeQualifiedItem: ?fn ([*c]IXMLDOMNamedNodeMap, BSTR, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    nextNode: ?fn ([*c]IXMLDOMNamedNodeMap, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    reset: ?fn ([*c]IXMLDOMNamedNodeMap) callconv(.C) HRESULT,
+    get__newEnum: ?fn ([*c]IXMLDOMNamedNodeMap, [*c]([*c]IUnknown)) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMNamedNodeMap = extern struct {
     lpVtbl: [*c]struct_IXMLDOMNamedNodeMapVtbl,
 };
 pub const IXMLDOMNamedNodeMap = struct_IXMLDOMNamedNodeMap;
 pub const struct_IXMLDOMDocumentTypeVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMDocumentType, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMDocumentType) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMDocumentType) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMDocumentType, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMDocumentType, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMDocumentType, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMDocumentType, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMDocumentType, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMDocumentType, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMDocumentType, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMDocumentType, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMDocumentType, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMDocumentType, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMDocumentType, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMDocumentType, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMDocumentType, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMDocumentType, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMDocumentType, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMDocumentType, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMDocumentType, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMDocumentType, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMDocumentType, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMDocumentType, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMDocumentType, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMDocumentType, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMDocumentType, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMDocumentType, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMDocumentType, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_name: ?extern fn ([*c]IXMLDOMDocumentType, [*c]BSTR) HRESULT,
-    get_entities: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    get_notations: ?extern fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMDocumentType, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMDocumentType) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMDocumentType) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMDocumentType, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMDocumentType, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMDocumentType, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMDocumentType, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMDocumentType, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMDocumentType, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMDocumentType, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMDocumentType, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMDocumentType, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMDocumentType, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMDocumentType, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMDocumentType, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMDocumentType, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMDocumentType, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMDocumentType, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMDocumentType, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMDocumentType, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMDocumentType, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMDocumentType, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMDocumentType, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMDocumentType, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMDocumentType, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMDocumentType, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMDocumentType, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMDocumentType, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMDocumentType, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_name: ?fn ([*c]IXMLDOMDocumentType, [*c]BSTR) callconv(.C) HRESULT,
+    get_entities: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    get_notations: ?fn ([*c]IXMLDOMDocumentType, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMDocumentType = extern struct {
     lpVtbl: [*c]struct_IXMLDOMDocumentTypeVtbl,
 };
 pub const IXMLDOMDocumentType = struct_IXMLDOMDocumentType;
 pub const struct_IXMLDOMAttributeVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMAttribute, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMAttribute) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMAttribute) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMAttribute, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMAttribute, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMAttribute, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMAttribute, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMAttribute, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMAttribute, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMAttribute, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMAttribute, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMAttribute, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMAttribute, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMAttribute, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMAttribute, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMAttribute, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMAttribute, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMAttribute, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMAttribute, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMAttribute, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMAttribute, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMAttribute, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMAttribute, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMAttribute, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMAttribute, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMAttribute, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMAttribute, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMAttribute, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_name: ?extern fn ([*c]IXMLDOMAttribute, [*c]BSTR) HRESULT,
-    get_value: ?extern fn ([*c]IXMLDOMAttribute, [*c]VARIANT) HRESULT,
-    put_value: ?extern fn ([*c]IXMLDOMAttribute, VARIANT) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMAttribute, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMAttribute) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMAttribute) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMAttribute, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMAttribute, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMAttribute, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMAttribute, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMAttribute, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMAttribute, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMAttribute, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMAttribute, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMAttribute, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMAttribute, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMAttribute, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMAttribute, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMAttribute, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMAttribute, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMAttribute, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMAttribute, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMAttribute, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMAttribute, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMAttribute, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMAttribute, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMAttribute, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMAttribute, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMAttribute, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMAttribute, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMAttribute, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMAttribute, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_name: ?fn ([*c]IXMLDOMAttribute, [*c]BSTR) callconv(.C) HRESULT,
+    get_value: ?fn ([*c]IXMLDOMAttribute, [*c]VARIANT) callconv(.C) HRESULT,
+    put_value: ?fn ([*c]IXMLDOMAttribute, VARIANT) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMAttribute = extern struct {
     lpVtbl: [*c]struct_IXMLDOMAttributeVtbl,
 };
 pub const IXMLDOMAttribute = struct_IXMLDOMAttribute;
 pub const struct_IXMLDOMElementVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMElement, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMElement) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMElement) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMElement, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMElement, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMElement, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMElement, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMElement, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMElement, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMElement, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMElement, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMElement, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMElement, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMElement, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMElement, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMElement, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMElement, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMElement, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMElement, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMElement, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMElement, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMElement, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMElement, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMElement, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMElement, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMElement, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMElement, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMElement, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_tagName: ?extern fn ([*c]IXMLDOMElement, [*c]BSTR) HRESULT,
-    getAttribute: ?extern fn ([*c]IXMLDOMElement, BSTR, [*c]VARIANT) HRESULT,
-    setAttribute: ?extern fn ([*c]IXMLDOMElement, BSTR, VARIANT) HRESULT,
-    removeAttribute: ?extern fn ([*c]IXMLDOMElement, BSTR) HRESULT,
-    getAttributeNode: ?extern fn ([*c]IXMLDOMElement, BSTR, [*c]([*c]IXMLDOMAttribute)) HRESULT,
-    setAttributeNode: ?extern fn ([*c]IXMLDOMElement, [*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMAttribute)) HRESULT,
-    removeAttributeNode: ?extern fn ([*c]IXMLDOMElement, [*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMAttribute)) HRESULT,
-    getElementsByTagName: ?extern fn ([*c]IXMLDOMElement, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    normalize: ?extern fn ([*c]IXMLDOMElement) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMElement, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMElement) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMElement) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMElement, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMElement, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMElement, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMElement, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMElement, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMElement, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMElement, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMElement, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMElement, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMElement, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMElement, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMElement, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMElement, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMElement, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMElement, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMElement, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMElement, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMElement, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMElement, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMElement, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMElement, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMElement, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMElement, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMElement, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMElement, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMElement, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMElement, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_tagName: ?fn ([*c]IXMLDOMElement, [*c]BSTR) callconv(.C) HRESULT,
+    getAttribute: ?fn ([*c]IXMLDOMElement, BSTR, [*c]VARIANT) callconv(.C) HRESULT,
+    setAttribute: ?fn ([*c]IXMLDOMElement, BSTR, VARIANT) callconv(.C) HRESULT,
+    removeAttribute: ?fn ([*c]IXMLDOMElement, BSTR) callconv(.C) HRESULT,
+    getAttributeNode: ?fn ([*c]IXMLDOMElement, BSTR, [*c]([*c]IXMLDOMAttribute)) callconv(.C) HRESULT,
+    setAttributeNode: ?fn ([*c]IXMLDOMElement, [*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMAttribute)) callconv(.C) HRESULT,
+    removeAttributeNode: ?fn ([*c]IXMLDOMElement, [*c]IXMLDOMAttribute, [*c]([*c]IXMLDOMAttribute)) callconv(.C) HRESULT,
+    getElementsByTagName: ?fn ([*c]IXMLDOMElement, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    normalize: ?fn ([*c]IXMLDOMElement) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMElement = extern struct {
     lpVtbl: [*c]struct_IXMLDOMElementVtbl,
 };
 pub const IXMLDOMElement = struct_IXMLDOMElement;
 pub const struct_IXMLDOMDocumentFragmentVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMDocumentFragment) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMDocumentFragment) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMDocumentFragment, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMDocumentFragment, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMDocumentFragment, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMDocumentFragment, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMDocumentFragment, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMDocumentFragment, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMDocumentFragment, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMDocumentFragment, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMDocumentFragment, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, VARIANT) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMDocumentFragment, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMDocumentFragment) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMDocumentFragment) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMDocumentFragment, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMDocumentFragment, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMDocumentFragment, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMDocumentFragment, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMDocumentFragment, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMDocumentFragment, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMDocumentFragment, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMDocumentFragment, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMDocumentFragment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMDocumentFragment, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMDocumentFragment, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMDocumentFragment, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMDocumentFragment, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMDocumentFragment, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMDocumentFragment, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMDocumentFragment, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMDocumentFragment = extern struct {
     lpVtbl: [*c]struct_IXMLDOMDocumentFragmentVtbl,
 };
 pub const IXMLDOMDocumentFragment = struct_IXMLDOMDocumentFragment;
 pub const struct_IXMLDOMTextVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMText, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMText) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMText) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMText, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMText, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMText, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMText, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMText, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMText, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMText, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMText, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMText, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMText, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMText, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMText, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMText, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMText, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMText, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMText, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMText, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMText, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMText, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMText, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMText, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMText, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMText, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMText, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMText, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_data: ?extern fn ([*c]IXMLDOMText, [*c]BSTR) HRESULT,
-    put_data: ?extern fn ([*c]IXMLDOMText, BSTR) HRESULT,
-    get_length: ?extern fn ([*c]IXMLDOMText, [*c]c_long) HRESULT,
-    substringData: ?extern fn ([*c]IXMLDOMText, c_long, c_long, [*c]BSTR) HRESULT,
-    appendData: ?extern fn ([*c]IXMLDOMText, BSTR) HRESULT,
-    insertData: ?extern fn ([*c]IXMLDOMText, c_long, BSTR) HRESULT,
-    deleteData: ?extern fn ([*c]IXMLDOMText, c_long, c_long) HRESULT,
-    replaceData: ?extern fn ([*c]IXMLDOMText, c_long, c_long, BSTR) HRESULT,
-    splitText: ?extern fn ([*c]IXMLDOMText, c_long, [*c]([*c]IXMLDOMText)) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMText, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMText) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMText) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMText, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMText, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMText, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMText, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMText, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMText, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMText, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMText, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMText, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMText, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMText, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMText, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMText, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMText, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMText, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMText, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMText, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMText, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMText, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMText, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMText, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMText, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMText, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMText, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMText, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMText, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMText, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_data: ?fn ([*c]IXMLDOMText, [*c]BSTR) callconv(.C) HRESULT,
+    put_data: ?fn ([*c]IXMLDOMText, BSTR) callconv(.C) HRESULT,
+    get_length: ?fn ([*c]IXMLDOMText, [*c]c_long) callconv(.C) HRESULT,
+    substringData: ?fn ([*c]IXMLDOMText, c_long, c_long, [*c]BSTR) callconv(.C) HRESULT,
+    appendData: ?fn ([*c]IXMLDOMText, BSTR) callconv(.C) HRESULT,
+    insertData: ?fn ([*c]IXMLDOMText, c_long, BSTR) callconv(.C) HRESULT,
+    deleteData: ?fn ([*c]IXMLDOMText, c_long, c_long) callconv(.C) HRESULT,
+    replaceData: ?fn ([*c]IXMLDOMText, c_long, c_long, BSTR) callconv(.C) HRESULT,
+    splitText: ?fn ([*c]IXMLDOMText, c_long, [*c]([*c]IXMLDOMText)) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMText = extern struct {
     lpVtbl: [*c]struct_IXMLDOMTextVtbl,
 };
 pub const IXMLDOMText = struct_IXMLDOMText;
 pub const struct_IXMLDOMCommentVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMComment, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMComment) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMComment) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMComment, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMComment, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMComment, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMComment, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMComment, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMComment, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMComment, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMComment, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMComment, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMComment, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMComment, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMComment, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMComment, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMComment, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMComment, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMComment, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMComment, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMComment, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMComment, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMComment, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMComment, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMComment, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMComment, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMComment, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMComment, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_data: ?extern fn ([*c]IXMLDOMComment, [*c]BSTR) HRESULT,
-    put_data: ?extern fn ([*c]IXMLDOMComment, BSTR) HRESULT,
-    get_length: ?extern fn ([*c]IXMLDOMComment, [*c]c_long) HRESULT,
-    substringData: ?extern fn ([*c]IXMLDOMComment, c_long, c_long, [*c]BSTR) HRESULT,
-    appendData: ?extern fn ([*c]IXMLDOMComment, BSTR) HRESULT,
-    insertData: ?extern fn ([*c]IXMLDOMComment, c_long, BSTR) HRESULT,
-    deleteData: ?extern fn ([*c]IXMLDOMComment, c_long, c_long) HRESULT,
-    replaceData: ?extern fn ([*c]IXMLDOMComment, c_long, c_long, BSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMComment, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMComment) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMComment) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMComment, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMComment, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMComment, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMComment, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMComment, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMComment, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMComment, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMComment, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMComment, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMComment, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMComment, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMComment, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMComment, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMComment, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMComment, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMComment, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMComment, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMComment, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMComment, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMComment, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMComment, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMComment, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMComment, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMComment, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMComment, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMComment, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMComment, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_data: ?fn ([*c]IXMLDOMComment, [*c]BSTR) callconv(.C) HRESULT,
+    put_data: ?fn ([*c]IXMLDOMComment, BSTR) callconv(.C) HRESULT,
+    get_length: ?fn ([*c]IXMLDOMComment, [*c]c_long) callconv(.C) HRESULT,
+    substringData: ?fn ([*c]IXMLDOMComment, c_long, c_long, [*c]BSTR) callconv(.C) HRESULT,
+    appendData: ?fn ([*c]IXMLDOMComment, BSTR) callconv(.C) HRESULT,
+    insertData: ?fn ([*c]IXMLDOMComment, c_long, BSTR) callconv(.C) HRESULT,
+    deleteData: ?fn ([*c]IXMLDOMComment, c_long, c_long) callconv(.C) HRESULT,
+    replaceData: ?fn ([*c]IXMLDOMComment, c_long, c_long, BSTR) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMComment = extern struct {
     lpVtbl: [*c]struct_IXMLDOMCommentVtbl,
 };
 pub const IXMLDOMComment = struct_IXMLDOMComment;
 pub const struct_IXMLDOMCDATASectionVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMCDATASection, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMCDATASection) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMCDATASection) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMCDATASection, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMCDATASection, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMCDATASection, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMCDATASection, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMCDATASection, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMCDATASection, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMCDATASection, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMCDATASection, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMCDATASection, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMCDATASection, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMCDATASection, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMCDATASection, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMCDATASection, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMCDATASection, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMCDATASection, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMCDATASection, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMCDATASection, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMCDATASection, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMCDATASection, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMCDATASection, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMCDATASection, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMCDATASection, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMCDATASection, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMCDATASection, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMCDATASection, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_data: ?extern fn ([*c]IXMLDOMCDATASection, [*c]BSTR) HRESULT,
-    put_data: ?extern fn ([*c]IXMLDOMCDATASection, BSTR) HRESULT,
-    get_length: ?extern fn ([*c]IXMLDOMCDATASection, [*c]c_long) HRESULT,
-    substringData: ?extern fn ([*c]IXMLDOMCDATASection, c_long, c_long, [*c]BSTR) HRESULT,
-    appendData: ?extern fn ([*c]IXMLDOMCDATASection, BSTR) HRESULT,
-    insertData: ?extern fn ([*c]IXMLDOMCDATASection, c_long, BSTR) HRESULT,
-    deleteData: ?extern fn ([*c]IXMLDOMCDATASection, c_long, c_long) HRESULT,
-    replaceData: ?extern fn ([*c]IXMLDOMCDATASection, c_long, c_long, BSTR) HRESULT,
-    splitText: ?extern fn ([*c]IXMLDOMCDATASection, c_long, [*c]([*c]IXMLDOMText)) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMCDATASection, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMCDATASection) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMCDATASection) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMCDATASection, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMCDATASection, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMCDATASection, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMCDATASection, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMCDATASection, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMCDATASection, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMCDATASection, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMCDATASection, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMCDATASection, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMCDATASection, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMCDATASection, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMCDATASection, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMCDATASection, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMCDATASection, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMCDATASection, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMCDATASection, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMCDATASection, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMCDATASection, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMCDATASection, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMCDATASection, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMCDATASection, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMCDATASection, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMCDATASection, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMCDATASection, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMCDATASection, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMCDATASection, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMCDATASection, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_data: ?fn ([*c]IXMLDOMCDATASection, [*c]BSTR) callconv(.C) HRESULT,
+    put_data: ?fn ([*c]IXMLDOMCDATASection, BSTR) callconv(.C) HRESULT,
+    get_length: ?fn ([*c]IXMLDOMCDATASection, [*c]c_long) callconv(.C) HRESULT,
+    substringData: ?fn ([*c]IXMLDOMCDATASection, c_long, c_long, [*c]BSTR) callconv(.C) HRESULT,
+    appendData: ?fn ([*c]IXMLDOMCDATASection, BSTR) callconv(.C) HRESULT,
+    insertData: ?fn ([*c]IXMLDOMCDATASection, c_long, BSTR) callconv(.C) HRESULT,
+    deleteData: ?fn ([*c]IXMLDOMCDATASection, c_long, c_long) callconv(.C) HRESULT,
+    replaceData: ?fn ([*c]IXMLDOMCDATASection, c_long, c_long, BSTR) callconv(.C) HRESULT,
+    splitText: ?fn ([*c]IXMLDOMCDATASection, c_long, [*c]([*c]IXMLDOMText)) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMCDATASection = extern struct {
     lpVtbl: [*c]struct_IXMLDOMCDATASectionVtbl,
 };
 pub const IXMLDOMCDATASection = struct_IXMLDOMCDATASection;
 pub const struct_IXMLDOMProcessingInstructionVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMProcessingInstruction) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMProcessingInstruction) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMProcessingInstruction, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMProcessingInstruction, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMProcessingInstruction, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMProcessingInstruction, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMProcessingInstruction, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMProcessingInstruction, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMProcessingInstruction, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMProcessingInstruction, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMProcessingInstruction, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_target: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) HRESULT,
-    get_data: ?extern fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) HRESULT,
-    put_data: ?extern fn ([*c]IXMLDOMProcessingInstruction, BSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMProcessingInstruction) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMProcessingInstruction) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMProcessingInstruction, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMProcessingInstruction, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMProcessingInstruction, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMProcessingInstruction, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMProcessingInstruction, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMProcessingInstruction, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMProcessingInstruction, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMProcessingInstruction, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMProcessingInstruction, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_target: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) callconv(.C) HRESULT,
+    get_data: ?fn ([*c]IXMLDOMProcessingInstruction, [*c]BSTR) callconv(.C) HRESULT,
+    put_data: ?fn ([*c]IXMLDOMProcessingInstruction, BSTR) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMProcessingInstruction = extern struct {
     lpVtbl: [*c]struct_IXMLDOMProcessingInstructionVtbl,
 };
 pub const IXMLDOMProcessingInstruction = struct_IXMLDOMProcessingInstruction;
 pub const struct_IXMLDOMEntityReferenceVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMEntityReference, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMEntityReference) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMEntityReference) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMEntityReference, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMEntityReference, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMEntityReference, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMEntityReference, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMEntityReference, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMEntityReference, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMEntityReference, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMEntityReference, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMEntityReference, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMEntityReference, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMEntityReference, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMEntityReference, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMEntityReference, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMEntityReference, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMEntityReference, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMEntityReference, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMEntityReference, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMEntityReference, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMEntityReference, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMEntityReference, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMEntityReference, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMEntityReference, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMEntityReference, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMEntityReference, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMEntityReference, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, VARIANT) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMEntityReference, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMEntityReference) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMEntityReference) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMEntityReference, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMEntityReference, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMEntityReference, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMEntityReference, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMEntityReference, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMEntityReference, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMEntityReference, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMEntityReference, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMEntityReference, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMEntityReference, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMEntityReference, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMEntityReference, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMEntityReference, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMEntityReference, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMEntityReference, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMEntityReference, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMEntityReference, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMEntityReference, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMEntityReference, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMEntityReference, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMEntityReference, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMEntityReference, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMEntityReference, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMEntityReference, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMEntityReference, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMEntityReference, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMEntityReference, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMEntityReference = extern struct {
     lpVtbl: [*c]struct_IXMLDOMEntityReferenceVtbl,
 };
 pub const IXMLDOMEntityReference = struct_IXMLDOMEntityReference;
 pub const struct_IXMLDOMParseErrorVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMParseError, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMParseError) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMParseError) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMParseError, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMParseError, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMParseError, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMParseError, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_errorCode: ?extern fn ([*c]IXMLDOMParseError, [*c]c_long) HRESULT,
-    get_url: ?extern fn ([*c]IXMLDOMParseError, [*c]BSTR) HRESULT,
-    get_reason: ?extern fn ([*c]IXMLDOMParseError, [*c]BSTR) HRESULT,
-    get_srcText: ?extern fn ([*c]IXMLDOMParseError, [*c]BSTR) HRESULT,
-    get_line: ?extern fn ([*c]IXMLDOMParseError, [*c]c_long) HRESULT,
-    get_linepos: ?extern fn ([*c]IXMLDOMParseError, [*c]c_long) HRESULT,
-    get_filepos: ?extern fn ([*c]IXMLDOMParseError, [*c]c_long) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMParseError, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMParseError) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMParseError) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMParseError, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMParseError, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMParseError, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMParseError, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_errorCode: ?fn ([*c]IXMLDOMParseError, [*c]c_long) callconv(.C) HRESULT,
+    get_url: ?fn ([*c]IXMLDOMParseError, [*c]BSTR) callconv(.C) HRESULT,
+    get_reason: ?fn ([*c]IXMLDOMParseError, [*c]BSTR) callconv(.C) HRESULT,
+    get_srcText: ?fn ([*c]IXMLDOMParseError, [*c]BSTR) callconv(.C) HRESULT,
+    get_line: ?fn ([*c]IXMLDOMParseError, [*c]c_long) callconv(.C) HRESULT,
+    get_linepos: ?fn ([*c]IXMLDOMParseError, [*c]c_long) callconv(.C) HRESULT,
+    get_filepos: ?fn ([*c]IXMLDOMParseError, [*c]c_long) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMParseError = extern struct {
     lpVtbl: [*c]struct_IXMLDOMParseErrorVtbl,
 };
 pub const IXMLDOMParseError = struct_IXMLDOMParseError;
 pub const struct_IXMLDOMDocumentVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMDocument, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMDocument) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMDocument) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMDocument, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMDocument, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMDocument, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMDocument, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMDocument, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMDocument, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMDocument, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMDocument, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMDocument, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMDocument, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMDocument, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMDocument, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMDocument, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMDocument, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMDocument, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMDocument, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMDocument, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_doctype: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMDocumentType)) HRESULT,
-    get_implementation: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMImplementation)) HRESULT,
-    get_documentElement: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMElement)) HRESULT,
-    putref_documentElement: ?extern fn ([*c]IXMLDOMDocument, [*c]IXMLDOMElement) HRESULT,
-    createElement: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMElement)) HRESULT,
-    createDocumentFragment: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMDocumentFragment)) HRESULT,
-    createTextNode: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMText)) HRESULT,
-    createComment: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMComment)) HRESULT,
-    createCDATASection: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMCDATASection)) HRESULT,
-    createProcessingInstruction: ?extern fn ([*c]IXMLDOMDocument, BSTR, BSTR, [*c]([*c]IXMLDOMProcessingInstruction)) HRESULT,
-    createAttribute: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMAttribute)) HRESULT,
-    createEntityReference: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMEntityReference)) HRESULT,
-    getElementsByTagName: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    createNode: ?extern fn ([*c]IXMLDOMDocument, VARIANT, BSTR, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    nodeFromID: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    load: ?extern fn ([*c]IXMLDOMDocument, VARIANT, [*c]VARIANT_BOOL) HRESULT,
-    get_readyState: ?extern fn ([*c]IXMLDOMDocument, [*c]c_long) HRESULT,
-    get_parseError: ?extern fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMParseError)) HRESULT,
-    get_url: ?extern fn ([*c]IXMLDOMDocument, [*c]BSTR) HRESULT,
-    get_async: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) HRESULT,
-    put_async: ?extern fn ([*c]IXMLDOMDocument, VARIANT_BOOL) HRESULT,
-    abort: ?extern fn ([*c]IXMLDOMDocument) HRESULT,
-    loadXML: ?extern fn ([*c]IXMLDOMDocument, BSTR, [*c]VARIANT_BOOL) HRESULT,
-    save: ?extern fn ([*c]IXMLDOMDocument, VARIANT) HRESULT,
-    get_validateOnParse: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) HRESULT,
-    put_validateOnParse: ?extern fn ([*c]IXMLDOMDocument, VARIANT_BOOL) HRESULT,
-    get_resolveExternals: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) HRESULT,
-    put_resolveExternals: ?extern fn ([*c]IXMLDOMDocument, VARIANT_BOOL) HRESULT,
-    get_preserveWhiteSpace: ?extern fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) HRESULT,
-    put_preserveWhiteSpace: ?extern fn ([*c]IXMLDOMDocument, VARIANT_BOOL) HRESULT,
-    put_onreadystatechange: ?extern fn ([*c]IXMLDOMDocument, VARIANT) HRESULT,
-    put_ondataavailable: ?extern fn ([*c]IXMLDOMDocument, VARIANT) HRESULT,
-    put_ontransformnode: ?extern fn ([*c]IXMLDOMDocument, VARIANT) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMDocument, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMDocument) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMDocument) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMDocument, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMDocument, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMDocument, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMDocument, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMDocument, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMDocument, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMDocument, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMDocument, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMDocument, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMDocument, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMDocument, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMDocument, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMDocument, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMDocument, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_doctype: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMDocumentType)) callconv(.C) HRESULT,
+    get_implementation: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMImplementation)) callconv(.C) HRESULT,
+    get_documentElement: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMElement)) callconv(.C) HRESULT,
+    putref_documentElement: ?fn ([*c]IXMLDOMDocument, [*c]IXMLDOMElement) callconv(.C) HRESULT,
+    createElement: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMElement)) callconv(.C) HRESULT,
+    createDocumentFragment: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMDocumentFragment)) callconv(.C) HRESULT,
+    createTextNode: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMText)) callconv(.C) HRESULT,
+    createComment: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMComment)) callconv(.C) HRESULT,
+    createCDATASection: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMCDATASection)) callconv(.C) HRESULT,
+    createProcessingInstruction: ?fn ([*c]IXMLDOMDocument, BSTR, BSTR, [*c]([*c]IXMLDOMProcessingInstruction)) callconv(.C) HRESULT,
+    createAttribute: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMAttribute)) callconv(.C) HRESULT,
+    createEntityReference: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMEntityReference)) callconv(.C) HRESULT,
+    getElementsByTagName: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    createNode: ?fn ([*c]IXMLDOMDocument, VARIANT, BSTR, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    nodeFromID: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    load: ?fn ([*c]IXMLDOMDocument, VARIANT, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_readyState: ?fn ([*c]IXMLDOMDocument, [*c]c_long) callconv(.C) HRESULT,
+    get_parseError: ?fn ([*c]IXMLDOMDocument, [*c]([*c]IXMLDOMParseError)) callconv(.C) HRESULT,
+    get_url: ?fn ([*c]IXMLDOMDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_async: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    put_async: ?fn ([*c]IXMLDOMDocument, VARIANT_BOOL) callconv(.C) HRESULT,
+    abort: ?fn ([*c]IXMLDOMDocument) callconv(.C) HRESULT,
+    loadXML: ?fn ([*c]IXMLDOMDocument, BSTR, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    save: ?fn ([*c]IXMLDOMDocument, VARIANT) callconv(.C) HRESULT,
+    get_validateOnParse: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    put_validateOnParse: ?fn ([*c]IXMLDOMDocument, VARIANT_BOOL) callconv(.C) HRESULT,
+    get_resolveExternals: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    put_resolveExternals: ?fn ([*c]IXMLDOMDocument, VARIANT_BOOL) callconv(.C) HRESULT,
+    get_preserveWhiteSpace: ?fn ([*c]IXMLDOMDocument, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    put_preserveWhiteSpace: ?fn ([*c]IXMLDOMDocument, VARIANT_BOOL) callconv(.C) HRESULT,
+    put_onreadystatechange: ?fn ([*c]IXMLDOMDocument, VARIANT) callconv(.C) HRESULT,
+    put_ondataavailable: ?fn ([*c]IXMLDOMDocument, VARIANT) callconv(.C) HRESULT,
+    put_ontransformnode: ?fn ([*c]IXMLDOMDocument, VARIANT) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMDocument = extern struct {
     lpVtbl: [*c]struct_IXMLDOMDocumentVtbl,
 };
 pub const IXMLDOMDocument = struct_IXMLDOMDocument;
 pub const struct_IXMLDOMNodeVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMNode, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMNode) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMNode) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMNode, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMNode, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMNode, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMNode, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMNode, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMNode, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMNode, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMNode, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMNode, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMNode, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMNode, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMNode, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMNode, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMNode, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMNode, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMNode, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, VARIANT) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMNode, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMNode) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMNode) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMNode, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMNode, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMNode, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMNode, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMNode, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMNode, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMNode, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMNode, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMNode, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMNode, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMNode, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMNode, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMNode, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMNode, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMNode, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMNode, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMNode, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMNode = extern struct {
     lpVtbl: [*c]struct_IXMLDOMNodeVtbl,
 };
 pub const IXMLDOMCharacterData = struct_IXMLDOMCharacterData;
 pub const struct_IXMLDOMCharacterDataVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMCharacterData, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMCharacterData) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMCharacterData) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMCharacterData, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMCharacterData, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMCharacterData, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMCharacterData, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMCharacterData, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMCharacterData, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMCharacterData, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMCharacterData, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMCharacterData, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMCharacterData, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMCharacterData, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMCharacterData, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMCharacterData, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMCharacterData, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMCharacterData, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMCharacterData, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMCharacterData, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMCharacterData, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMCharacterData, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMCharacterData, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMCharacterData, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMCharacterData, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMCharacterData, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMCharacterData, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMCharacterData, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_data: ?extern fn ([*c]IXMLDOMCharacterData, [*c]BSTR) HRESULT,
-    put_data: ?extern fn ([*c]IXMLDOMCharacterData, BSTR) HRESULT,
-    get_length: ?extern fn ([*c]IXMLDOMCharacterData, [*c]c_long) HRESULT,
-    substringData: ?extern fn ([*c]IXMLDOMCharacterData, c_long, c_long, [*c]BSTR) HRESULT,
-    appendData: ?extern fn ([*c]IXMLDOMCharacterData, BSTR) HRESULT,
-    insertData: ?extern fn ([*c]IXMLDOMCharacterData, c_long, BSTR) HRESULT,
-    deleteData: ?extern fn ([*c]IXMLDOMCharacterData, c_long, c_long) HRESULT,
-    replaceData: ?extern fn ([*c]IXMLDOMCharacterData, c_long, c_long, BSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMCharacterData, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMCharacterData) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMCharacterData) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMCharacterData, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMCharacterData, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMCharacterData, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMCharacterData, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMCharacterData, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMCharacterData, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMCharacterData, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMCharacterData, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMCharacterData, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMCharacterData, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMCharacterData, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMCharacterData, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMCharacterData, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMCharacterData, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMCharacterData, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMCharacterData, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMCharacterData, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMCharacterData, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMCharacterData, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMCharacterData, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMCharacterData, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMCharacterData, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMCharacterData, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMCharacterData, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMCharacterData, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMCharacterData, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMCharacterData, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_data: ?fn ([*c]IXMLDOMCharacterData, [*c]BSTR) callconv(.C) HRESULT,
+    put_data: ?fn ([*c]IXMLDOMCharacterData, BSTR) callconv(.C) HRESULT,
+    get_length: ?fn ([*c]IXMLDOMCharacterData, [*c]c_long) callconv(.C) HRESULT,
+    substringData: ?fn ([*c]IXMLDOMCharacterData, c_long, c_long, [*c]BSTR) callconv(.C) HRESULT,
+    appendData: ?fn ([*c]IXMLDOMCharacterData, BSTR) callconv(.C) HRESULT,
+    insertData: ?fn ([*c]IXMLDOMCharacterData, c_long, BSTR) callconv(.C) HRESULT,
+    deleteData: ?fn ([*c]IXMLDOMCharacterData, c_long, c_long) callconv(.C) HRESULT,
+    replaceData: ?fn ([*c]IXMLDOMCharacterData, c_long, c_long, BSTR) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMCharacterData = extern struct {
     lpVtbl: [*c]struct_IXMLDOMCharacterDataVtbl,
 };
 pub const IXMLDOMNotation = struct_IXMLDOMNotation;
 pub const struct_IXMLDOMNotationVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMNotation, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMNotation) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMNotation) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMNotation, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMNotation, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMNotation, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMNotation, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMNotation, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMNotation, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMNotation, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMNotation, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMNotation, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMNotation, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMNotation, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMNotation, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMNotation, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMNotation, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMNotation, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMNotation, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMNotation, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMNotation, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMNotation, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMNotation, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMNotation, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMNotation, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMNotation, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMNotation, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMNotation, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_publicId: ?extern fn ([*c]IXMLDOMNotation, [*c]VARIANT) HRESULT,
-    get_systemId: ?extern fn ([*c]IXMLDOMNotation, [*c]VARIANT) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMNotation, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMNotation) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMNotation) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMNotation, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMNotation, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMNotation, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMNotation, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMNotation, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMNotation, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMNotation, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMNotation, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMNotation, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMNotation, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMNotation, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMNotation, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMNotation, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMNotation, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMNotation, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMNotation, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMNotation, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMNotation, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMNotation, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMNotation, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMNotation, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMNotation, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMNotation, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMNotation, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMNotation, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMNotation, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMNotation, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_publicId: ?fn ([*c]IXMLDOMNotation, [*c]VARIANT) callconv(.C) HRESULT,
+    get_systemId: ?fn ([*c]IXMLDOMNotation, [*c]VARIANT) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMNotation = extern struct {
     lpVtbl: [*c]struct_IXMLDOMNotationVtbl,
 };
 pub const IXMLDOMEntity = struct_IXMLDOMEntity;
 pub const struct_IXMLDOMEntityVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDOMEntity, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDOMEntity) ULONG,
-    Release: ?extern fn ([*c]IXMLDOMEntity) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDOMEntity, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDOMEntity, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDOMEntity, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDOMEntity, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXMLDOMEntity, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXMLDOMEntity, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXMLDOMEntity, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXMLDOMEntity, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXMLDOMEntity, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXMLDOMEntity, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXMLDOMEntity, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXMLDOMEntity, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLDOMEntity, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXMLDOMEntity, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXMLDOMEntity, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXMLDOMEntity, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXMLDOMEntity, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXMLDOMEntity, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXMLDOMEntity, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXMLDOMEntity, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXMLDOMEntity, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXMLDOMEntity, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXMLDOMEntity, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXMLDOMEntity, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXMLDOMEntity, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    get_publicId: ?extern fn ([*c]IXMLDOMEntity, [*c]VARIANT) HRESULT,
-    get_systemId: ?extern fn ([*c]IXMLDOMEntity, [*c]VARIANT) HRESULT,
-    get_notationName: ?extern fn ([*c]IXMLDOMEntity, [*c]BSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDOMEntity, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDOMEntity) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDOMEntity) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDOMEntity, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDOMEntity, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDOMEntity, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDOMEntity, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXMLDOMEntity, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXMLDOMEntity, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXMLDOMEntity, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXMLDOMEntity, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXMLDOMEntity, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXMLDOMEntity, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXMLDOMEntity, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLDOMEntity, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLDOMEntity, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXMLDOMEntity, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXMLDOMEntity, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXMLDOMEntity, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXMLDOMEntity, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXMLDOMEntity, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXMLDOMEntity, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXMLDOMEntity, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXMLDOMEntity, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXMLDOMEntity, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXMLDOMEntity, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXMLDOMEntity, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXMLDOMEntity, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXMLDOMEntity, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXMLDOMEntity, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    get_publicId: ?fn ([*c]IXMLDOMEntity, [*c]VARIANT) callconv(.C) HRESULT,
+    get_systemId: ?fn ([*c]IXMLDOMEntity, [*c]VARIANT) callconv(.C) HRESULT,
+    get_notationName: ?fn ([*c]IXMLDOMEntity, [*c]BSTR) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDOMEntity = extern struct {
     lpVtbl: [*c]struct_IXMLDOMEntityVtbl,
 };
 pub const IXTLRuntime = struct_IXTLRuntime;
 pub const struct_IXTLRuntimeVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXTLRuntime, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXTLRuntime) ULONG,
-    Release: ?extern fn ([*c]IXTLRuntime) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXTLRuntime, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXTLRuntime, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXTLRuntime, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXTLRuntime, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_nodeName: ?extern fn ([*c]IXTLRuntime, [*c]BSTR) HRESULT,
-    get_nodeValue: ?extern fn ([*c]IXTLRuntime, [*c]VARIANT) HRESULT,
-    put_nodeValue: ?extern fn ([*c]IXTLRuntime, VARIANT) HRESULT,
-    get_nodeType: ?extern fn ([*c]IXTLRuntime, [*c]DOMNodeType) HRESULT,
-    get_parentNode: ?extern fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_childNodes: ?extern fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    get_firstChild: ?extern fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_lastChild: ?extern fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_previousSibling: ?extern fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nextSibling: ?extern fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_attributes: ?extern fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNamedNodeMap)) HRESULT,
-    insertBefore: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) HRESULT,
-    replaceChild: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    removeChild: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    appendChild: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) HRESULT,
-    hasChildNodes: ?extern fn ([*c]IXTLRuntime, [*c]VARIANT_BOOL) HRESULT,
-    get_ownerDocument: ?extern fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    cloneNode: ?extern fn ([*c]IXTLRuntime, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypeString: ?extern fn ([*c]IXTLRuntime, [*c]BSTR) HRESULT,
-    get_text: ?extern fn ([*c]IXTLRuntime, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXTLRuntime, BSTR) HRESULT,
-    get_specified: ?extern fn ([*c]IXTLRuntime, [*c]VARIANT_BOOL) HRESULT,
-    get_definition: ?extern fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_nodeTypedValue: ?extern fn ([*c]IXTLRuntime, [*c]VARIANT) HRESULT,
-    put_nodeTypedValue: ?extern fn ([*c]IXTLRuntime, VARIANT) HRESULT,
-    get_dataType: ?extern fn ([*c]IXTLRuntime, [*c]VARIANT) HRESULT,
-    put_dataType: ?extern fn ([*c]IXTLRuntime, BSTR) HRESULT,
-    get_xml: ?extern fn ([*c]IXTLRuntime, [*c]BSTR) HRESULT,
-    transformNode: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]BSTR) HRESULT,
-    selectNodes: ?extern fn ([*c]IXTLRuntime, BSTR, [*c]([*c]IXMLDOMNodeList)) HRESULT,
-    selectSingleNode: ?extern fn ([*c]IXTLRuntime, BSTR, [*c]([*c]IXMLDOMNode)) HRESULT,
-    get_parsed: ?extern fn ([*c]IXTLRuntime, [*c]VARIANT_BOOL) HRESULT,
-    get_namespaceURI: ?extern fn ([*c]IXTLRuntime, [*c]BSTR) HRESULT,
-    get_prefix: ?extern fn ([*c]IXTLRuntime, [*c]BSTR) HRESULT,
-    get_baseName: ?extern fn ([*c]IXTLRuntime, [*c]BSTR) HRESULT,
-    transformNodeToObject: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, VARIANT) HRESULT,
-    uniqueID: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]c_long) HRESULT,
-    depth: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]c_long) HRESULT,
-    childNumber: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]c_long) HRESULT,
-    ancestorChildNumber: ?extern fn ([*c]IXTLRuntime, BSTR, [*c]IXMLDOMNode, [*c]c_long) HRESULT,
-    absoluteChildNumber: ?extern fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]c_long) HRESULT,
-    formatIndex: ?extern fn ([*c]IXTLRuntime, c_long, BSTR, [*c]BSTR) HRESULT,
-    formatNumber: ?extern fn ([*c]IXTLRuntime, f64, BSTR, [*c]BSTR) HRESULT,
-    formatDate: ?extern fn ([*c]IXTLRuntime, VARIANT, BSTR, VARIANT, [*c]BSTR) HRESULT,
-    formatTime: ?extern fn ([*c]IXTLRuntime, VARIANT, BSTR, VARIANT, [*c]BSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IXTLRuntime, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXTLRuntime) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXTLRuntime) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXTLRuntime, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXTLRuntime, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXTLRuntime, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXTLRuntime, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_nodeName: ?fn ([*c]IXTLRuntime, [*c]BSTR) callconv(.C) HRESULT,
+    get_nodeValue: ?fn ([*c]IXTLRuntime, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeValue: ?fn ([*c]IXTLRuntime, VARIANT) callconv(.C) HRESULT,
+    get_nodeType: ?fn ([*c]IXTLRuntime, [*c]DOMNodeType) callconv(.C) HRESULT,
+    get_parentNode: ?fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_childNodes: ?fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    get_firstChild: ?fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_lastChild: ?fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_previousSibling: ?fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nextSibling: ?fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNamedNodeMap)) callconv(.C) HRESULT,
+    insertBefore: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, VARIANT, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    replaceChild: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    appendChild: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    hasChildNodes: ?fn ([*c]IXTLRuntime, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_ownerDocument: ?fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    cloneNode: ?fn ([*c]IXTLRuntime, VARIANT_BOOL, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypeString: ?fn ([*c]IXTLRuntime, [*c]BSTR) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXTLRuntime, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXTLRuntime, BSTR) callconv(.C) HRESULT,
+    get_specified: ?fn ([*c]IXTLRuntime, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_definition: ?fn ([*c]IXTLRuntime, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_nodeTypedValue: ?fn ([*c]IXTLRuntime, [*c]VARIANT) callconv(.C) HRESULT,
+    put_nodeTypedValue: ?fn ([*c]IXTLRuntime, VARIANT) callconv(.C) HRESULT,
+    get_dataType: ?fn ([*c]IXTLRuntime, [*c]VARIANT) callconv(.C) HRESULT,
+    put_dataType: ?fn ([*c]IXTLRuntime, BSTR) callconv(.C) HRESULT,
+    get_xml: ?fn ([*c]IXTLRuntime, [*c]BSTR) callconv(.C) HRESULT,
+    transformNode: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]BSTR) callconv(.C) HRESULT,
+    selectNodes: ?fn ([*c]IXTLRuntime, BSTR, [*c]([*c]IXMLDOMNodeList)) callconv(.C) HRESULT,
+    selectSingleNode: ?fn ([*c]IXTLRuntime, BSTR, [*c]([*c]IXMLDOMNode)) callconv(.C) HRESULT,
+    get_parsed: ?fn ([*c]IXTLRuntime, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    get_namespaceURI: ?fn ([*c]IXTLRuntime, [*c]BSTR) callconv(.C) HRESULT,
+    get_prefix: ?fn ([*c]IXTLRuntime, [*c]BSTR) callconv(.C) HRESULT,
+    get_baseName: ?fn ([*c]IXTLRuntime, [*c]BSTR) callconv(.C) HRESULT,
+    transformNodeToObject: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, VARIANT) callconv(.C) HRESULT,
+    uniqueID: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]c_long) callconv(.C) HRESULT,
+    depth: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]c_long) callconv(.C) HRESULT,
+    childNumber: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]c_long) callconv(.C) HRESULT,
+    ancestorChildNumber: ?fn ([*c]IXTLRuntime, BSTR, [*c]IXMLDOMNode, [*c]c_long) callconv(.C) HRESULT,
+    absoluteChildNumber: ?fn ([*c]IXTLRuntime, [*c]IXMLDOMNode, [*c]c_long) callconv(.C) HRESULT,
+    formatIndex: ?fn ([*c]IXTLRuntime, c_long, BSTR, [*c]BSTR) callconv(.C) HRESULT,
+    formatNumber: ?fn ([*c]IXTLRuntime, f64, BSTR, [*c]BSTR) callconv(.C) HRESULT,
+    formatDate: ?fn ([*c]IXTLRuntime, VARIANT, BSTR, VARIANT, [*c]BSTR) callconv(.C) HRESULT,
+    formatTime: ?fn ([*c]IXTLRuntime, VARIANT, BSTR, VARIANT, [*c]BSTR) callconv(.C) HRESULT,
 };
 pub const struct_IXTLRuntime = extern struct {
     lpVtbl: [*c]struct_IXTLRuntimeVtbl,
 };
 pub const XMLDOMDocumentEvents = struct_XMLDOMDocumentEvents;
 pub const struct_XMLDOMDocumentEventsVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]XMLDOMDocumentEvents, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]XMLDOMDocumentEvents) ULONG,
-    Release: ?extern fn ([*c]XMLDOMDocumentEvents) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]XMLDOMDocumentEvents, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]XMLDOMDocumentEvents, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]XMLDOMDocumentEvents, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]XMLDOMDocumentEvents, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
+    QueryInterface: ?fn ([*c]XMLDOMDocumentEvents, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]XMLDOMDocumentEvents) callconv(.C) ULONG,
+    Release: ?fn ([*c]XMLDOMDocumentEvents) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]XMLDOMDocumentEvents, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]XMLDOMDocumentEvents, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]XMLDOMDocumentEvents, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]XMLDOMDocumentEvents, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
 };
 pub const struct_XMLDOMDocumentEvents = extern struct {
     lpVtbl: [*c]struct_XMLDOMDocumentEventsVtbl,
@@ -40020,27 +40020,27 @@ pub const struct_DOMFreeThreadedDocument = @OpaqueType();
 pub const DOMFreeThreadedDocument = struct_DOMFreeThreadedDocument;
 pub const IXMLHttpRequest = struct_IXMLHttpRequest;
 pub const struct_IXMLHttpRequestVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLHttpRequest, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLHttpRequest) ULONG,
-    Release: ?extern fn ([*c]IXMLHttpRequest) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLHttpRequest, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLHttpRequest, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLHttpRequest, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLHttpRequest, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    open: ?extern fn ([*c]IXMLHttpRequest, BSTR, BSTR, VARIANT, VARIANT, VARIANT) HRESULT,
-    setRequestHeader: ?extern fn ([*c]IXMLHttpRequest, BSTR, BSTR) HRESULT,
-    getResponseHeader: ?extern fn ([*c]IXMLHttpRequest, BSTR, [*c]BSTR) HRESULT,
-    getAllResponseHeaders: ?extern fn ([*c]IXMLHttpRequest, [*c]BSTR) HRESULT,
-    send: ?extern fn ([*c]IXMLHttpRequest, VARIANT) HRESULT,
-    abort: ?extern fn ([*c]IXMLHttpRequest) HRESULT,
-    get_status: ?extern fn ([*c]IXMLHttpRequest, [*c]c_long) HRESULT,
-    get_statusText: ?extern fn ([*c]IXMLHttpRequest, [*c]BSTR) HRESULT,
-    get_responseXML: ?extern fn ([*c]IXMLHttpRequest, [*c]([*c]IDispatch)) HRESULT,
-    get_responseText: ?extern fn ([*c]IXMLHttpRequest, [*c]BSTR) HRESULT,
-    get_responseBody: ?extern fn ([*c]IXMLHttpRequest, [*c]VARIANT) HRESULT,
-    get_responseStream: ?extern fn ([*c]IXMLHttpRequest, [*c]VARIANT) HRESULT,
-    get_readyState: ?extern fn ([*c]IXMLHttpRequest, [*c]c_long) HRESULT,
-    put_onreadystatechange: ?extern fn ([*c]IXMLHttpRequest, [*c]IDispatch) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLHttpRequest, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLHttpRequest) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLHttpRequest) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLHttpRequest, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLHttpRequest, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLHttpRequest, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLHttpRequest, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    open: ?fn ([*c]IXMLHttpRequest, BSTR, BSTR, VARIANT, VARIANT, VARIANT) callconv(.C) HRESULT,
+    setRequestHeader: ?fn ([*c]IXMLHttpRequest, BSTR, BSTR) callconv(.C) HRESULT,
+    getResponseHeader: ?fn ([*c]IXMLHttpRequest, BSTR, [*c]BSTR) callconv(.C) HRESULT,
+    getAllResponseHeaders: ?fn ([*c]IXMLHttpRequest, [*c]BSTR) callconv(.C) HRESULT,
+    send: ?fn ([*c]IXMLHttpRequest, VARIANT) callconv(.C) HRESULT,
+    abort: ?fn ([*c]IXMLHttpRequest) callconv(.C) HRESULT,
+    get_status: ?fn ([*c]IXMLHttpRequest, [*c]c_long) callconv(.C) HRESULT,
+    get_statusText: ?fn ([*c]IXMLHttpRequest, [*c]BSTR) callconv(.C) HRESULT,
+    get_responseXML: ?fn ([*c]IXMLHttpRequest, [*c]([*c]IDispatch)) callconv(.C) HRESULT,
+    get_responseText: ?fn ([*c]IXMLHttpRequest, [*c]BSTR) callconv(.C) HRESULT,
+    get_responseBody: ?fn ([*c]IXMLHttpRequest, [*c]VARIANT) callconv(.C) HRESULT,
+    get_responseStream: ?fn ([*c]IXMLHttpRequest, [*c]VARIANT) callconv(.C) HRESULT,
+    get_readyState: ?fn ([*c]IXMLHttpRequest, [*c]c_long) callconv(.C) HRESULT,
+    put_onreadystatechange: ?fn ([*c]IXMLHttpRequest, [*c]IDispatch) callconv(.C) HRESULT,
 };
 pub const struct_IXMLHttpRequest = extern struct {
     lpVtbl: [*c]struct_IXMLHttpRequestVtbl,
@@ -40049,18 +40049,18 @@ pub const struct_XMLHTTPRequest = @OpaqueType();
 pub const XMLHTTPRequest = struct_XMLHTTPRequest;
 pub const IXMLDSOControl = struct_IXMLDSOControl;
 pub const struct_IXMLDSOControlVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDSOControl, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDSOControl) ULONG,
-    Release: ?extern fn ([*c]IXMLDSOControl) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDSOControl, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDSOControl, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDSOControl, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDSOControl, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_XMLDocument: ?extern fn ([*c]IXMLDSOControl, [*c]([*c]IXMLDOMDocument)) HRESULT,
-    put_XMLDocument: ?extern fn ([*c]IXMLDSOControl, [*c]IXMLDOMDocument) HRESULT,
-    get_JavaDSOCompatible: ?extern fn ([*c]IXMLDSOControl, [*c]BOOL) HRESULT,
-    put_JavaDSOCompatible: ?extern fn ([*c]IXMLDSOControl, BOOL) HRESULT,
-    get_readyState: ?extern fn ([*c]IXMLDSOControl, [*c]c_long) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDSOControl, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDSOControl) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDSOControl) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDSOControl, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDSOControl, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDSOControl, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDSOControl, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_XMLDocument: ?fn ([*c]IXMLDSOControl, [*c]([*c]IXMLDOMDocument)) callconv(.C) HRESULT,
+    put_XMLDocument: ?fn ([*c]IXMLDSOControl, [*c]IXMLDOMDocument) callconv(.C) HRESULT,
+    get_JavaDSOCompatible: ?fn ([*c]IXMLDSOControl, [*c]BOOL) callconv(.C) HRESULT,
+    put_JavaDSOCompatible: ?fn ([*c]IXMLDSOControl, BOOL) callconv(.C) HRESULT,
+    get_readyState: ?fn ([*c]IXMLDSOControl, [*c]c_long) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDSOControl = extern struct {
     lpVtbl: [*c]struct_IXMLDSOControlVtbl,
@@ -40069,97 +40069,97 @@ pub const struct_XMLDSOControl = @OpaqueType();
 pub const XMLDSOControl = struct_XMLDSOControl;
 pub const IXMLDocument = struct_IXMLDocument;
 pub const struct_IXMLDocumentVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDocument, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDocument) ULONG,
-    Release: ?extern fn ([*c]IXMLDocument) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDocument, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDocument, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDocument, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDocument, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_root: ?extern fn ([*c]IXMLDocument, [*c]([*c]IXMLElement)) HRESULT,
-    get_fileSize: ?extern fn ([*c]IXMLDocument, [*c]BSTR) HRESULT,
-    get_fileModifiedDate: ?extern fn ([*c]IXMLDocument, [*c]BSTR) HRESULT,
-    get_fileUpdatedDate: ?extern fn ([*c]IXMLDocument, [*c]BSTR) HRESULT,
-    get_URL: ?extern fn ([*c]IXMLDocument, [*c]BSTR) HRESULT,
-    put_URL: ?extern fn ([*c]IXMLDocument, BSTR) HRESULT,
-    get_mimeType: ?extern fn ([*c]IXMLDocument, [*c]BSTR) HRESULT,
-    get_readyState: ?extern fn ([*c]IXMLDocument, [*c]c_long) HRESULT,
-    get_charset: ?extern fn ([*c]IXMLDocument, [*c]BSTR) HRESULT,
-    put_charset: ?extern fn ([*c]IXMLDocument, BSTR) HRESULT,
-    get_version: ?extern fn ([*c]IXMLDocument, [*c]BSTR) HRESULT,
-    get_doctype: ?extern fn ([*c]IXMLDocument, [*c]BSTR) HRESULT,
-    get_dtdURL: ?extern fn ([*c]IXMLDocument, [*c]BSTR) HRESULT,
-    createElement: ?extern fn ([*c]IXMLDocument, VARIANT, VARIANT, [*c]([*c]IXMLElement)) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDocument, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDocument) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDocument) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDocument, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDocument, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDocument, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDocument, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_root: ?fn ([*c]IXMLDocument, [*c]([*c]IXMLElement)) callconv(.C) HRESULT,
+    get_fileSize: ?fn ([*c]IXMLDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_fileModifiedDate: ?fn ([*c]IXMLDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_fileUpdatedDate: ?fn ([*c]IXMLDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_URL: ?fn ([*c]IXMLDocument, [*c]BSTR) callconv(.C) HRESULT,
+    put_URL: ?fn ([*c]IXMLDocument, BSTR) callconv(.C) HRESULT,
+    get_mimeType: ?fn ([*c]IXMLDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_readyState: ?fn ([*c]IXMLDocument, [*c]c_long) callconv(.C) HRESULT,
+    get_charset: ?fn ([*c]IXMLDocument, [*c]BSTR) callconv(.C) HRESULT,
+    put_charset: ?fn ([*c]IXMLDocument, BSTR) callconv(.C) HRESULT,
+    get_version: ?fn ([*c]IXMLDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_doctype: ?fn ([*c]IXMLDocument, [*c]BSTR) callconv(.C) HRESULT,
+    get_dtdURL: ?fn ([*c]IXMLDocument, [*c]BSTR) callconv(.C) HRESULT,
+    createElement: ?fn ([*c]IXMLDocument, VARIANT, VARIANT, [*c]([*c]IXMLElement)) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDocument = extern struct {
     lpVtbl: [*c]struct_IXMLDocumentVtbl,
 };
 pub const IXMLDocument2 = struct_IXMLDocument2;
 pub const struct_IXMLElement2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLElement2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLElement2) ULONG,
-    Release: ?extern fn ([*c]IXMLElement2) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLElement2, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLElement2, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLElement2, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLElement2, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_tagName: ?extern fn ([*c]IXMLElement2, [*c]BSTR) HRESULT,
-    put_tagName: ?extern fn ([*c]IXMLElement2, BSTR) HRESULT,
-    get_parent: ?extern fn ([*c]IXMLElement2, [*c]([*c]IXMLElement2)) HRESULT,
-    setAttribute: ?extern fn ([*c]IXMLElement2, BSTR, VARIANT) HRESULT,
-    getAttribute: ?extern fn ([*c]IXMLElement2, BSTR, [*c]VARIANT) HRESULT,
-    removeAttribute: ?extern fn ([*c]IXMLElement2, BSTR) HRESULT,
-    get_children: ?extern fn ([*c]IXMLElement2, [*c]([*c]IXMLElementCollection)) HRESULT,
-    get_type: ?extern fn ([*c]IXMLElement2, [*c]c_long) HRESULT,
-    get_text: ?extern fn ([*c]IXMLElement2, [*c]BSTR) HRESULT,
-    put_text: ?extern fn ([*c]IXMLElement2, BSTR) HRESULT,
-    addChild: ?extern fn ([*c]IXMLElement2, [*c]IXMLElement2, c_long, c_long) HRESULT,
-    removeChild: ?extern fn ([*c]IXMLElement2, [*c]IXMLElement2) HRESULT,
-    get_attributes: ?extern fn ([*c]IXMLElement2, [*c]([*c]IXMLElementCollection)) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLElement2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLElement2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLElement2) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLElement2, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLElement2, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLElement2, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLElement2, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_tagName: ?fn ([*c]IXMLElement2, [*c]BSTR) callconv(.C) HRESULT,
+    put_tagName: ?fn ([*c]IXMLElement2, BSTR) callconv(.C) HRESULT,
+    get_parent: ?fn ([*c]IXMLElement2, [*c]([*c]IXMLElement2)) callconv(.C) HRESULT,
+    setAttribute: ?fn ([*c]IXMLElement2, BSTR, VARIANT) callconv(.C) HRESULT,
+    getAttribute: ?fn ([*c]IXMLElement2, BSTR, [*c]VARIANT) callconv(.C) HRESULT,
+    removeAttribute: ?fn ([*c]IXMLElement2, BSTR) callconv(.C) HRESULT,
+    get_children: ?fn ([*c]IXMLElement2, [*c]([*c]IXMLElementCollection)) callconv(.C) HRESULT,
+    get_type: ?fn ([*c]IXMLElement2, [*c]c_long) callconv(.C) HRESULT,
+    get_text: ?fn ([*c]IXMLElement2, [*c]BSTR) callconv(.C) HRESULT,
+    put_text: ?fn ([*c]IXMLElement2, BSTR) callconv(.C) HRESULT,
+    addChild: ?fn ([*c]IXMLElement2, [*c]IXMLElement2, c_long, c_long) callconv(.C) HRESULT,
+    removeChild: ?fn ([*c]IXMLElement2, [*c]IXMLElement2) callconv(.C) HRESULT,
+    get_attributes: ?fn ([*c]IXMLElement2, [*c]([*c]IXMLElementCollection)) callconv(.C) HRESULT,
 };
 pub const struct_IXMLElement2 = extern struct {
     lpVtbl: [*c]struct_IXMLElement2Vtbl,
 };
 pub const IXMLElement2 = struct_IXMLElement2;
 pub const struct_IXMLDocument2Vtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLDocument2, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLDocument2) ULONG,
-    Release: ?extern fn ([*c]IXMLDocument2) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLDocument2, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLDocument2, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLDocument2, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLDocument2, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_root: ?extern fn ([*c]IXMLDocument2, [*c]([*c]IXMLElement2)) HRESULT,
-    get_fileSize: ?extern fn ([*c]IXMLDocument2, [*c]BSTR) HRESULT,
-    get_fileModifiedDate: ?extern fn ([*c]IXMLDocument2, [*c]BSTR) HRESULT,
-    get_fileUpdatedDate: ?extern fn ([*c]IXMLDocument2, [*c]BSTR) HRESULT,
-    get_URL: ?extern fn ([*c]IXMLDocument2, [*c]BSTR) HRESULT,
-    put_URL: ?extern fn ([*c]IXMLDocument2, BSTR) HRESULT,
-    get_mimeType: ?extern fn ([*c]IXMLDocument2, [*c]BSTR) HRESULT,
-    get_readyState: ?extern fn ([*c]IXMLDocument2, [*c]c_long) HRESULT,
-    get_charset: ?extern fn ([*c]IXMLDocument2, [*c]BSTR) HRESULT,
-    put_charset: ?extern fn ([*c]IXMLDocument2, BSTR) HRESULT,
-    get_version: ?extern fn ([*c]IXMLDocument2, [*c]BSTR) HRESULT,
-    get_doctype: ?extern fn ([*c]IXMLDocument2, [*c]BSTR) HRESULT,
-    get_dtdURL: ?extern fn ([*c]IXMLDocument2, [*c]BSTR) HRESULT,
-    createElement: ?extern fn ([*c]IXMLDocument2, VARIANT, VARIANT, [*c]([*c]IXMLElement2)) HRESULT,
-    get_async: ?extern fn ([*c]IXMLDocument2, [*c]VARIANT_BOOL) HRESULT,
-    put_async: ?extern fn ([*c]IXMLDocument2, VARIANT_BOOL) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLDocument2, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLDocument2) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLDocument2) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLDocument2, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLDocument2, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLDocument2, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLDocument2, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_root: ?fn ([*c]IXMLDocument2, [*c]([*c]IXMLElement2)) callconv(.C) HRESULT,
+    get_fileSize: ?fn ([*c]IXMLDocument2, [*c]BSTR) callconv(.C) HRESULT,
+    get_fileModifiedDate: ?fn ([*c]IXMLDocument2, [*c]BSTR) callconv(.C) HRESULT,
+    get_fileUpdatedDate: ?fn ([*c]IXMLDocument2, [*c]BSTR) callconv(.C) HRESULT,
+    get_URL: ?fn ([*c]IXMLDocument2, [*c]BSTR) callconv(.C) HRESULT,
+    put_URL: ?fn ([*c]IXMLDocument2, BSTR) callconv(.C) HRESULT,
+    get_mimeType: ?fn ([*c]IXMLDocument2, [*c]BSTR) callconv(.C) HRESULT,
+    get_readyState: ?fn ([*c]IXMLDocument2, [*c]c_long) callconv(.C) HRESULT,
+    get_charset: ?fn ([*c]IXMLDocument2, [*c]BSTR) callconv(.C) HRESULT,
+    put_charset: ?fn ([*c]IXMLDocument2, BSTR) callconv(.C) HRESULT,
+    get_version: ?fn ([*c]IXMLDocument2, [*c]BSTR) callconv(.C) HRESULT,
+    get_doctype: ?fn ([*c]IXMLDocument2, [*c]BSTR) callconv(.C) HRESULT,
+    get_dtdURL: ?fn ([*c]IXMLDocument2, [*c]BSTR) callconv(.C) HRESULT,
+    createElement: ?fn ([*c]IXMLDocument2, VARIANT, VARIANT, [*c]([*c]IXMLElement2)) callconv(.C) HRESULT,
+    get_async: ?fn ([*c]IXMLDocument2, [*c]VARIANT_BOOL) callconv(.C) HRESULT,
+    put_async: ?fn ([*c]IXMLDocument2, VARIANT_BOOL) callconv(.C) HRESULT,
 };
 pub const struct_IXMLDocument2 = extern struct {
     lpVtbl: [*c]struct_IXMLDocument2Vtbl,
 };
 pub const IXMLAttribute = struct_IXMLAttribute;
 pub const struct_IXMLAttributeVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLAttribute, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLAttribute) ULONG,
-    Release: ?extern fn ([*c]IXMLAttribute) ULONG,
-    GetTypeInfoCount: ?extern fn ([*c]IXMLAttribute, [*c]UINT) HRESULT,
-    GetTypeInfo: ?extern fn ([*c]IXMLAttribute, UINT, LCID, [*c]([*c]ITypeInfo)) HRESULT,
-    GetIDsOfNames: ?extern fn ([*c]IXMLAttribute, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) HRESULT,
-    Invoke: ?extern fn ([*c]IXMLAttribute, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) HRESULT,
-    get_name: ?extern fn ([*c]IXMLAttribute, [*c]BSTR) HRESULT,
-    get_value: ?extern fn ([*c]IXMLAttribute, [*c]BSTR) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLAttribute, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLAttribute) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLAttribute) callconv(.C) ULONG,
+    GetTypeInfoCount: ?fn ([*c]IXMLAttribute, [*c]UINT) callconv(.C) HRESULT,
+    GetTypeInfo: ?fn ([*c]IXMLAttribute, UINT, LCID, [*c]([*c]ITypeInfo)) callconv(.C) HRESULT,
+    GetIDsOfNames: ?fn ([*c]IXMLAttribute, [*c]const IID, [*c]LPOLESTR, UINT, LCID, [*c]DISPID) callconv(.C) HRESULT,
+    Invoke: ?fn ([*c]IXMLAttribute, DISPID, [*c]const IID, LCID, WORD, [*c]DISPPARAMS, [*c]VARIANT, [*c]EXCEPINFO, [*c]UINT) callconv(.C) HRESULT,
+    get_name: ?fn ([*c]IXMLAttribute, [*c]BSTR) callconv(.C) HRESULT,
+    get_value: ?fn ([*c]IXMLAttribute, [*c]BSTR) callconv(.C) HRESULT,
 };
 pub const struct_IXMLAttribute = extern struct {
     lpVtbl: [*c]struct_IXMLAttributeVtbl,
@@ -40177,10 +40177,10 @@ pub const struct__xml_error = extern struct {
 };
 pub const XML_ERROR = struct__xml_error;
 pub const struct_IXMLErrorVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IXMLError, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IXMLError) ULONG,
-    Release: ?extern fn ([*c]IXMLError) ULONG,
-    GetErrorInfo: ?extern fn ([*c]IXMLError, [*c]XML_ERROR) HRESULT,
+    QueryInterface: ?fn ([*c]IXMLError, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IXMLError) callconv(.C) ULONG,
+    Release: ?fn ([*c]IXMLError) callconv(.C) ULONG,
+    GetErrorInfo: ?fn ([*c]IXMLError, [*c]XML_ERROR) callconv(.C) HRESULT,
 };
 pub const struct_IXMLError = extern struct {
     lpVtbl: [*c]struct_IXMLErrorVtbl,
@@ -41981,8 +41981,8 @@ pub extern "ole32" fn OleRegEnumFormatEtc(clsid: [*c]const IID, dwDirection: DWO
 pub extern "ole32" fn OleRegEnumVerbs(clsid: [*c]const IID, ppenum: [*c]LPENUMOLEVERB) callconv(.Stdcall) HRESULT;
 pub const LPOLESTREAM = [*c]struct__OLESTREAM;
 pub const struct__OLESTREAMVTBL = extern struct {
-    Get: ?extern fn (LPOLESTREAM, ?*c_void, DWORD) DWORD,
-    Put: ?extern fn (LPOLESTREAM, ?*const c_void, DWORD) DWORD,
+    Get: ?fn (LPOLESTREAM, ?*c_void, DWORD) callconv(.C) DWORD,
+    Put: ?fn (LPOLESTREAM, ?*const c_void, DWORD) callconv(.C) DWORD,
 };
 pub const OLESTREAMVTBL = struct__OLESTREAMVTBL;
 pub const LPOLESTREAMVTBL = [*c]OLESTREAMVTBL;
@@ -42000,7 +42000,7 @@ pub extern "ole32" fn OleConvertIStorageToOLESTREAMEx(pstg: LPSTORAGE, cfFormat:
 pub extern "ole32" fn OleConvertOLESTREAMToIStorageEx(polestm: LPOLESTREAM, pstg: LPSTORAGE, pcfFormat: [*c]CLIPFORMAT, plwWidth: [*c]LONG, plHeight: [*c]LONG, pdwSize: [*c]DWORD, pmedium: LPSTGMEDIUM) callconv(.Stdcall) HRESULT;
 pub extern const IID_IPrintDialogCallback: GUID;
 pub extern const IID_IPrintDialogServices: GUID;
-pub const LPOFNHOOKPROC = ?extern fn (HWND, UINT, WPARAM, LPARAM) UINT_PTR;
+pub const LPOFNHOOKPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) UINT_PTR;
 pub const struct_tagOFN_NT4A = extern struct {
     lStructSize: DWORD,
     hwndOwner: HWND,
@@ -42113,7 +42113,7 @@ pub extern "comdlg32" fn GetSaveFileNameA(arg0: LPOPENFILENAMEA) callconv(.Stdca
 pub extern "comdlg32" fn GetSaveFileNameW(arg0: LPOPENFILENAMEW) callconv(.Stdcall) BOOL;
 pub extern "comdlg32" fn GetFileTitleA(arg0: LPCSTR, Buf: LPSTR, cchSize: WORD) callconv(.Stdcall) c_short;
 pub extern "comdlg32" fn GetFileTitleW(arg0: LPCWSTR, Buf: LPWSTR, cchSize: WORD) callconv(.Stdcall) c_short;
-pub const LPCCHOOKPROC = ?extern fn (HWND, UINT, WPARAM, LPARAM) UINT_PTR;
+pub const LPCCHOOKPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) UINT_PTR;
 pub const struct__OFNOTIFYA = extern struct {
     hdr: NMHDR,
     lpOFN: LPOPENFILENAMEA,
@@ -42178,7 +42178,7 @@ pub const CHOOSECOLOR = CHOOSECOLORA;
 pub const LPCHOOSECOLOR = LPCHOOSECOLORA;
 pub extern "comdlg32" fn ChooseColorA(arg0: LPCHOOSECOLORA) callconv(.Stdcall) BOOL;
 pub extern "comdlg32" fn ChooseColorW(arg0: LPCHOOSECOLORW) callconv(.Stdcall) BOOL;
-pub const LPFRHOOKPROC = ?extern fn (HWND, UINT, WPARAM, LPARAM) UINT_PTR;
+pub const LPFRHOOKPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) UINT_PTR;
 pub const struct_tagFINDREPLACEA = extern struct {
     lStructSize: DWORD,
     hwndOwner: HWND,
@@ -42215,7 +42215,7 @@ pub extern "comdlg32" fn FindTextA(arg0: LPFINDREPLACEA) callconv(.Stdcall) HWND
 pub extern "comdlg32" fn FindTextW(arg0: LPFINDREPLACEW) callconv(.Stdcall) HWND;
 pub extern "comdlg32" fn ReplaceTextA(arg0: LPFINDREPLACEA) callconv(.Stdcall) HWND;
 pub extern "comdlg32" fn ReplaceTextW(arg0: LPFINDREPLACEW) callconv(.Stdcall) HWND;
-pub const LPCFHOOKPROC = ?extern fn (HWND, UINT, WPARAM, LPARAM) UINT_PTR;
+pub const LPCFHOOKPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) UINT_PTR;
 pub const struct_tagCHOOSEFONTA = extern struct {
     lStructSize: DWORD,
     hwndOwner: HWND,
@@ -42263,8 +42263,8 @@ pub const PCCHOOSEFONTW = [*c]const CHOOSEFONTW;
 pub const PCCHOOSEFONT = PCCHOOSEFONTA;
 pub extern "comdlg32" fn ChooseFontA(arg0: LPCHOOSEFONTA) callconv(.Stdcall) BOOL;
 pub extern "comdlg32" fn ChooseFontW(arg0: LPCHOOSEFONTW) callconv(.Stdcall) BOOL;
-pub const LPPRINTHOOKPROC = ?extern fn (HWND, UINT, WPARAM, LPARAM) UINT_PTR;
-pub const LPSETUPHOOKPROC = ?extern fn (HWND, UINT, WPARAM, LPARAM) UINT_PTR;
+pub const LPPRINTHOOKPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) UINT_PTR;
+pub const LPSETUPHOOKPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) UINT_PTR;
 pub const struct_tagPDA = extern struct {
     lStructSize: DWORD,
     hwndOwner: HWND,
@@ -42317,12 +42317,12 @@ pub extern "comdlg32" fn PrintDlgA(pPD: LPPRINTDLGA) callconv(.Stdcall) BOOL;
 pub extern "comdlg32" fn PrintDlgW(pPD: LPPRINTDLGW) callconv(.Stdcall) BOOL;
 pub const IPrintDialogCallback = struct_IPrintDialogCallback;
 pub const struct_IPrintDialogCallbackVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPrintDialogCallback, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPrintDialogCallback) ULONG,
-    Release: ?extern fn ([*c]IPrintDialogCallback) ULONG,
-    InitDone: ?extern fn ([*c]IPrintDialogCallback) HRESULT,
-    SelectionChange: ?extern fn ([*c]IPrintDialogCallback) HRESULT,
-    HandleMessage: ?extern fn ([*c]IPrintDialogCallback, HWND, UINT, WPARAM, LPARAM, [*c]LRESULT) HRESULT,
+    QueryInterface: ?fn ([*c]IPrintDialogCallback, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPrintDialogCallback) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPrintDialogCallback) callconv(.C) ULONG,
+    InitDone: ?fn ([*c]IPrintDialogCallback) callconv(.C) HRESULT,
+    SelectionChange: ?fn ([*c]IPrintDialogCallback) callconv(.C) HRESULT,
+    HandleMessage: ?fn ([*c]IPrintDialogCallback, HWND, UINT, WPARAM, LPARAM, [*c]LRESULT) callconv(.C) HRESULT,
 };
 pub const struct_IPrintDialogCallback = extern struct {
     lpVtbl: [*c]struct_IPrintDialogCallbackVtbl,
@@ -42330,12 +42330,12 @@ pub const struct_IPrintDialogCallback = extern struct {
 pub const IPrintDialogCallbackVtbl = struct_IPrintDialogCallbackVtbl;
 pub const IPrintDialogServices = struct_IPrintDialogServices;
 pub const struct_IPrintDialogServicesVtbl = extern struct {
-    QueryInterface: ?extern fn ([*c]IPrintDialogServices, [*c]const IID, [*c](?*c_void)) HRESULT,
-    AddRef: ?extern fn ([*c]IPrintDialogServices) ULONG,
-    Release: ?extern fn ([*c]IPrintDialogServices) ULONG,
-    GetCurrentDevMode: ?extern fn ([*c]IPrintDialogServices, LPDEVMODE, [*c]UINT) HRESULT,
-    GetCurrentPrinterName: ?extern fn ([*c]IPrintDialogServices, LPWSTR, [*c]UINT) HRESULT,
-    GetCurrentPortName: ?extern fn ([*c]IPrintDialogServices, LPWSTR, [*c]UINT) HRESULT,
+    QueryInterface: ?fn ([*c]IPrintDialogServices, [*c]const IID, [*c](?*c_void)) callconv(.C) HRESULT,
+    AddRef: ?fn ([*c]IPrintDialogServices) callconv(.C) ULONG,
+    Release: ?fn ([*c]IPrintDialogServices) callconv(.C) ULONG,
+    GetCurrentDevMode: ?fn ([*c]IPrintDialogServices, LPDEVMODE, [*c]UINT) callconv(.C) HRESULT,
+    GetCurrentPrinterName: ?fn ([*c]IPrintDialogServices, LPWSTR, [*c]UINT) callconv(.C) HRESULT,
+    GetCurrentPortName: ?fn ([*c]IPrintDialogServices, LPWSTR, [*c]UINT) callconv(.C) HRESULT,
 };
 pub const struct_IPrintDialogServices = extern struct {
     lpVtbl: [*c]struct_IPrintDialogServicesVtbl,
@@ -42412,8 +42412,8 @@ pub const DEVNAMES = struct_tagDEVNAMES;
 pub const LPDEVNAMES = [*c]DEVNAMES;
 pub const PCDEVNAMES = [*c]const DEVNAMES;
 pub extern "comdlg32" fn CommDlgExtendedError() callconv(.Stdcall) DWORD;
-pub const LPPAGEPAINTHOOK = ?extern fn (HWND, UINT, WPARAM, LPARAM) UINT_PTR;
-pub const LPPAGESETUPHOOK = ?extern fn (HWND, UINT, WPARAM, LPARAM) UINT_PTR;
+pub const LPPAGEPAINTHOOK = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) UINT_PTR;
+pub const LPPAGESETUPHOOK = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) UINT_PTR;
 pub const struct_tagPSDA = extern struct {
     lStructSize: DWORD,
     hwndOwner: HWND,
@@ -42802,10 +42802,10 @@ pub const QUERY_SERVICE_CONFIGW = struct__QUERY_SERVICE_CONFIGW;
 pub const LPQUERY_SERVICE_CONFIGW = [*c]struct__QUERY_SERVICE_CONFIGW;
 pub const QUERY_SERVICE_CONFIG = QUERY_SERVICE_CONFIGA;
 pub const LPQUERY_SERVICE_CONFIG = LPQUERY_SERVICE_CONFIGA;
-pub const SERVICE_MAIN_FUNCTIONW = extern fn (DWORD, [*c]LPWSTR) void;
-pub const SERVICE_MAIN_FUNCTIONA = extern fn (DWORD, [*c]LPTSTR) void;
-pub const LPSERVICE_MAIN_FUNCTIONW = ?extern fn (DWORD, [*c]LPWSTR) void;
-pub const LPSERVICE_MAIN_FUNCTIONA = ?extern fn (DWORD, [*c]LPSTR) void;
+pub const SERVICE_MAIN_FUNCTIONW = fn (DWORD, [*c]LPWSTR) callconv(.C) void;
+pub const SERVICE_MAIN_FUNCTIONA = fn (DWORD, [*c]LPTSTR) callconv(.C) void;
+pub const LPSERVICE_MAIN_FUNCTIONW = ?fn (DWORD, [*c]LPWSTR) callconv(.C) void;
+pub const LPSERVICE_MAIN_FUNCTIONA = ?fn (DWORD, [*c]LPSTR) callconv(.C) void;
 pub const struct__SERVICE_TABLE_ENTRYA = extern struct {
     lpServiceName: LPSTR,
     lpServiceProc: LPSERVICE_MAIN_FUNCTIONA,
@@ -42820,11 +42820,11 @@ pub const SERVICE_TABLE_ENTRYW = struct__SERVICE_TABLE_ENTRYW;
 pub const LPSERVICE_TABLE_ENTRYW = [*c]struct__SERVICE_TABLE_ENTRYW;
 pub const SERVICE_TABLE_ENTRY = SERVICE_TABLE_ENTRYA;
 pub const LPSERVICE_TABLE_ENTRY = LPSERVICE_TABLE_ENTRYA;
-pub const HANDLER_FUNCTION = extern fn (DWORD) void;
-pub const HANDLER_FUNCTION_EX = extern fn (DWORD, DWORD, LPVOID, LPVOID) DWORD;
-pub const LPHANDLER_FUNCTION = ?extern fn (DWORD) void;
-pub const LPHANDLER_FUNCTION_EX = ?extern fn (DWORD, DWORD, LPVOID, LPVOID) DWORD;
-pub const PFN_SC_NOTIFY_CALLBACK = ?extern fn (PVOID) void;
+pub const HANDLER_FUNCTION = fn (DWORD) callconv(.C) void;
+pub const HANDLER_FUNCTION_EX = fn (DWORD, DWORD, LPVOID, LPVOID) callconv(.C) DWORD;
+pub const LPHANDLER_FUNCTION = ?fn (DWORD) callconv(.C) void;
+pub const LPHANDLER_FUNCTION_EX = ?fn (DWORD, DWORD, LPVOID, LPVOID) callconv(.C) DWORD;
+pub const PFN_SC_NOTIFY_CALLBACK = ?fn (PVOID) callconv(.C) void;
 pub const struct__SERVICE_NOTIFY_1 = extern struct {
     dwVersion: DWORD,
     pfnNotifyCallback: PFN_SC_NOTIFY_CALLBACK,
@@ -42945,7 +42945,7 @@ pub const enum__SC_EVENT_TYPE = extern enum {
 };
 pub const SC_EVENT_TYPE = enum__SC_EVENT_TYPE;
 pub const PSC_EVENT_TYPE = [*c]enum__SC_EVENT_TYPE;
-pub const SC_NOTIFICATION_CALLBACK = extern fn (DWORD, PVOID) void;
+pub const SC_NOTIFICATION_CALLBACK = fn (DWORD, PVOID) callconv(.C) void;
 pub const PSC_NOTIFICATION_CALLBACK = [*c]SC_NOTIFICATION_CALLBACK;
 pub const struct__SC_NOTIFICATION_REGISTRATION = @OpaqueType();
 pub const PSC_NOTIFICATION_REGISTRATION = ?*struct__SC_NOTIFICATION_REGISTRATION;
@@ -43152,7 +43152,7 @@ pub const IMECHARPOSITION = struct_tagIMECHARPOSITION;
 pub const PIMECHARPOSITION = [*c]struct_tagIMECHARPOSITION;
 pub const NPIMECHARPOSITION = [*c]struct_tagIMECHARPOSITION;
 pub const LPIMECHARPOSITION = [*c]struct_tagIMECHARPOSITION;
-pub const IMCENUMPROC = ?extern fn (HIMC, LPARAM) BOOL;
+pub const IMCENUMPROC = ?fn (HIMC, LPARAM) callconv(.C) BOOL;
 pub extern "imm32" fn ImmInstallIMEA(lpszIMEFileName: LPCSTR, lpszLayoutText: LPCSTR) callconv(.Stdcall) HKL;
 pub extern "imm32" fn ImmInstallIMEW(lpszIMEFileName: LPCWSTR, lpszLayoutText: LPCWSTR) callconv(.Stdcall) HKL;
 pub extern "imm32" fn ImmGetDefaultIMEWnd(arg0: HWND) callconv(.Stdcall) HWND;
@@ -43203,8 +43203,8 @@ pub extern "imm32" fn ImmSetCandidateWindow(arg0: HIMC, lpCandidate: LPCANDIDATE
 pub extern "imm32" fn ImmIsUIMessageA(arg0: HWND, arg1: UINT, arg2: WPARAM, arg3: LPARAM) callconv(.Stdcall) BOOL;
 pub extern "imm32" fn ImmIsUIMessageW(arg0: HWND, arg1: UINT, arg2: WPARAM, arg3: LPARAM) callconv(.Stdcall) BOOL;
 pub extern "imm32" fn ImmGetVirtualKey(arg0: HWND) callconv(.Stdcall) UINT;
-pub const REGISTERWORDENUMPROCA = ?extern fn (LPCSTR, DWORD, LPCSTR, LPVOID) c_int;
-pub const REGISTERWORDENUMPROCW = ?extern fn (LPCWSTR, DWORD, LPCWSTR, LPVOID) c_int;
+pub const REGISTERWORDENUMPROCA = ?fn (LPCSTR, DWORD, LPCSTR, LPVOID) callconv(.C) c_int;
+pub const REGISTERWORDENUMPROCW = ?fn (LPCWSTR, DWORD, LPCWSTR, LPVOID) callconv(.C) c_int;
 pub extern "imm32" fn ImmRegisterWordA(arg0: HKL, lpszReading: LPCSTR, arg2: DWORD, lpszRegister: LPCSTR) callconv(.Stdcall) BOOL;
 pub extern "imm32" fn ImmRegisterWordW(arg0: HKL, lpszReading: LPCWSTR, arg2: DWORD, lpszRegister: LPCWSTR) callconv(.Stdcall) BOOL;
 pub extern "imm32" fn ImmUnregisterWordA(arg0: HKL, lpszReading: LPCSTR, arg2: DWORD, lpszUnregister: LPCSTR) callconv(.Stdcall) BOOL;
