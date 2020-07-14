@@ -1,4 +1,4 @@
-const win32 = import("./c.zig");
+const win32 = @import("./c.zig");
 
 pub const EmptyWorkingSet = K32EmptyWorkingSet;
 pub extern "kernel32" fn K32EmptyWorkingSet(hProcess: win32.HANDLE) win32.BOOL;
