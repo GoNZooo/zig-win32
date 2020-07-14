@@ -7259,9 +7259,9 @@ pub const HGLOBAL = HANDLE;
 pub const HLOCAL = HANDLE;
 pub const GLOBALHANDLE = HANDLE;
 pub const LOCALHANDLE = HANDLE;
-pub const FARPROC = [*c]fn () callconv(.C) INT_PTR;
-pub const NEARPROC = [*c]fn () callconv(.C) INT_PTR;
-pub const PROC = [*c]fn () callconv(.C) INT_PTR;
+pub const FARPROC = ?fn (...) callconv(.C) INT_PTR;
+pub const NEARPROC = ?fn (...) callconv(.C) INT_PTR;
+pub const PROC = ?fn (...) callconv(.C) INT_PTR;
 pub const ATOM = WORD;
 pub const struct_HKEY__ = extern struct {
     unused: c_int,
