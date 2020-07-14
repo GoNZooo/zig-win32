@@ -4,6 +4,7 @@ const testing = std.testing;
 
 pub const c = @import("./win32/c.zig");
 pub const lean_and_mean = @import("./win32/lean_and_mean.zig");
+pub const psapi = @import("./win32/psapi.zig");
 
 pub fn makeIntResourceA(value: windows.INT) windows.LPSTR {
     return @ptrCast(windows.LPSTR, @intToPtr(*windows.ULONG_PTR, @intCast(windows.WORD, value)));
