@@ -1,3 +1,5 @@
+const std = @import("std");
+
 pub const va_list = [*c]u8;
 extern fn __va_start(arg0: [*c]([*c]u8), ...) void;
 pub const ptrdiff_t = c_longlong;
@@ -139,7 +141,7 @@ pub const struct__IMAGE_RUNTIME_FUNCTION_ENTRY = extern struct {
 };
 pub const PRUNTIME_FUNCTION = [*c]struct__IMAGE_RUNTIME_FUNCTION_ENTRY;
 pub const PCONTEXT = [*c]struct__CONTEXT;
-pub const EXCEPTION_ROUTINE = fn ([*c]struct__EXCEPTION_RECORD, PVOID, [*c]struct__CONTEXT, PVOID) callconv(.C) EXCEPTION_DISPOSITION;
+pub const EXCEPTION_ROUTINE = fn ([*c]struct__EXCEPTION_RECORD, PVOID, [*c]struct__CONTEXT, PVOID) callconv(std.os.windows.WINAPI) EXCEPTION_DISPOSITION;
 pub const PEXCEPTION_ROUTINE = [*c]EXCEPTION_ROUTINE;
 pub const struct__UNWIND_HISTORY_TABLE_ENTRY = extern struct {
     ImageBase: DWORD64,
@@ -218,8 +220,8 @@ pub const struct___crt_locale_data_public = extern struct {
     _locale_lc_codepage: c_uint,
 };
 pub const __crt_locale_data_public = struct___crt_locale_data_public;
-pub const struct___crt_locale_data = @OpaqueType();
-pub const struct___crt_multibyte_data = @OpaqueType();
+pub const struct___crt_locale_data = opaque {};
+pub const struct___crt_multibyte_data = opaque {};
 pub const struct___crt_locale_pointers = extern struct {
     locinfo: ?*struct___crt_locale_data,
     mbcinfo: ?*struct___crt_multibyte_data,
@@ -1054,9 +1056,9 @@ pub const SCOPE_TABLE = SCOPE_TABLE_AMD64;
 pub const PSCOPE_TABLE = [*c]SCOPE_TABLE_AMD64;
 pub const PUNWIND_HISTORY_TABLE_ENTRY = [*c]struct__UNWIND_HISTORY_TABLE_ENTRY;
 pub const UNWIND_HISTORY_TABLE = struct__UNWIND_HISTORY_TABLE;
-pub const GET_RUNTIME_FUNCTION_CALLBACK = fn (DWORD64, PVOID) callconv(.C) PRUNTIME_FUNCTION;
+pub const GET_RUNTIME_FUNCTION_CALLBACK = fn (DWORD64, PVOID) callconv(std.os.windows.WINAPI) PRUNTIME_FUNCTION;
 pub const PGET_RUNTIME_FUNCTION_CALLBACK = ?GET_RUNTIME_FUNCTION_CALLBACK;
-pub const OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK = fn (HANDLE, PVOID, PDWORD, [*c]PRUNTIME_FUNCTION) callconv(.C) DWORD;
+pub const OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK = fn (HANDLE, PVOID, PDWORD, [*c]PRUNTIME_FUNCTION) callconv(std.os.windows.WINAPI) DWORD;
 pub const POUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK = ?OUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK;
 pub const DISPATCHER_CONTEXT = struct__DISPATCHER_CONTEXT;
 pub const PDISPATCHER_CONTEXT = [*c]struct__DISPATCHER_CONTEXT;
@@ -1066,8 +1068,8 @@ pub const struct__EXCEPTION_POINTERS = extern struct {
     ExceptionRecord: PEXCEPTION_RECORD,
     ContextRecord: PCONTEXT,
 };
-pub const PEXCEPTION_FILTER = ?fn ([*c]struct__EXCEPTION_POINTERS, PVOID) callconv(.C) LONG;
-pub const PTERMINATION_HANDLER = ?fn (BOOLEAN, PVOID) callconv(.C) void;
+pub const PEXCEPTION_FILTER = ?fn ([*c]struct__EXCEPTION_POINTERS, PVOID) callconv(std.os.windows.WINAPI) LONG;
+pub const PTERMINATION_HANDLER = ?fn (BOOLEAN, PVOID) callconv(std.os.windows.WINAPI) void;
 pub const struct__KNONVOLATILE_CONTEXT_POINTERS = extern struct {
     @"": extern union {
         FloatingContext: [16]PM128A,
@@ -1171,7 +1173,7 @@ pub const struct__LDT_ENTRY = extern struct {
             Flags2: BYTE,
             BaseHi: BYTE,
         },
-        Bits: @OpaqueType(),
+        Bits: opaque {},
     },
 };
 pub const LDT_ENTRY = struct__LDT_ENTRY;
@@ -1455,7 +1457,7 @@ pub const struct__WOW64_LDT_ENTRY = extern struct {
             Flags2: BYTE,
             BaseHi: BYTE,
         },
-        Bits: @OpaqueType(),
+        Bits: opaque {},
     },
 };
 pub const WOW64_LDT_ENTRY = struct__WOW64_LDT_ENTRY;
@@ -2631,7 +2633,7 @@ pub const struct__UMS_CREATE_THREAD_ATTRIBUTES = extern struct {
 };
 pub const UMS_CREATE_THREAD_ATTRIBUTES = struct__UMS_CREATE_THREAD_ATTRIBUTES;
 pub const PUMS_CREATE_THREAD_ATTRIBUTES = [*c]struct__UMS_CREATE_THREAD_ATTRIBUTES;
-pub const struct__WOW64_ARCHITECTURE_INFORMATION = @OpaqueType();
+pub const struct__WOW64_ARCHITECTURE_INFORMATION = opaque {};
 pub const WOW64_ARCHITECTURE_INFORMATION = struct__WOW64_ARCHITECTURE_INFORMATION;
 pub const struct__QUOTA_LIMITS = extern struct {
     PagedPoolLimit: SIZE_T,
@@ -2645,7 +2647,7 @@ pub const QUOTA_LIMITS = struct__QUOTA_LIMITS;
 pub const PQUOTA_LIMITS = [*c]struct__QUOTA_LIMITS;
 pub const union__RATE_QUOTA_LIMIT = extern union {
     RateData: DWORD,
-    @"": @OpaqueType(),
+    @"": opaque {},
 };
 pub const RATE_QUOTA_LIMIT = union__RATE_QUOTA_LIMIT;
 pub const PRATE_QUOTA_LIMIT = [*c]union__RATE_QUOTA_LIMIT;
@@ -2722,7 +2724,7 @@ pub const PPROCESS_MITIGATION_POLICY = [*c]enum__PROCESS_MITIGATION_POLICY;
 pub const struct__PROCESS_MITIGATION_ASLR_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_ASLR_POLICY = struct__PROCESS_MITIGATION_ASLR_POLICY;
@@ -2730,7 +2732,7 @@ pub const PPROCESS_MITIGATION_ASLR_POLICY = [*c]struct__PROCESS_MITIGATION_ASLR_
 pub const struct__PROCESS_MITIGATION_DEP_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
     Permanent: BOOLEAN,
 };
@@ -2739,7 +2741,7 @@ pub const PPROCESS_MITIGATION_DEP_POLICY = [*c]struct__PROCESS_MITIGATION_DEP_PO
 pub const struct__PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY = struct__PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY;
@@ -2747,7 +2749,7 @@ pub const PPROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY = [*c]struct__PROCESS_M
 pub const struct__PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY = struct__PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY;
@@ -2755,7 +2757,7 @@ pub const PPROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY = [*c]struct__PROCESS_M
 pub const struct__PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY = struct__PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY;
@@ -2763,7 +2765,7 @@ pub const PPROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY = [*c]struct__PROCE
 pub const struct__PROCESS_MITIGATION_DYNAMIC_CODE_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_DYNAMIC_CODE_POLICY = struct__PROCESS_MITIGATION_DYNAMIC_CODE_POLICY;
@@ -2771,7 +2773,7 @@ pub const PPROCESS_MITIGATION_DYNAMIC_CODE_POLICY = [*c]struct__PROCESS_MITIGATI
 pub const struct__PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY = struct__PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY;
@@ -2779,7 +2781,7 @@ pub const PPROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY = [*c]struct__PROCESS_MI
 pub const struct__PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY = struct__PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY;
@@ -2787,7 +2789,7 @@ pub const PPROCESS_MITIGATION_BINARY_SIGNATURE_POLICY = [*c]struct__PROCESS_MITI
 pub const struct__PROCESS_MITIGATION_FONT_DISABLE_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_FONT_DISABLE_POLICY = struct__PROCESS_MITIGATION_FONT_DISABLE_POLICY;
@@ -2795,7 +2797,7 @@ pub const PPROCESS_MITIGATION_FONT_DISABLE_POLICY = [*c]struct__PROCESS_MITIGATI
 pub const struct__PROCESS_MITIGATION_IMAGE_LOAD_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_IMAGE_LOAD_POLICY = struct__PROCESS_MITIGATION_IMAGE_LOAD_POLICY;
@@ -2803,7 +2805,7 @@ pub const PPROCESS_MITIGATION_IMAGE_LOAD_POLICY = [*c]struct__PROCESS_MITIGATION
 pub const struct__PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY = struct__PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY;
@@ -2811,7 +2813,7 @@ pub const PPROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY = [*c]struct__PROCESS_MI
 pub const struct__PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY = struct__PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY;
@@ -2819,7 +2821,7 @@ pub const PPROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY = [*c]struct__PROCESS_M
 pub const struct__PROCESS_MITIGATION_CHILD_PROCESS_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_CHILD_PROCESS_POLICY = struct__PROCESS_MITIGATION_CHILD_PROCESS_POLICY;
@@ -2827,7 +2829,7 @@ pub const PPROCESS_MITIGATION_CHILD_PROCESS_POLICY = [*c]struct__PROCESS_MITIGAT
 pub const struct__PROCESS_MITIGATION_SIDE_CHANNEL_ISOLATION_POLICY = extern struct {
     @"": extern union {
         Flags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const PROCESS_MITIGATION_SIDE_CHANNEL_ISOLATION_POLICY = struct__PROCESS_MITIGATION_SIDE_CHANNEL_ISOLATION_POLICY;
@@ -3393,7 +3395,7 @@ pub const struct__SYSTEM_CPU_SET_INFORMATION = extern struct {
             EfficiencyClass: BYTE,
             @"": extern union {
                 AllFlags: BYTE,
-                @"": @OpaqueType(),
+                @"": opaque {},
             },
             @"": extern union {
                 Reserved: DWORD,
@@ -3422,7 +3424,7 @@ pub const struct__XSTATE_CONFIGURATION = extern struct {
     Size: DWORD,
     @"": extern union {
         ControlFlags: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
     Features: [64]XSTATE_FEATURE,
     EnabledSupervisorFeatures: DWORD64,
@@ -3500,7 +3502,7 @@ pub const enum_MEM_EXTENDED_PARAMETER_TYPE = extern enum {
 pub const MEM_EXTENDED_PARAMETER_TYPE = enum_MEM_EXTENDED_PARAMETER_TYPE;
 pub const PMEM_EXTENDED_PARAMETER_TYPE = [*c]enum_MEM_EXTENDED_PARAMETER_TYPE;
 pub const struct_MEM_EXTENDED_PARAMETER = extern struct {
-    @"": @OpaqueType(),
+    @"": opaque {},
     @"": extern union {
         ULong64: DWORD64,
         Pointer: PVOID,
@@ -3572,7 +3574,7 @@ pub const struct__ENCLAVE_INIT_INFO_VBS = extern struct {
 };
 pub const ENCLAVE_INIT_INFO_VBS = struct__ENCLAVE_INIT_INFO_VBS;
 pub const PENCLAVE_INIT_INFO_VBS = [*c]struct__ENCLAVE_INIT_INFO_VBS;
-pub const ENCLAVE_TARGET_FUNCTION = fn (PVOID) callconv(.C) PVOID;
+pub const ENCLAVE_TARGET_FUNCTION = fn (PVOID) callconv(std.os.windows.WINAPI) PVOID;
 pub const PENCLAVE_TARGET_FUNCTION = [*c]ENCLAVE_TARGET_FUNCTION;
 pub const LPENCLAVE_TARGET_FUNCTION = PENCLAVE_TARGET_FUNCTION;
 pub const struct__FILE_ID_128 = extern struct {
@@ -4883,7 +4885,7 @@ pub const PROCESSOR_IDLESTATE_POLICY = extern struct {
     Revision: WORD,
     Flags: extern union {
         AsWORD: WORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
     PolicyCount: DWORD,
     Policy: [3]PROCESSOR_IDLESTATE_INFO,
@@ -4892,15 +4894,15 @@ pub const PPROCESSOR_IDLESTATE_POLICY = [*c]extern struct {
     Revision: WORD,
     Flags: extern union {
         AsWORD: WORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
     PolicyCount: DWORD,
     Policy: [3]PROCESSOR_IDLESTATE_INFO,
 };
-pub const struct__PROCESSOR_POWER_POLICY_INFO = @OpaqueType();
+pub const struct__PROCESSOR_POWER_POLICY_INFO = opaque {};
 pub const PROCESSOR_POWER_POLICY_INFO = struct__PROCESSOR_POWER_POLICY_INFO;
 pub const PPROCESSOR_POWER_POLICY_INFO = ?*struct__PROCESSOR_POWER_POLICY_INFO;
-pub const struct__PROCESSOR_POWER_POLICY = @OpaqueType();
+pub const struct__PROCESSOR_POWER_POLICY = opaque {};
 pub const PROCESSOR_POWER_POLICY = struct__PROCESSOR_POWER_POLICY;
 pub const PPROCESSOR_POWER_POLICY = ?*struct__PROCESSOR_POWER_POLICY;
 pub const PROCESSOR_PERFSTATE_POLICY = extern struct {
@@ -4912,7 +4914,7 @@ pub const PROCESSOR_PERFSTATE_POLICY = extern struct {
         Spare: BYTE,
         Flags: extern union {
             AsBYTE: BYTE,
-            @"": @OpaqueType(),
+            @"": opaque {},
         },
     },
     TimeCheck: DWORD,
@@ -4930,7 +4932,7 @@ pub const PPROCESSOR_PERFSTATE_POLICY = [*c]extern struct {
         Spare: BYTE,
         Flags: extern union {
             AsBYTE: BYTE,
-            @"": @OpaqueType(),
+            @"": opaque {},
         },
     },
     TimeCheck: DWORD,
@@ -5565,7 +5567,7 @@ pub const struct__IMAGE_THUNK_DATA32 = extern struct {
 };
 pub const IMAGE_THUNK_DATA32 = struct__IMAGE_THUNK_DATA32;
 pub const PIMAGE_THUNK_DATA32 = [*c]IMAGE_THUNK_DATA32;
-pub const PIMAGE_TLS_CALLBACK = ?fn (PVOID, DWORD, PVOID) callconv(.C) void;
+pub const PIMAGE_TLS_CALLBACK = ?fn (PVOID, DWORD, PVOID) callconv(std.os.windows.WINAPI) void;
 pub const struct__IMAGE_TLS_DIRECTORY64 = extern struct {
     StartAddressOfRawData: ULONGLONG,
     EndAddressOfRawData: ULONGLONG,
@@ -5574,7 +5576,7 @@ pub const struct__IMAGE_TLS_DIRECTORY64 = extern struct {
     SizeOfZeroFill: DWORD,
     @"": extern union {
         Characteristics: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const IMAGE_TLS_DIRECTORY64 = struct__IMAGE_TLS_DIRECTORY64;
@@ -5587,7 +5589,7 @@ pub const struct__IMAGE_TLS_DIRECTORY32 = extern struct {
     SizeOfZeroFill: DWORD,
     @"": extern union {
         Characteristics: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const IMAGE_TLS_DIRECTORY32 = struct__IMAGE_TLS_DIRECTORY32;
@@ -5625,7 +5627,7 @@ pub const PIMAGE_BOUND_FORWARDER_REF = [*c]struct__IMAGE_BOUND_FORWARDER_REF;
 pub const struct__IMAGE_DELAYLOAD_DESCRIPTOR = extern struct {
     Attributes: extern union {
         AllAttributes: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
     DllNameRVA: DWORD,
     ModuleHandleRVA: DWORD,
@@ -5650,13 +5652,13 @@ pub const IMAGE_RESOURCE_DIRECTORY = struct__IMAGE_RESOURCE_DIRECTORY;
 pub const PIMAGE_RESOURCE_DIRECTORY = [*c]struct__IMAGE_RESOURCE_DIRECTORY;
 pub const struct__IMAGE_RESOURCE_DIRECTORY_ENTRY = extern struct {
     @"": extern union {
-        @"": @OpaqueType(),
+        @"": opaque {},
         Name: DWORD,
         Id: WORD,
     },
     @"": extern union {
         OffsetToData: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const IMAGE_RESOURCE_DIRECTORY_ENTRY = struct__IMAGE_RESOURCE_DIRECTORY_ENTRY;
@@ -5742,13 +5744,13 @@ pub const struct__IMAGE_EPILOGUE_DYNAMIC_RELOCATION_HEADER = extern struct {
 };
 pub const IMAGE_EPILOGUE_DYNAMIC_RELOCATION_HEADER = struct__IMAGE_EPILOGUE_DYNAMIC_RELOCATION_HEADER;
 pub const PIMAGE_EPILOGUE_DYNAMIC_RELOCATION_HEADER = [*c]IMAGE_EPILOGUE_DYNAMIC_RELOCATION_HEADER;
-pub const struct__IMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION = @OpaqueType();
+pub const struct__IMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION = opaque {};
 pub const IMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION = struct__IMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION;
 pub const PIMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION = ?*IMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION;
-pub const struct__IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION = @OpaqueType();
+pub const struct__IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION = opaque {};
 pub const IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION = struct__IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION;
 pub const PIMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION = ?*IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION;
-pub const struct__IMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION = @OpaqueType();
+pub const struct__IMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION = opaque {};
 pub const IMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION = struct__IMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION;
 pub const PIMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION = ?*IMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION;
 pub const struct__IMAGE_LOAD_CONFIG_DIRECTORY32 = extern struct {
@@ -5874,14 +5876,14 @@ pub const struct__IMAGE_HOT_PATCH_HASHES = extern struct {
 };
 pub const IMAGE_HOT_PATCH_HASHES = struct__IMAGE_HOT_PATCH_HASHES;
 pub const PIMAGE_HOT_PATCH_HASHES = [*c]struct__IMAGE_HOT_PATCH_HASHES;
-pub const struct__IMAGE_CE_RUNTIME_FUNCTION_ENTRY = @OpaqueType();
+pub const struct__IMAGE_CE_RUNTIME_FUNCTION_ENTRY = opaque {};
 pub const IMAGE_CE_RUNTIME_FUNCTION_ENTRY = struct__IMAGE_CE_RUNTIME_FUNCTION_ENTRY;
 pub const PIMAGE_CE_RUNTIME_FUNCTION_ENTRY = ?*struct__IMAGE_CE_RUNTIME_FUNCTION_ENTRY;
 pub const struct__IMAGE_ARM_RUNTIME_FUNCTION_ENTRY = extern struct {
     BeginAddress: DWORD,
     @"": extern union {
         UnwindData: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const IMAGE_ARM_RUNTIME_FUNCTION_ENTRY = struct__IMAGE_ARM_RUNTIME_FUNCTION_ENTRY;
@@ -5890,7 +5892,7 @@ pub const struct__IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY = extern struct {
     BeginAddress: DWORD,
     @"": extern union {
         UnwindData: DWORD,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
 };
 pub const IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY = struct__IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY;
@@ -5990,7 +5992,7 @@ pub const struct__IMAGE_COFF_SYMBOLS_HEADER = extern struct {
 };
 pub const IMAGE_COFF_SYMBOLS_HEADER = struct__IMAGE_COFF_SYMBOLS_HEADER;
 pub const PIMAGE_COFF_SYMBOLS_HEADER = [*c]struct__IMAGE_COFF_SYMBOLS_HEADER;
-pub const struct__FPO_DATA = @OpaqueType();
+pub const struct__FPO_DATA = opaque {};
 pub const FPO_DATA = struct__FPO_DATA;
 pub const PFPO_DATA = ?*struct__FPO_DATA;
 pub const struct__IMAGE_DEBUG_MISC = extern struct {
@@ -6049,7 +6051,7 @@ pub const struct__NON_PAGED_DEBUG_INFO = extern struct {
 };
 pub const NON_PAGED_DEBUG_INFO = struct__NON_PAGED_DEBUG_INFO;
 pub const PNON_PAGED_DEBUG_INFO = [*c]struct__NON_PAGED_DEBUG_INFO;
-pub const struct__ImageArchitectureHeader = @OpaqueType();
+pub const struct__ImageArchitectureHeader = opaque {};
 pub const IMAGE_ARCHITECTURE_HEADER = struct__ImageArchitectureHeader;
 pub const PIMAGE_ARCHITECTURE_HEADER = ?*struct__ImageArchitectureHeader;
 pub const struct__ImageArchitectureEntry = extern struct {
@@ -6058,7 +6060,7 @@ pub const struct__ImageArchitectureEntry = extern struct {
 };
 pub const IMAGE_ARCHITECTURE_ENTRY = struct__ImageArchitectureEntry;
 pub const PIMAGE_ARCHITECTURE_ENTRY = [*c]struct__ImageArchitectureEntry;
-pub const struct_IMPORT_OBJECT_HEADER = @OpaqueType();
+pub const struct_IMPORT_OBJECT_HEADER = opaque {};
 pub const IMPORT_OBJECT_HEADER = struct_IMPORT_OBJECT_HEADER;
 pub const IMPORT_OBJECT_CODE = enum_IMPORT_OBJECT_TYPE.IMPORT_OBJECT_CODE;
 pub const IMPORT_OBJECT_DATA = enum_IMPORT_OBJECT_TYPE.IMPORT_OBJECT_DATA;
@@ -6180,7 +6182,7 @@ pub const union__SLIST_HEADER = extern union {
         Alignment: ULONGLONG,
         Region: ULONGLONG,
     },
-    HeaderX64: @OpaqueType(),
+    HeaderX64: opaque {},
 };
 pub const SLIST_HEADER = union__SLIST_HEADER;
 pub const PSLIST_HEADER = [*c]union__SLIST_HEADER;
@@ -6325,7 +6327,7 @@ pub const enum__RTL_UMS_SCHEDULER_REASON = extern enum {
 };
 pub const RTL_UMS_SCHEDULER_REASON = enum__RTL_UMS_SCHEDULER_REASON;
 pub const PRTL_UMS_SCHEDULER_REASON = [*c]enum__RTL_UMS_SCHEDULER_REASON;
-pub const RTL_UMS_SCHEDULER_ENTRY_POINT = fn (RTL_UMS_SCHEDULER_REASON, ULONG_PTR, PVOID) callconv(.C) void;
+pub const RTL_UMS_SCHEDULER_ENTRY_POINT = fn (RTL_UMS_SCHEDULER_REASON, ULONG_PTR, PVOID) callconv(std.os.windows.WINAPI) void;
 pub const PRTL_UMS_SCHEDULER_ENTRY_POINT = [*c]RTL_UMS_SCHEDULER_ENTRY_POINT;
 extern fn RtlCrc32(Buffer: ?*const c_void, Size: usize, InitialCrc: DWORD) DWORD;
 extern fn RtlCrc64(Buffer: ?*const c_void, Size: usize, InitialCrc: ULONGLONG) ULONGLONG;
@@ -6495,8 +6497,8 @@ pub const struct__RTL_CONDITION_VARIABLE = extern struct {
 };
 pub const RTL_CONDITION_VARIABLE = struct__RTL_CONDITION_VARIABLE;
 pub const PRTL_CONDITION_VARIABLE = [*c]struct__RTL_CONDITION_VARIABLE;
-pub const PAPCFUNC = ?fn (ULONG_PTR) callconv(.C) void;
-pub const PVECTORED_EXCEPTION_HANDLER = ?fn ([*c]struct__EXCEPTION_POINTERS) callconv(.C) LONG;
+pub const PAPCFUNC = ?fn (ULONG_PTR) callconv(std.os.windows.WINAPI) void;
+pub const PVECTORED_EXCEPTION_HANDLER = ?fn ([*c]struct__EXCEPTION_POINTERS) callconv(std.os.windows.WINAPI) LONG;
 pub const HeapCompatibilityInformation = enum__HEAP_INFORMATION_CLASS.HeapCompatibilityInformation;
 pub const HeapEnableTerminationOnCorruption = enum__HEAP_INFORMATION_CLASS.HeapEnableTerminationOnCorruption;
 pub const HeapOptimizeResources = enum__HEAP_INFORMATION_CLASS.HeapOptimizeResources;
@@ -6512,12 +6514,12 @@ pub const struct__HEAP_OPTIMIZE_RESOURCES_INFORMATION = extern struct {
 };
 pub const HEAP_OPTIMIZE_RESOURCES_INFORMATION = struct__HEAP_OPTIMIZE_RESOURCES_INFORMATION;
 pub const PHEAP_OPTIMIZE_RESOURCES_INFORMATION = [*c]struct__HEAP_OPTIMIZE_RESOURCES_INFORMATION;
-pub const WAITORTIMERCALLBACKFUNC = ?fn (PVOID, BOOLEAN) callconv(.C) void;
-pub const WORKERCALLBACKFUNC = ?fn (PVOID) callconv(.C) void;
-pub const APC_CALLBACK_FUNCTION = ?fn (DWORD, PVOID, PVOID) callconv(.C) void;
+pub const WAITORTIMERCALLBACKFUNC = ?fn (PVOID, BOOLEAN) callconv(std.os.windows.WINAPI) void;
+pub const WORKERCALLBACKFUNC = ?fn (PVOID) callconv(std.os.windows.WINAPI) void;
+pub const APC_CALLBACK_FUNCTION = ?fn (DWORD, PVOID, PVOID) callconv(std.os.windows.WINAPI) void;
 pub const WAITORTIMERCALLBACK = WAITORTIMERCALLBACKFUNC;
-pub const PFLS_CALLBACK_FUNCTION = ?fn (PVOID) callconv(.C) void;
-pub const PSECURE_MEMORY_CACHE_CALLBACK = ?fn (PVOID, SIZE_T) callconv(.C) BOOLEAN;
+pub const PFLS_CALLBACK_FUNCTION = ?fn (PVOID) callconv(std.os.windows.WINAPI) void;
+pub const PSECURE_MEMORY_CACHE_CALLBACK = ?fn (PVOID, SIZE_T) callconv(std.os.windows.WINAPI) BOOLEAN;
 pub const ActivationContextBasicInformation = enum__ACTIVATION_CONTEXT_INFO_CLASS.ActivationContextBasicInformation;
 pub const ActivationContextDetailedInformation = enum__ACTIVATION_CONTEXT_INFO_CLASS.ActivationContextDetailedInformation;
 pub const AssemblyDetailedInformationInActivationContext = enum__ACTIVATION_CONTEXT_INFO_CLASS.AssemblyDetailedInformationInActivationContext;
@@ -7138,11 +7140,11 @@ pub const KTMOBJECT_CURSOR = struct__KTMOBJECT_CURSOR;
 pub const PKTMOBJECT_CURSOR = [*c]struct__KTMOBJECT_CURSOR;
 pub const TP_VERSION = DWORD;
 pub const PTP_VERSION = [*c]DWORD;
-pub const struct__TP_CALLBACK_INSTANCE = @OpaqueType();
+pub const struct__TP_CALLBACK_INSTANCE = opaque {};
 pub const TP_CALLBACK_INSTANCE = struct__TP_CALLBACK_INSTANCE;
 pub const PTP_CALLBACK_INSTANCE = ?*struct__TP_CALLBACK_INSTANCE;
-pub const PTP_SIMPLE_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID) callconv(.C) void;
-pub const struct__TP_POOL = @OpaqueType();
+pub const PTP_SIMPLE_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID) callconv(std.os.windows.WINAPI) void;
+pub const struct__TP_POOL = opaque {};
 pub const TP_POOL = struct__TP_POOL;
 pub const PTP_POOL = ?*struct__TP_POOL;
 pub const TP_CALLBACK_PRIORITY_HIGH = enum__TP_CALLBACK_PRIORITY.TP_CALLBACK_PRIORITY_HIGH;
@@ -7164,11 +7166,11 @@ pub const struct__TP_POOL_STACK_INFORMATION = extern struct {
 };
 pub const TP_POOL_STACK_INFORMATION = struct__TP_POOL_STACK_INFORMATION;
 pub const PTP_POOL_STACK_INFORMATION = [*c]struct__TP_POOL_STACK_INFORMATION;
-pub const struct__TP_CLEANUP_GROUP = @OpaqueType();
+pub const struct__TP_CLEANUP_GROUP = opaque {};
 pub const TP_CLEANUP_GROUP = struct__TP_CLEANUP_GROUP;
 pub const PTP_CLEANUP_GROUP = ?*struct__TP_CLEANUP_GROUP;
-pub const PTP_CLEANUP_GROUP_CANCEL_CALLBACK = ?fn (PVOID, PVOID) callconv(.C) void;
-pub const struct__ACTIVATION_CONTEXT = @OpaqueType();
+pub const PTP_CLEANUP_GROUP_CANCEL_CALLBACK = ?fn (PVOID, PVOID) callconv(std.os.windows.WINAPI) void;
+pub const struct__ACTIVATION_CONTEXT = opaque {};
 pub const struct__TP_CALLBACK_ENVIRON_V3 = extern struct {
     Version: TP_VERSION,
     Pool: PTP_POOL,
@@ -7179,7 +7181,7 @@ pub const struct__TP_CALLBACK_ENVIRON_V3 = extern struct {
     FinalizationCallback: PTP_SIMPLE_CALLBACK,
     u: extern union {
         Flags: DWORD,
-        s: @OpaqueType(),
+        s: opaque {},
     },
     CallbackPriority: TP_CALLBACK_PRIORITY,
     Size: DWORD,
@@ -7230,23 +7232,23 @@ pub fn TpSetCallbackPersistent(CallbackEnviron: PTP_CALLBACK_ENVIRON) void {
 pub fn TpDestroyCallbackEnviron(CallbackEnviron: PTP_CALLBACK_ENVIRON) void {
     CallbackEnviron;
 }
-pub const struct__TP_WORK = @OpaqueType();
+pub const struct__TP_WORK = opaque {};
 pub const TP_WORK = struct__TP_WORK;
 pub const PTP_WORK = ?*struct__TP_WORK;
-pub const PTP_WORK_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_WORK) callconv(.C) void;
-pub const struct__TP_TIMER = @OpaqueType();
+pub const PTP_WORK_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_WORK) callconv(std.os.windows.WINAPI) void;
+pub const struct__TP_TIMER = opaque {};
 pub const TP_TIMER = struct__TP_TIMER;
 pub const PTP_TIMER = ?*struct__TP_TIMER;
-pub const PTP_TIMER_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_TIMER) callconv(.C) void;
+pub const PTP_TIMER_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_TIMER) callconv(std.os.windows.WINAPI) void;
 pub const TP_WAIT_RESULT = DWORD;
-pub const struct__TP_WAIT = @OpaqueType();
+pub const struct__TP_WAIT = opaque {};
 pub const TP_WAIT = struct__TP_WAIT;
 pub const PTP_WAIT = ?*struct__TP_WAIT;
-pub const PTP_WAIT_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_WAIT, TP_WAIT_RESULT) callconv(.C) void;
-pub const struct__TP_IO = @OpaqueType();
+pub const PTP_WAIT_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PTP_WAIT, TP_WAIT_RESULT) callconv(std.os.windows.WINAPI) void;
+pub const struct__TP_IO = opaque {};
 pub const TP_IO = struct__TP_IO;
 pub const PTP_IO = ?*struct__TP_IO;
-pub const struct__TEB = @OpaqueType();
+pub const struct__TEB = opaque {};
 pub fn GetFiberData() PVOID {
     return @ptrCast([*c]PVOID, @alignCast(@alignOf(PVOID), GetCurrentFiber())).?.*;
 }
@@ -7259,9 +7261,9 @@ pub const HGLOBAL = HANDLE;
 pub const HLOCAL = HANDLE;
 pub const GLOBALHANDLE = HANDLE;
 pub const LOCALHANDLE = HANDLE;
-pub const FARPROC = [*c]fn () callconv(.C) INT_PTR;
-pub const NEARPROC = [*c]fn () callconv(.C) INT_PTR;
-pub const PROC = [*c]fn () callconv(.C) INT_PTR;
+pub const FARPROC = [*c]fn () callconv(std.os.windows.WINAPI) INT_PTR;
+pub const NEARPROC = [*c]fn () callconv(std.os.windows.WINAPI) INT_PTR;
+pub const PROC = [*c]fn () callconv(std.os.windows.WINAPI) INT_PTR;
 pub const ATOM = WORD;
 pub const struct_HKEY__ = extern struct {
     unused: c_int,
@@ -7642,7 +7644,7 @@ pub const LPCRITICAL_SECTION = PRTL_CRITICAL_SECTION;
 pub const CRITICAL_SECTION_DEBUG = RTL_CRITICAL_SECTION_DEBUG;
 pub const PCRITICAL_SECTION_DEBUG = PRTL_CRITICAL_SECTION_DEBUG;
 pub const LPCRITICAL_SECTION_DEBUG = PRTL_CRITICAL_SECTION_DEBUG;
-pub const LPOVERLAPPED_COMPLETION_ROUTINE = ?fn (DWORD, DWORD, LPOVERLAPPED) callconv(.C) void;
+pub const LPOVERLAPPED_COMPLETION_ROUTINE = ?fn (DWORD, DWORD, LPOVERLAPPED) callconv(std.os.windows.WINAPI) void;
 pub const struct__PROCESS_HEAP_ENTRY = extern struct {
     lpData: PVOID,
     cbData: DWORD,
@@ -7680,9 +7682,9 @@ pub const struct__REASON_CONTEXT = extern struct {
 };
 pub const REASON_CONTEXT = struct__REASON_CONTEXT;
 pub const PREASON_CONTEXT = [*c]struct__REASON_CONTEXT;
-pub const PTHREAD_START_ROUTINE = ?fn (LPVOID) callconv(.C) DWORD;
+pub const PTHREAD_START_ROUTINE = ?fn (LPVOID) callconv(std.os.windows.WINAPI) DWORD;
 pub const LPTHREAD_START_ROUTINE = PTHREAD_START_ROUTINE;
-pub const PENCLAVE_ROUTINE = ?fn (LPVOID) callconv(.C) LPVOID;
+pub const PENCLAVE_ROUTINE = ?fn (LPVOID) callconv(std.os.windows.WINAPI) LPVOID;
 pub const LPENCLAVE_ROUTINE = PENCLAVE_ROUTINE;
 pub const struct__EXCEPTION_DEBUG_INFO = extern struct {
     ExceptionRecord: EXCEPTION_RECORD,
@@ -7985,7 +7987,7 @@ extern fn DuplicateHandle(hSourceProcessHandle: HANDLE, hSourceHandle: HANDLE, h
 extern fn CompareObjectHandles(hFirstObjectHandle: HANDLE, hSecondObjectHandle: HANDLE) BOOL;
 extern fn GetHandleInformation(hObject: HANDLE, lpdwFlags: LPDWORD) BOOL;
 extern fn SetHandleInformation(hObject: HANDLE, dwMask: DWORD, dwFlags: DWORD) BOOL;
-pub const PTOP_LEVEL_EXCEPTION_FILTER = ?fn ([*c]struct__EXCEPTION_POINTERS) callconv(.C) LONG;
+pub const PTOP_LEVEL_EXCEPTION_FILTER = ?fn ([*c]struct__EXCEPTION_POINTERS) callconv(std.os.windows.WINAPI) LONG;
 pub const LPTOP_LEVEL_EXCEPTION_FILTER = PTOP_LEVEL_EXCEPTION_FILTER;
 extern fn RaiseException(dwExceptionCode: DWORD, dwExceptionFlags: DWORD, nNumberOfArguments: DWORD, lpArguments: [*c]const ULONG_PTR) void;
 extern fn UnhandledExceptionFilter(ExceptionInfo: [*c]struct__EXCEPTION_POINTERS) LONG;
@@ -8080,7 +8082,7 @@ extern fn DeleteCriticalSection(lpCriticalSection: LPCRITICAL_SECTION) void;
 pub const INIT_ONCE = RTL_RUN_ONCE;
 pub const PINIT_ONCE = PRTL_RUN_ONCE;
 pub const LPINIT_ONCE = PRTL_RUN_ONCE;
-pub const PINIT_ONCE_FN = ?fn (PINIT_ONCE, PVOID, [*c]PVOID) callconv(.C) BOOL;
+pub const PINIT_ONCE_FN = ?fn (PINIT_ONCE, PVOID, [*c]PVOID) callconv(std.os.windows.WINAPI) BOOL;
 extern fn InitOnceInitialize(InitOnce: PINIT_ONCE) void;
 extern fn InitOnceExecuteOnce(InitOnce: PINIT_ONCE, InitFn: PINIT_ONCE_FN, Parameter: PVOID, Context: [*c]LPVOID) BOOL;
 extern fn InitOnceBeginInitialize(lpInitOnce: LPINIT_ONCE, dwFlags: DWORD, fPending: PBOOL, lpContext: [*c]LPVOID) BOOL;
@@ -8108,7 +8110,7 @@ extern fn CreateEventW(lpEventAttributes: LPSECURITY_ATTRIBUTES, bManualReset: B
 extern fn OpenEventA(dwDesiredAccess: DWORD, bInheritHandle: BOOL, lpName: LPCSTR) HANDLE;
 extern fn OpenEventW(dwDesiredAccess: DWORD, bInheritHandle: BOOL, lpName: LPCWSTR) HANDLE;
 extern fn OpenSemaphoreW(dwDesiredAccess: DWORD, bInheritHandle: BOOL, lpName: LPCWSTR) HANDLE;
-pub const PTIMERAPCROUTINE = ?fn (LPVOID, DWORD, DWORD) callconv(.C) void;
+pub const PTIMERAPCROUTINE = ?fn (LPVOID, DWORD, DWORD) callconv(std.os.windows.WINAPI) void;
 extern fn OpenWaitableTimerW(dwDesiredAccess: DWORD, bInheritHandle: BOOL, lpTimerName: LPCWSTR) HANDLE;
 extern fn SetWaitableTimerEx(hTimer: HANDLE, lpDueTime: [*c]const LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: PTIMERAPCROUTINE, lpArgToCompletionRoutine: LPVOID, WakeContext: PREASON_CONTEXT, TolerableDelay: ULONG) BOOL;
 extern fn SetWaitableTimer(hTimer: HANDLE, lpDueTime: [*c]const LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: PTIMERAPCROUTINE, lpArgToCompletionRoutine: LPVOID, fResume: BOOL) BOOL;
@@ -8242,7 +8244,7 @@ extern fn SetPriorityClass(hProcess: HANDLE, dwPriorityClass: DWORD) BOOL;
 extern fn GetPriorityClass(hProcess: HANDLE) DWORD;
 extern fn SetThreadStackGuarantee(StackSizeInBytes: PULONG) BOOL;
 extern fn ProcessIdToSessionId(dwProcessId: DWORD, pSessionId: [*c]DWORD) BOOL;
-pub const struct__PROC_THREAD_ATTRIBUTE_LIST = @OpaqueType();
+pub const struct__PROC_THREAD_ATTRIBUTE_LIST = opaque {};
 pub const PPROC_THREAD_ATTRIBUTE_LIST = ?*struct__PROC_THREAD_ATTRIBUTE_LIST;
 pub const LPPROC_THREAD_ATTRIBUTE_LIST = ?*struct__PROC_THREAD_ATTRIBUTE_LIST;
 extern fn GetProcessId(Process: HANDLE) DWORD;
@@ -8527,7 +8529,7 @@ extern fn MapUserPhysicalPages(VirtualAddress: PVOID, NumberOfPages: ULONG_PTR, 
 extern fn AllocateUserPhysicalPagesNuma(hProcess: HANDLE, NumberOfPages: PULONG_PTR, PageArray: PULONG_PTR, nndPreferred: DWORD) BOOL;
 extern fn VirtualAllocExNuma(hProcess: HANDLE, lpAddress: LPVOID, dwSize: SIZE_T, flAllocationType: DWORD, flProtect: DWORD, nndPreferred: DWORD) LPVOID;
 extern fn GetMemoryErrorHandlingCapabilities(Capabilities: PULONG) BOOL;
-pub const BAD_MEMORY_CALLBACK_ROUTINE = fn () callconv(.C) void;
+pub const BAD_MEMORY_CALLBACK_ROUTINE = fn () callconv(std.os.windows.WINAPI) void;
 pub const PBAD_MEMORY_CALLBACK_ROUTINE = [*c]BAD_MEMORY_CALLBACK_ROUTINE;
 extern fn RegisterBadMemoryNotification(Callback: PBAD_MEMORY_CALLBACK_ROUTINE) PVOID;
 extern fn UnregisterBadMemoryNotification(RegistrationHandle: PVOID) BOOL;
@@ -8560,7 +8562,7 @@ pub const struct_WIN32_MEMORY_REGION_INFORMATION = extern struct {
     AllocationProtect: ULONG,
     @"": extern union {
         Flags: ULONG,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
     RegionSize: SIZE_T,
     CommitSize: SIZE_T,
@@ -8594,7 +8596,7 @@ extern fn CreateTimerQueueTimer(phNewTimer: PHANDLE, TimerQueue: HANDLE, Callbac
 extern fn ChangeTimerQueueTimer(TimerQueue: HANDLE, Timer: HANDLE, DueTime: ULONG, Period: ULONG) BOOL;
 extern fn DeleteTimerQueueTimer(TimerQueue: HANDLE, Timer: HANDLE, CompletionEvent: HANDLE) BOOL;
 extern fn DeleteTimerQueueEx(TimerQueue: HANDLE, CompletionEvent: HANDLE) BOOL;
-pub const PTP_WIN32_IO_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PVOID, ULONG, ULONG_PTR, PTP_IO) callconv(.C) void;
+pub const PTP_WIN32_IO_CALLBACK = ?fn (PTP_CALLBACK_INSTANCE, PVOID, PVOID, ULONG, ULONG_PTR, PTP_IO) callconv(std.os.windows.WINAPI) void;
 extern fn CreateThreadpool(reserved: PVOID) PTP_POOL;
 extern fn SetThreadpoolThreadMaximum(ptpp: PTP_POOL, cthrdMost: DWORD) void;
 extern fn SetThreadpoolThreadMinimum(ptpp: PTP_POOL, cthrdMic: DWORD) BOOL;
@@ -8668,12 +8670,12 @@ pub const struct_tagENUMUILANG = extern struct {
 };
 pub const ENUMUILANG = struct_tagENUMUILANG;
 pub const PENUMUILANG = [*c]struct_tagENUMUILANG;
-pub const ENUMRESLANGPROCA = ?fn (HMODULE, LPCSTR, LPCSTR, WORD, LONG_PTR) callconv(.C) BOOL;
-pub const ENUMRESLANGPROCW = ?fn (HMODULE, LPCWSTR, LPCWSTR, WORD, LONG_PTR) callconv(.C) BOOL;
-pub const ENUMRESNAMEPROCA = ?fn (HMODULE, LPCSTR, LPSTR, LONG_PTR) callconv(.C) BOOL;
-pub const ENUMRESNAMEPROCW = ?fn (HMODULE, LPCWSTR, LPWSTR, LONG_PTR) callconv(.C) BOOL;
-pub const ENUMRESTYPEPROCA = ?fn (HMODULE, LPSTR, LONG_PTR) callconv(.C) BOOL;
-pub const ENUMRESTYPEPROCW = ?fn (HMODULE, LPWSTR, LONG_PTR) callconv(.C) BOOL;
+pub const ENUMRESLANGPROCA = ?fn (HMODULE, LPCSTR, LPCSTR, WORD, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const ENUMRESLANGPROCW = ?fn (HMODULE, LPCWSTR, LPCWSTR, WORD, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const ENUMRESNAMEPROCA = ?fn (HMODULE, LPCSTR, LPSTR, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const ENUMRESNAMEPROCW = ?fn (HMODULE, LPCWSTR, LPWSTR, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const ENUMRESTYPEPROCA = ?fn (HMODULE, LPSTR, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const ENUMRESTYPEPROCW = ?fn (HMODULE, LPWSTR, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
 extern fn DisableThreadLibraryCalls(hLibModule: HMODULE) BOOL;
 extern fn FindResourceExW(hModule: HMODULE, lpType: LPCWSTR, lpName: LPCWSTR, wLanguage: WORD) HRSRC;
 extern fn FindStringOrdinal(dwFindStringOrdinalFlags: DWORD, lpStringSource: LPCWSTR, cchSource: c_int, lpStringValue: LPCWSTR, cchValue: c_int, bIgnoreCase: BOOL) c_int;
@@ -8684,8 +8686,8 @@ extern fn GetModuleFileNameA(hModule: HMODULE, lpFilename: LPSTR, nSize: DWORD) 
 extern fn GetModuleFileNameW(hModule: HMODULE, lpFilename: LPWSTR, nSize: DWORD) DWORD;
 extern fn GetModuleHandleA(lpModuleName: LPCSTR) HMODULE;
 extern fn GetModuleHandleW(lpModuleName: LPCWSTR) HMODULE;
-pub const PGET_MODULE_HANDLE_EXA = ?fn (DWORD, LPCSTR, [*c]HMODULE) callconv(.C) BOOL;
-pub const PGET_MODULE_HANDLE_EXW = ?fn (DWORD, LPCWSTR, [*c]HMODULE) callconv(.C) BOOL;
+pub const PGET_MODULE_HANDLE_EXA = ?fn (DWORD, LPCSTR, [*c]HMODULE) callconv(std.os.windows.WINAPI) BOOL;
+pub const PGET_MODULE_HANDLE_EXW = ?fn (DWORD, LPCWSTR, [*c]HMODULE) callconv(std.os.windows.WINAPI) BOOL;
 extern fn GetModuleHandleExA(dwFlags: DWORD, lpModuleName: LPCSTR, phModule: [*c]HMODULE) BOOL;
 extern fn GetModuleHandleExW(dwFlags: DWORD, lpModuleName: LPCWSTR, phModule: [*c]HMODULE) BOOL;
 extern fn GetProcAddress(hModule: HMODULE, lpProcName: LPCSTR) FARPROC;
@@ -8855,9 +8857,9 @@ extern fn QueryUnbiasedInterruptTime(UnbiasedTime: PULONGLONG) BOOL;
 extern fn QueryAuxiliaryCounterFrequency(lpAuxiliaryCounterFrequency: PULONGLONG) HRESULT;
 extern fn ConvertAuxiliaryCounterToPerformanceCounter(ullAuxiliaryCounterValue: ULONGLONG, lpPerformanceCounterValue: PULONGLONG, lpConversionError: PULONGLONG) HRESULT;
 extern fn ConvertPerformanceCounterToAuxiliaryCounter(ullPerformanceCounterValue: ULONGLONG, lpAuxiliaryCounterValue: PULONGLONG, lpConversionError: PULONGLONG) HRESULT;
-pub const PFIBER_START_ROUTINE = ?fn (LPVOID) callconv(.C) void;
+pub const PFIBER_START_ROUTINE = ?fn (LPVOID) callconv(std.os.windows.WINAPI) void;
 pub const LPFIBER_START_ROUTINE = PFIBER_START_ROUTINE;
-pub const PFIBER_CALLOUT_ROUTINE = ?fn (LPVOID) callconv(.C) LPVOID;
+pub const PFIBER_CALLOUT_ROUTINE = ?fn (LPVOID) callconv(std.os.windows.WINAPI) LPVOID;
 pub const LPLDT_ENTRY = LPVOID;
 pub const struct__COMMPROP = extern struct {
     wPacketLength: WORD,
@@ -8881,10 +8883,10 @@ pub const struct__COMMPROP = extern struct {
 };
 pub const COMMPROP = struct__COMMPROP;
 pub const LPCOMMPROP = [*c]struct__COMMPROP;
-pub const struct__COMSTAT = @OpaqueType();
+pub const struct__COMSTAT = opaque {};
 pub const COMSTAT = struct__COMSTAT;
 pub const LPCOMSTAT = ?*struct__COMSTAT;
-pub const struct__DCB = @OpaqueType();
+pub const struct__DCB = opaque {};
 pub const DCB = struct__DCB;
 pub const LPDCB = ?*struct__DCB;
 pub const struct__COMMTIMEOUTS = extern struct {
@@ -9010,7 +9012,7 @@ pub const PUMS_SCHEDULER_STARTUP_INFO = [*c]struct__UMS_SCHEDULER_STARTUP_INFO;
 pub const struct__UMS_SYSTEM_THREAD_INFORMATION = extern struct {
     UmsVersion: ULONG,
     @"": extern union {
-        @"": @OpaqueType(),
+        @"": opaque {},
         ThreadUmsFlags: ULONG,
     },
 };
@@ -9122,8 +9124,8 @@ extern fn DecryptFileA(lpFileName: LPCSTR, dwReserved: DWORD) BOOL;
 extern fn DecryptFileW(lpFileName: LPCWSTR, dwReserved: DWORD) BOOL;
 extern fn FileEncryptionStatusA(lpFileName: LPCSTR, lpStatus: LPDWORD) BOOL;
 extern fn FileEncryptionStatusW(lpFileName: LPCWSTR, lpStatus: LPDWORD) BOOL;
-pub const PFE_EXPORT_FUNC = ?fn (PBYTE, PVOID, ULONG) callconv(.C) DWORD;
-pub const PFE_IMPORT_FUNC = ?fn (PBYTE, PVOID, PULONG) callconv(.C) DWORD;
+pub const PFE_EXPORT_FUNC = ?fn (PBYTE, PVOID, ULONG) callconv(std.os.windows.WINAPI) DWORD;
+pub const PFE_IMPORT_FUNC = ?fn (PBYTE, PVOID, PULONG) callconv(std.os.windows.WINAPI) DWORD;
 extern fn OpenEncryptedFileRawA(lpFileName: LPCSTR, ulFlags: ULONG, pvContext: [*c]PVOID) DWORD;
 extern fn OpenEncryptedFileRawW(lpFileName: LPCWSTR, ulFlags: ULONG, pvContext: [*c]PVOID) DWORD;
 extern fn ReadEncryptedFileRaw(pfExportCallback: PFE_EXPORT_FUNC, pvCallbackContext: PVOID, pvContext: PVOID) DWORD;
@@ -9291,8 +9293,8 @@ extern fn GetPrivateProfileStructW(lpszSection: LPCWSTR, lpszKey: LPCWSTR, lpStr
 extern fn WritePrivateProfileStructA(lpszSection: LPCSTR, lpszKey: LPCSTR, lpStruct: LPVOID, uSizeStruct: UINT, szFile: LPCSTR) BOOL;
 extern fn WritePrivateProfileStructW(lpszSection: LPCWSTR, lpszKey: LPCWSTR, lpStruct: LPVOID, uSizeStruct: UINT, szFile: LPCWSTR) BOOL;
 extern fn Wow64EnableWow64FsRedirection(Wow64FsEnableRedirection: BOOLEAN) BOOLEAN;
-pub const PGET_SYSTEM_WOW64_DIRECTORY_A = ?fn (LPSTR, UINT) callconv(.C) UINT;
-pub const PGET_SYSTEM_WOW64_DIRECTORY_W = ?fn (LPWSTR, UINT) callconv(.C) UINT;
+pub const PGET_SYSTEM_WOW64_DIRECTORY_A = ?fn (LPSTR, UINT) callconv(std.os.windows.WINAPI) UINT;
+pub const PGET_SYSTEM_WOW64_DIRECTORY_W = ?fn (LPWSTR, UINT) callconv(std.os.windows.WINAPI) UINT;
 extern fn SetDllDirectoryA(lpPathName: LPCSTR) BOOL;
 extern fn SetDllDirectoryW(lpPathName: LPCWSTR) BOOL;
 extern fn GetDllDirectoryA(nBufferLength: DWORD, lpBuffer: LPSTR) DWORD;
@@ -9325,7 +9327,7 @@ extern fn FindFirstFileTransactedA(lpFileName: LPCSTR, fInfoLevelId: FINDEX_INFO
 extern fn FindFirstFileTransactedW(lpFileName: LPCWSTR, fInfoLevelId: FINDEX_INFO_LEVELS, lpFindFileData: LPVOID, fSearchOp: FINDEX_SEARCH_OPS, lpSearchFilter: LPVOID, dwAdditionalFlags: DWORD, hTransaction: HANDLE) HANDLE;
 extern fn CopyFileA(lpExistingFileName: LPCSTR, lpNewFileName: LPCSTR, bFailIfExists: BOOL) BOOL;
 extern fn CopyFileW(lpExistingFileName: LPCWSTR, lpNewFileName: LPCWSTR, bFailIfExists: BOOL) BOOL;
-pub const LPPROGRESS_ROUTINE = ?fn (LARGE_INTEGER, LARGE_INTEGER, LARGE_INTEGER, LARGE_INTEGER, DWORD, DWORD, HANDLE, HANDLE, LPVOID) callconv(.C) DWORD;
+pub const LPPROGRESS_ROUTINE = ?fn (LARGE_INTEGER, LARGE_INTEGER, LARGE_INTEGER, LARGE_INTEGER, DWORD, DWORD, HANDLE, HANDLE, LPVOID) callconv(std.os.windows.WINAPI) DWORD;
 extern fn CopyFileExA(lpExistingFileName: LPCSTR, lpNewFileName: LPCSTR, lpProgressRoutine: LPPROGRESS_ROUTINE, lpData: LPVOID, pbCancel: LPBOOL, dwCopyFlags: DWORD) BOOL;
 extern fn CopyFileExW(lpExistingFileName: LPCWSTR, lpNewFileName: LPCWSTR, lpProgressRoutine: LPPROGRESS_ROUTINE, lpData: LPVOID, pbCancel: LPBOOL, dwCopyFlags: DWORD) BOOL;
 extern fn CopyFileTransactedA(lpExistingFileName: LPCSTR, lpNewFileName: LPCSTR, lpProgressRoutine: LPPROGRESS_ROUTINE, lpData: LPVOID, pbCancel: LPBOOL, dwCopyFlags: DWORD, hTransaction: HANDLE) BOOL;
@@ -9442,7 +9444,7 @@ pub const struct_COPYFILE2_MESSAGE = extern struct {
     },
 };
 pub const COPYFILE2_MESSAGE = struct_COPYFILE2_MESSAGE;
-pub const PCOPYFILE2_PROGRESS_ROUTINE = ?fn ([*c]const COPYFILE2_MESSAGE, PVOID) callconv(.C) COPYFILE2_MESSAGE_ACTION;
+pub const PCOPYFILE2_PROGRESS_ROUTINE = ?fn ([*c]const COPYFILE2_MESSAGE, PVOID) callconv(std.os.windows.WINAPI) COPYFILE2_MESSAGE_ACTION;
 pub const struct_COPYFILE2_EXTENDED_PARAMETERS = extern struct {
     dwSize: DWORD,
     dwCopyFlags: DWORD,
@@ -9800,7 +9802,7 @@ pub const ACTIVATION_CONTEXT_BASIC_INFORMATION = struct__ACTIVATION_CONTEXT_BASI
 pub const PACTIVATION_CONTEXT_BASIC_INFORMATION = [*c]struct__ACTIVATION_CONTEXT_BASIC_INFORMATION;
 pub const PCACTIVATION_CONTEXT_BASIC_INFORMATION = [*c]const struct__ACTIVATION_CONTEXT_BASIC_INFORMATION;
 extern fn QueryActCtxW(dwFlags: DWORD, hActCtx: HANDLE, pvSubInstance: PVOID, ulInfoClass: ULONG, pvBuffer: PVOID, cbBuffer: SIZE_T, pcbWrittenOrRequired: [*c]SIZE_T) BOOL;
-pub const PQUERYACTCTXW_FUNC = ?fn (DWORD, HANDLE, PVOID, ULONG, PVOID, SIZE_T, [*c]SIZE_T) callconv(.C) BOOL;
+pub const PQUERYACTCTXW_FUNC = ?fn (DWORD, HANDLE, PVOID, ULONG, PVOID, SIZE_T, [*c]SIZE_T) callconv(std.os.windows.WINAPI) BOOL;
 extern fn WTSGetActiveConsoleSessionId() DWORD;
 extern fn WTSGetServiceSessionId() DWORD;
 extern fn WTSIsServerContainer() BOOLEAN;
@@ -9815,7 +9817,7 @@ extern fn GetNumaNodeProcessorMask(Node: UCHAR, ProcessorMask: PULONGLONG) BOOL;
 extern fn GetNumaAvailableMemoryNode(Node: UCHAR, AvailableBytes: PULONGLONG) BOOL;
 extern fn GetNumaAvailableMemoryNodeEx(Node: USHORT, AvailableBytes: PULONGLONG) BOOL;
 extern fn GetNumaProximityNode(ProximityId: ULONG, NodeNumber: PUCHAR) BOOL;
-pub const APPLICATION_RECOVERY_CALLBACK = ?fn (PVOID) callconv(.C) DWORD;
+pub const APPLICATION_RECOVERY_CALLBACK = ?fn (PVOID) callconv(std.os.windows.WINAPI) DWORD;
 extern fn RegisterApplicationRecoveryCallback(pRecoveyCallback: APPLICATION_RECOVERY_CALLBACK, pvParameter: PVOID, dwPingInterval: DWORD, dwFlags: DWORD) HRESULT;
 extern fn UnregisterApplicationRecoveryCallback() HRESULT;
 extern fn RegisterApplicationRestart(pwzCommandline: PCWSTR, dwFlags: DWORD) HRESULT;
@@ -11029,7 +11031,7 @@ pub const struct_DISPLAYCONFIG_VIDEO_SIGNAL_INFO = extern struct {
     activeSize: DISPLAYCONFIG_2DREGION,
     totalSize: DISPLAYCONFIG_2DREGION,
     @"": extern union {
-        AdditionalSignalInfo: @OpaqueType(),
+        AdditionalSignalInfo: opaque {},
         videoStandard: UINT32,
     },
     scanLineOrdering: DISPLAYCONFIG_SCANLINE_ORDERING,
@@ -11120,7 +11122,7 @@ pub const struct_DISPLAYCONFIG_PATH_SOURCE_INFO = extern struct {
     id: UINT32,
     @"": extern union {
         modeInfoIdx: UINT32,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
     statusFlags: UINT32,
 };
@@ -11130,7 +11132,7 @@ pub const struct_DISPLAYCONFIG_PATH_TARGET_INFO = extern struct {
     id: UINT32,
     @"": extern union {
         modeInfoIdx: UINT32,
-        @"": @OpaqueType(),
+        @"": opaque {},
     },
     outputTechnology: DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY,
     rotation: DISPLAYCONFIG_ROTATION,
@@ -11200,7 +11202,7 @@ pub const struct_DISPLAYCONFIG_SOURCE_DEVICE_NAME = extern struct {
 pub const DISPLAYCONFIG_SOURCE_DEVICE_NAME = struct_DISPLAYCONFIG_SOURCE_DEVICE_NAME;
 pub const struct_DISPLAYCONFIG_TARGET_DEVICE_NAME_FLAGS = extern struct {
     @"": extern union {
-        @"": @OpaqueType(),
+        @"": opaque {},
         value: UINT32,
     },
 };
@@ -11236,7 +11238,7 @@ pub const DISPLAYCONFIG_TARGET_BASE_TYPE = struct_DISPLAYCONFIG_TARGET_BASE_TYPE
 pub const struct_DISPLAYCONFIG_SET_TARGET_PERSISTENCE = extern struct {
     header: DISPLAYCONFIG_DEVICE_INFO_HEADER,
     @"": extern union {
-        @"": @OpaqueType(),
+        @"": opaque {},
         value: UINT32,
     },
 };
@@ -11244,7 +11246,7 @@ pub const DISPLAYCONFIG_SET_TARGET_PERSISTENCE = struct_DISPLAYCONFIG_SET_TARGET
 pub const struct_DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION = extern struct {
     header: DISPLAYCONFIG_DEVICE_INFO_HEADER,
     @"": extern union {
-        @"": @OpaqueType(),
+        @"": opaque {},
         value: UINT32,
     },
 };
@@ -11267,7 +11269,7 @@ pub const DISPLAYCONFIG_COLOR_ENCODING = enum__DISPLAYCONFIG_COLOR_ENCODING;
 pub const struct__DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO = extern struct {
     header: DISPLAYCONFIG_DEVICE_INFO_HEADER,
     @"": extern union {
-        @"": @OpaqueType(),
+        @"": opaque {},
         value: UINT32,
     },
     colorEncoding: DISPLAYCONFIG_COLOR_ENCODING,
@@ -11277,7 +11279,7 @@ pub const DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO = struct__DISPLAYCONFIG_GET_ADVA
 pub const struct__DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE = extern struct {
     header: DISPLAYCONFIG_DEVICE_INFO_HEADER,
     @"": extern union {
-        @"": @OpaqueType(),
+        @"": opaque {},
         value: UINT32,
     },
 };
@@ -11540,13 +11542,13 @@ pub const struct_tagPIXELFORMATDESCRIPTOR = extern struct {
 pub const PIXELFORMATDESCRIPTOR = struct_tagPIXELFORMATDESCRIPTOR;
 pub const PPIXELFORMATDESCRIPTOR = [*c]struct_tagPIXELFORMATDESCRIPTOR;
 pub const LPPIXELFORMATDESCRIPTOR = [*c]struct_tagPIXELFORMATDESCRIPTOR;
-pub const OLDFONTENUMPROCA = ?fn ([*c]const LOGFONTA, [*c]const TEXTMETRICA, DWORD, LPARAM) callconv(.C) c_int;
-pub const OLDFONTENUMPROCW = ?fn ([*c]const LOGFONTW, [*c]const TEXTMETRICW, DWORD, LPARAM) callconv(.C) c_int;
+pub const OLDFONTENUMPROCA = ?fn ([*c]const LOGFONTA, [*c]const TEXTMETRICA, DWORD, LPARAM) callconv(std.os.windows.WINAPI) c_int;
+pub const OLDFONTENUMPROCW = ?fn ([*c]const LOGFONTW, [*c]const TEXTMETRICW, DWORD, LPARAM) callconv(std.os.windows.WINAPI) c_int;
 pub const FONTENUMPROCA = OLDFONTENUMPROCA;
 pub const FONTENUMPROCW = OLDFONTENUMPROCW;
 pub const FONTENUMPROC = FONTENUMPROCA;
-pub const GOBJENUMPROC = ?fn (LPVOID, LPARAM) callconv(.C) c_int;
-pub const LINEDDAPROC = ?fn (c_int, c_int, LPARAM) callconv(.C) void;
+pub const GOBJENUMPROC = ?fn (LPVOID, LPARAM) callconv(std.os.windows.WINAPI) c_int;
+pub const LINEDDAPROC = ?fn (c_int, c_int, LPARAM) callconv(std.os.windows.WINAPI) void;
 extern fn AddFontResourceA(arg0: LPCSTR) c_int;
 extern fn AddFontResourceW(arg0: LPCWSTR) c_int;
 extern fn AnimatePalette(hPal: HPALETTE, iStartIndex: UINT, cEntries: UINT, ppe: [*c]const PALETTEENTRY) BOOL;
@@ -11596,8 +11598,8 @@ extern fn DeleteDC(hdc: HDC) BOOL;
 extern fn DeleteMetaFile(hmf: HMETAFILE) BOOL;
 extern fn DeleteObject(ho: HGDIOBJ) BOOL;
 extern fn DescribePixelFormat(hdc: HDC, iPixelFormat: c_int, nBytes: UINT, ppfd: LPPIXELFORMATDESCRIPTOR) c_int;
-pub const LPFNDEVMODE = ?fn (HWND, HMODULE, LPDEVMODE, LPSTR, LPSTR, LPDEVMODE, LPSTR, UINT) callconv(.C) UINT;
-pub const LPFNDEVCAPS = ?fn (LPSTR, LPSTR, UINT, LPSTR, LPDEVMODE) callconv(.C) DWORD;
+pub const LPFNDEVMODE = ?fn (HWND, HMODULE, LPDEVMODE, LPSTR, LPSTR, LPDEVMODE, LPSTR, UINT) callconv(std.os.windows.WINAPI) UINT;
+pub const LPFNDEVCAPS = ?fn (LPSTR, LPSTR, UINT, LPSTR, LPDEVMODE) callconv(std.os.windows.WINAPI) DWORD;
 extern fn DeviceCapabilitiesA(pDevice: LPCSTR, pPort: LPCSTR, fwCapability: WORD, pOutput: LPSTR, pDevMode: [*c]const DEVMODEA) c_int;
 extern fn DeviceCapabilitiesW(pDevice: LPCWSTR, pPort: LPCWSTR, fwCapability: WORD, pOutput: LPWSTR, pDevMode: [*c]const DEVMODEW) c_int;
 extern fn DrawEscape(hdc: HDC, iEscape: c_int, cjIn: c_int, lpIn: LPCSTR) c_int;
@@ -11905,9 +11907,9 @@ extern fn GdiAlphaBlend(hdcDest: HDC, xoriginDest: c_int, yoriginDest: c_int, wD
 extern fn GdiTransparentBlt(hdcDest: HDC, xoriginDest: c_int, yoriginDest: c_int, wDest: c_int, hDest: c_int, hdcSrc: HDC, xoriginSrc: c_int, yoriginSrc: c_int, wSrc: c_int, hSrc: c_int, crTransparent: UINT) BOOL;
 extern fn GdiGradientFill(hdc: HDC, pVertex: PTRIVERTEX, nVertex: ULONG, pMesh: PVOID, nCount: ULONG, ulMode: ULONG) BOOL;
 extern fn PlayMetaFileRecord(hdc: HDC, lpHandleTable: LPHANDLETABLE, lpMR: LPMETARECORD, noObjs: UINT) BOOL;
-pub const MFENUMPROC = ?fn (HDC, [*c]HANDLETABLE, [*c]METARECORD, c_int, LPARAM) callconv(.C) c_int;
+pub const MFENUMPROC = ?fn (HDC, [*c]HANDLETABLE, [*c]METARECORD, c_int, LPARAM) callconv(std.os.windows.WINAPI) c_int;
 extern fn EnumMetaFile(hdc: HDC, hmf: HMETAFILE, proc: MFENUMPROC, param: LPARAM) BOOL;
-pub const ENHMFENUMPROC = ?fn (HDC, [*c]HANDLETABLE, [*c]const ENHMETARECORD, c_int, LPARAM) callconv(.C) c_int;
+pub const ENHMFENUMPROC = ?fn (HDC, [*c]HANDLETABLE, [*c]const ENHMETARECORD, c_int, LPARAM) callconv(std.os.windows.WINAPI) c_int;
 extern fn CloseEnhMetaFile(hdc: HDC) HENHMETAFILE;
 extern fn CopyEnhMetaFileA(hEnh: HENHMETAFILE, lpFileName: LPCSTR) HENHMETAFILE;
 extern fn CopyEnhMetaFileW(hEnh: HENHMETAFILE, lpFileName: LPCWSTR) HENHMETAFILE;
@@ -11970,7 +11972,7 @@ pub const LPCOLORADJUSTMENT = [*c]struct_tagCOLORADJUSTMENT;
 extern fn SetColorAdjustment(hdc: HDC, lpca: [*c]const COLORADJUSTMENT) BOOL;
 extern fn GetColorAdjustment(hdc: HDC, lpca: LPCOLORADJUSTMENT) BOOL;
 extern fn CreateHalftonePalette(hdc: HDC) HPALETTE;
-pub const ABORTPROC = ?fn (HDC, c_int) callconv(.C) BOOL;
+pub const ABORTPROC = ?fn (HDC, c_int) callconv(std.os.windows.WINAPI) BOOL;
 pub const struct__DOCINFOA = extern struct {
     cbSize: c_int,
     lpszDocName: LPCSTR,
@@ -12061,8 +12063,8 @@ extern fn UnrealizeObject(h: HGDIOBJ) BOOL;
 extern fn GdiFlush() BOOL;
 extern fn GdiSetBatchLimit(dw: DWORD) DWORD;
 extern fn GdiGetBatchLimit() DWORD;
-pub const ICMENUMPROCA = ?fn (LPSTR, LPARAM) callconv(.C) c_int;
-pub const ICMENUMPROCW = ?fn (LPWSTR, LPARAM) callconv(.C) c_int;
+pub const ICMENUMPROCA = ?fn (LPSTR, LPARAM) callconv(std.os.windows.WINAPI) c_int;
+pub const ICMENUMPROCW = ?fn (LPWSTR, LPARAM) callconv(std.os.windows.WINAPI) c_int;
 extern fn SetICMMode(hdc: HDC, mode: c_int) c_int;
 extern fn CheckColorsInGamut(hdc: HDC, lpRGBTriple: LPRGBTRIPLE, dlpBuffer: LPVOID, nCount: DWORD) BOOL;
 extern fn GetColorSpace(hdc: HDC) HCOLORSPACE;
@@ -12923,25 +12925,25 @@ pub const MENUTEMPLATE = MENUTEMPLATEA;
 pub const LPMENUTEMPLATEA = PVOID;
 pub const LPMENUTEMPLATEW = PVOID;
 pub const LPMENUTEMPLATE = LPMENUTEMPLATEA;
-pub const WNDPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) LRESULT;
-pub const DLGPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(.C) INT_PTR;
-pub const TIMERPROC = ?fn (HWND, UINT, UINT_PTR, DWORD) callconv(.C) void;
-pub const GRAYSTRINGPROC = ?fn (HDC, LPARAM, c_int) callconv(.C) BOOL;
-pub const WNDENUMPROC = ?fn (HWND, LPARAM) callconv(.C) BOOL;
-pub const HOOKPROC = ?fn (c_int, WPARAM, LPARAM) callconv(.C) LRESULT;
-pub const SENDASYNCPROC = ?fn (HWND, UINT, ULONG_PTR, LRESULT) callconv(.C) void;
-pub const PROPENUMPROCA = ?fn (HWND, LPCSTR, HANDLE) callconv(.C) BOOL;
-pub const PROPENUMPROCW = ?fn (HWND, LPCWSTR, HANDLE) callconv(.C) BOOL;
-pub const PROPENUMPROCEXA = ?fn (HWND, LPSTR, HANDLE, ULONG_PTR) callconv(.C) BOOL;
-pub const PROPENUMPROCEXW = ?fn (HWND, LPWSTR, HANDLE, ULONG_PTR) callconv(.C) BOOL;
-pub const EDITWORDBREAKPROCA = ?fn (LPSTR, c_int, c_int, c_int) callconv(.C) c_int;
-pub const EDITWORDBREAKPROCW = ?fn (LPWSTR, c_int, c_int, c_int) callconv(.C) c_int;
-pub const DRAWSTATEPROC = ?fn (HDC, LPARAM, WPARAM, c_int, c_int) callconv(.C) BOOL;
+pub const WNDPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(std.os.windows.WINAPI) LRESULT;
+pub const DLGPROC = ?fn (HWND, UINT, WPARAM, LPARAM) callconv(std.os.windows.WINAPI) INT_PTR;
+pub const TIMERPROC = ?fn (HWND, UINT, UINT_PTR, DWORD) callconv(std.os.windows.WINAPI) void;
+pub const GRAYSTRINGPROC = ?fn (HDC, LPARAM, c_int) callconv(std.os.windows.WINAPI) BOOL;
+pub const WNDENUMPROC = ?fn (HWND, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
+pub const HOOKPROC = ?fn (c_int, WPARAM, LPARAM) callconv(std.os.windows.WINAPI) LRESULT;
+pub const SENDASYNCPROC = ?fn (HWND, UINT, ULONG_PTR, LRESULT) callconv(std.os.windows.WINAPI) void;
+pub const PROPENUMPROCA = ?fn (HWND, LPCSTR, HANDLE) callconv(std.os.windows.WINAPI) BOOL;
+pub const PROPENUMPROCW = ?fn (HWND, LPCWSTR, HANDLE) callconv(std.os.windows.WINAPI) BOOL;
+pub const PROPENUMPROCEXA = ?fn (HWND, LPSTR, HANDLE, ULONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const PROPENUMPROCEXW = ?fn (HWND, LPWSTR, HANDLE, ULONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const EDITWORDBREAKPROCA = ?fn (LPSTR, c_int, c_int, c_int) callconv(std.os.windows.WINAPI) c_int;
+pub const EDITWORDBREAKPROCW = ?fn (LPWSTR, c_int, c_int, c_int) callconv(std.os.windows.WINAPI) c_int;
+pub const DRAWSTATEPROC = ?fn (HDC, LPARAM, WPARAM, c_int, c_int) callconv(std.os.windows.WINAPI) BOOL;
 pub const PROPENUMPROC = PROPENUMPROCA;
 pub const PROPENUMPROCEX = PROPENUMPROCEXA;
 pub const EDITWORDBREAKPROC = EDITWORDBREAKPROCA;
-pub const NAMEENUMPROCA = ?fn (LPSTR, LPARAM) callconv(.C) BOOL;
-pub const NAMEENUMPROCW = ?fn (LPWSTR, LPARAM) callconv(.C) BOOL;
+pub const NAMEENUMPROCA = ?fn (LPSTR, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
+pub const NAMEENUMPROCW = ?fn (LPWSTR, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
 pub const WINSTAENUMPROCA = NAMEENUMPROCA;
 pub const DESKTOPENUMPROCA = NAMEENUMPROCA;
 pub const WINSTAENUMPROCW = NAMEENUMPROCW;
@@ -13495,7 +13497,7 @@ extern fn RegisterClassExA(arg0: [*c]const WNDCLASSEXA) ATOM;
 extern fn RegisterClassExW(arg0: [*c]const WNDCLASSEXW) ATOM;
 extern fn GetClassInfoExA(hInstance: HINSTANCE, lpszClass: LPCSTR, lpwcx: LPWNDCLASSEXA) BOOL;
 extern fn GetClassInfoExW(hInstance: HINSTANCE, lpszClass: LPCWSTR, lpwcx: LPWNDCLASSEXW) BOOL;
-pub const PREGISTERCLASSNAMEW = ?fn (LPCWSTR) callconv(.C) BOOLEAN;
+pub const PREGISTERCLASSNAMEW = ?fn (LPCWSTR) callconv(std.os.windows.WINAPI) BOOLEAN;
 extern fn CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: c_int, Y: c_int, nWidth: c_int, nHeight: c_int, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID) HWND;
 extern fn CreateWindowExW(dwExStyle: DWORD, lpClassName: LPCWSTR, lpWindowName: LPCWSTR, dwStyle: DWORD, X: c_int, Y: c_int, nWidth: c_int, nHeight: c_int, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID) HWND;
 extern fn IsWindow(hWnd: HWND) BOOL;
@@ -14260,7 +14262,7 @@ extern fn MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: UINT
 extern fn MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: UINT) c_int;
 extern fn MessageBoxExA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: UINT, wLanguageId: WORD) c_int;
 extern fn MessageBoxExW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: UINT, wLanguageId: WORD) c_int;
-pub const MSGBOXCALLBACK = ?fn (LPHELPINFO) callconv(.C) void;
+pub const MSGBOXCALLBACK = ?fn (LPHELPINFO) callconv(std.os.windows.WINAPI) void;
 pub const struct_tagMSGBOXPARAMSA = extern struct {
     cbSize: UINT,
     hwndOwner: HWND,
@@ -14911,10 +14913,10 @@ pub const MONITORINFOEX = MONITORINFOEXA;
 pub const LPMONITORINFOEX = LPMONITORINFOEXA;
 extern fn GetMonitorInfoA(hMonitor: HMONITOR, lpmi: LPMONITORINFO) BOOL;
 extern fn GetMonitorInfoW(hMonitor: HMONITOR, lpmi: LPMONITORINFO) BOOL;
-pub const MONITORENUMPROC = ?fn (HMONITOR, HDC, LPRECT, LPARAM) callconv(.C) BOOL;
+pub const MONITORENUMPROC = ?fn (HMONITOR, HDC, LPRECT, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
 extern fn EnumDisplayMonitors(hdc: HDC, lprcClip: LPCRECT, lpfnEnum: MONITORENUMPROC, dwData: LPARAM) BOOL;
 extern fn NotifyWinEvent(event: DWORD, hwnd: HWND, idObject: LONG, idChild: LONG) void;
-pub const WINEVENTPROC = ?fn (HWINEVENTHOOK, DWORD, HWND, LONG, LONG, DWORD, DWORD) callconv(.C) void;
+pub const WINEVENTPROC = ?fn (HWINEVENTHOOK, DWORD, HWND, LONG, LONG, DWORD, DWORD) callconv(std.os.windows.WINAPI) void;
 extern fn SetWinEventHook(eventMin: DWORD, eventMax: DWORD, hmodWinEventProc: HMODULE, pfnWinEventProc: WINEVENTPROC, idProcess: DWORD, idThread: DWORD, dwFlags: DWORD) HWINEVENTHOOK;
 extern fn IsWinEventHookInstalled(event: DWORD) BOOL;
 extern fn UnhookWinEvent(hWinEventHook: HWINEVENTHOOK) BOOL;
@@ -14999,7 +15001,7 @@ pub const struct_tagTITLEBARINFOEX = extern struct {
 pub const TITLEBARINFOEX = struct_tagTITLEBARINFOEX;
 pub const PTITLEBARINFOEX = [*c]struct_tagTITLEBARINFOEX;
 pub const LPTITLEBARINFOEX = [*c]struct_tagTITLEBARINFOEX;
-pub const struct_tagMENUBARINFO = @OpaqueType();
+pub const struct_tagMENUBARINFO = opaque {};
 pub const MENUBARINFO = struct_tagMENUBARINFO;
 pub const PMENUBARINFO = ?*struct_tagMENUBARINFO;
 pub const LPMENUBARINFO = ?*struct_tagMENUBARINFO;
@@ -15530,28 +15532,28 @@ pub const enum__NORM_FORM = extern enum {
     NormalizationKD = 6,
 };
 pub const NORM_FORM = enum__NORM_FORM;
-pub const LANGUAGEGROUP_ENUMPROCA = ?fn (LGRPID, LPSTR, LPSTR, DWORD, LONG_PTR) callconv(.C) BOOL;
-pub const LANGGROUPLOCALE_ENUMPROCA = ?fn (LGRPID, LCID, LPSTR, LONG_PTR) callconv(.C) BOOL;
-pub const UILANGUAGE_ENUMPROCA = ?fn (LPSTR, LONG_PTR) callconv(.C) BOOL;
-pub const CODEPAGE_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
-pub const DATEFMT_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
-pub const DATEFMT_ENUMPROCEXA = ?fn (LPSTR, CALID) callconv(.C) BOOL;
-pub const TIMEFMT_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
-pub const CALINFO_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
-pub const CALINFO_ENUMPROCEXA = ?fn (LPSTR, CALID) callconv(.C) BOOL;
-pub const LOCALE_ENUMPROCA = ?fn (LPSTR) callconv(.C) BOOL;
-pub const LOCALE_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
-pub const LANGUAGEGROUP_ENUMPROCW = ?fn (LGRPID, LPWSTR, LPWSTR, DWORD, LONG_PTR) callconv(.C) BOOL;
-pub const LANGGROUPLOCALE_ENUMPROCW = ?fn (LGRPID, LCID, LPWSTR, LONG_PTR) callconv(.C) BOOL;
-pub const UILANGUAGE_ENUMPROCW = ?fn (LPWSTR, LONG_PTR) callconv(.C) BOOL;
-pub const CODEPAGE_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
-pub const DATEFMT_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
-pub const DATEFMT_ENUMPROCEXW = ?fn (LPWSTR, CALID) callconv(.C) BOOL;
-pub const TIMEFMT_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
-pub const CALINFO_ENUMPROCW = ?fn (LPWSTR) callconv(.C) BOOL;
-pub const CALINFO_ENUMPROCEXW = ?fn (LPWSTR, CALID) callconv(.C) BOOL;
-pub const GEO_ENUMPROC = ?fn (GEOID) callconv(.C) BOOL;
-pub const GEO_ENUMNAMEPROC = ?fn (PWSTR, LPARAM) callconv(.C) BOOL;
+pub const LANGUAGEGROUP_ENUMPROCA = ?fn (LGRPID, LPSTR, LPSTR, DWORD, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const LANGGROUPLOCALE_ENUMPROCA = ?fn (LGRPID, LCID, LPSTR, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const UILANGUAGE_ENUMPROCA = ?fn (LPSTR, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const CODEPAGE_ENUMPROCA = ?fn (LPSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const DATEFMT_ENUMPROCA = ?fn (LPSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const DATEFMT_ENUMPROCEXA = ?fn (LPSTR, CALID) callconv(std.os.windows.WINAPI) BOOL;
+pub const TIMEFMT_ENUMPROCA = ?fn (LPSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const CALINFO_ENUMPROCA = ?fn (LPSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const CALINFO_ENUMPROCEXA = ?fn (LPSTR, CALID) callconv(std.os.windows.WINAPI) BOOL;
+pub const LOCALE_ENUMPROCA = ?fn (LPSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const LOCALE_ENUMPROCW = ?fn (LPWSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const LANGUAGEGROUP_ENUMPROCW = ?fn (LGRPID, LPWSTR, LPWSTR, DWORD, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const LANGGROUPLOCALE_ENUMPROCW = ?fn (LGRPID, LCID, LPWSTR, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const UILANGUAGE_ENUMPROCW = ?fn (LPWSTR, LONG_PTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const CODEPAGE_ENUMPROCW = ?fn (LPWSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const DATEFMT_ENUMPROCW = ?fn (LPWSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const DATEFMT_ENUMPROCEXW = ?fn (LPWSTR, CALID) callconv(std.os.windows.WINAPI) BOOL;
+pub const TIMEFMT_ENUMPROCW = ?fn (LPWSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const CALINFO_ENUMPROCW = ?fn (LPWSTR) callconv(std.os.windows.WINAPI) BOOL;
+pub const CALINFO_ENUMPROCEXW = ?fn (LPWSTR, CALID) callconv(std.os.windows.WINAPI) BOOL;
+pub const GEO_ENUMPROC = ?fn (GEOID) callconv(std.os.windows.WINAPI) BOOL;
+pub const GEO_ENUMNAMEPROC = ?fn (PWSTR, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
 pub const struct__FILEMUIINFO = extern struct {
     dwSize: DWORD,
     dwVersion: DWORD,
@@ -15680,13 +15682,13 @@ extern fn IsValidNLSVersion(function: NLS_FUNCTION, lpLocaleName: LPCWSTR, lpVer
 extern fn FindNLSStringEx(lpLocaleName: LPCWSTR, dwFindNLSStringFlags: DWORD, lpStringSource: LPCWSTR, cchSource: c_int, lpStringValue: LPCWSTR, cchValue: c_int, pcchFound: LPINT, lpVersionInformation: LPNLSVERSIONINFO, lpReserved: LPVOID, sortHandle: LPARAM) c_int;
 extern fn LCMapStringEx(lpLocaleName: LPCWSTR, dwMapFlags: DWORD, lpSrcStr: LPCWSTR, cchSrc: c_int, lpDestStr: LPWSTR, cchDest: c_int, lpVersionInformation: LPNLSVERSIONINFO, lpReserved: LPVOID, sortHandle: LPARAM) c_int;
 extern fn IsValidLocaleName(lpLocaleName: LPCWSTR) BOOL;
-pub const CALINFO_ENUMPROCEXEX = ?fn (LPWSTR, CALID, LPWSTR, LPARAM) callconv(.C) BOOL;
+pub const CALINFO_ENUMPROCEXEX = ?fn (LPWSTR, CALID, LPWSTR, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
 extern fn EnumCalendarInfoExEx(pCalInfoEnumProcExEx: CALINFO_ENUMPROCEXEX, lpLocaleName: LPCWSTR, Calendar: CALID, lpReserved: LPCWSTR, CalType: CALTYPE, lParam: LPARAM) BOOL;
-pub const DATEFMT_ENUMPROCEXEX = ?fn (LPWSTR, CALID, LPARAM) callconv(.C) BOOL;
+pub const DATEFMT_ENUMPROCEXEX = ?fn (LPWSTR, CALID, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
 extern fn EnumDateFormatsExEx(lpDateFmtEnumProcExEx: DATEFMT_ENUMPROCEXEX, lpLocaleName: LPCWSTR, dwFlags: DWORD, lParam: LPARAM) BOOL;
-pub const TIMEFMT_ENUMPROCEX = ?fn (LPWSTR, LPARAM) callconv(.C) BOOL;
+pub const TIMEFMT_ENUMPROCEX = ?fn (LPWSTR, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
 extern fn EnumTimeFormatsEx(lpTimeFmtEnumProcEx: TIMEFMT_ENUMPROCEX, lpLocaleName: LPCWSTR, dwFlags: DWORD, lParam: LPARAM) BOOL;
-pub const LOCALE_ENUMPROCEX = ?fn (LPWSTR, DWORD, LPARAM) callconv(.C) BOOL;
+pub const LOCALE_ENUMPROCEX = ?fn (LPWSTR, DWORD, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
 extern fn EnumSystemLocalesEx(lpLocaleEnumProcEx: LOCALE_ENUMPROCEX, dwFlags: DWORD, lParam: LPARAM, lpReserved: LPVOID) BOOL;
 extern fn ResolveLocaleName(lpNameToResolve: LPCWSTR, lpLocaleName: LPWSTR, cchLocaleName: c_int) c_int;
 pub const struct__COORD = extern struct {
@@ -15791,7 +15793,7 @@ extern fn ReadConsoleA(hConsoleInput: HANDLE, lpBuffer: LPVOID, nNumberOfCharsTo
 extern fn ReadConsoleW(hConsoleInput: HANDLE, lpBuffer: LPVOID, nNumberOfCharsToRead: DWORD, lpNumberOfCharsRead: LPDWORD, pInputControl: PCONSOLE_READCONSOLE_CONTROL) BOOL;
 extern fn WriteConsoleA(hConsoleOutput: HANDLE, lpBuffer: ?*const c_void, nNumberOfCharsToWrite: DWORD, lpNumberOfCharsWritten: LPDWORD, lpReserved: LPVOID) BOOL;
 extern fn WriteConsoleW(hConsoleOutput: HANDLE, lpBuffer: ?*const c_void, nNumberOfCharsToWrite: DWORD, lpNumberOfCharsWritten: LPDWORD, lpReserved: LPVOID) BOOL;
-pub const PHANDLER_ROUTINE = ?fn (DWORD) callconv(.C) BOOL;
+pub const PHANDLER_ROUTINE = ?fn (DWORD) callconv(std.os.windows.WINAPI) BOOL;
 extern fn SetConsoleCtrlHandler(HandlerRoutine: PHANDLER_ROUTINE, Add: BOOL) BOOL;
 extern fn CreatePseudoConsole(size: COORD, hInput: HANDLE, hOutput: HANDLE, dwFlags: DWORD, phPC: [*c]HPCON) HRESULT;
 extern fn ResizePseudoConsole(hPC: HPCON, size: COORD) HRESULT;
@@ -15978,7 +15980,7 @@ pub const PVALUEW = struct_pvalueW;
 pub const PPVALUEW = [*c]struct_pvalueW;
 pub const PVALUE = PVALUEA;
 pub const PPVALUE = PPVALUEA;
-pub const QUERYHANDLER = fn (LPVOID, PVALCONTEXT, DWORD, LPVOID, [*c]DWORD, DWORD) callconv(.C) DWORD;
+pub const QUERYHANDLER = fn (LPVOID, PVALCONTEXT, DWORD, LPVOID, [*c]DWORD, DWORD) callconv(std.os.windows.WINAPI) DWORD;
 pub const PQUERYHANDLER = [*c]QUERYHANDLER;
 pub const struct_provider_info = extern struct {
     pi_R0_1val: PQUERYHANDLER,
@@ -16604,10 +16606,10 @@ pub const QUERY_SERVICE_CONFIGW = struct__QUERY_SERVICE_CONFIGW;
 pub const LPQUERY_SERVICE_CONFIGW = [*c]struct__QUERY_SERVICE_CONFIGW;
 pub const QUERY_SERVICE_CONFIG = QUERY_SERVICE_CONFIGA;
 pub const LPQUERY_SERVICE_CONFIG = LPQUERY_SERVICE_CONFIGA;
-pub const SERVICE_MAIN_FUNCTIONW = fn (DWORD, [*c]LPWSTR) callconv(.C) void;
-pub const SERVICE_MAIN_FUNCTIONA = fn (DWORD, [*c]LPTSTR) callconv(.C) void;
-pub const LPSERVICE_MAIN_FUNCTIONW = ?fn (DWORD, [*c]LPWSTR) callconv(.C) void;
-pub const LPSERVICE_MAIN_FUNCTIONA = ?fn (DWORD, [*c]LPSTR) callconv(.C) void;
+pub const SERVICE_MAIN_FUNCTIONW = fn (DWORD, [*c]LPWSTR) callconv(std.os.windows.WINAPI) void;
+pub const SERVICE_MAIN_FUNCTIONA = fn (DWORD, [*c]LPTSTR) callconv(std.os.windows.WINAPI) void;
+pub const LPSERVICE_MAIN_FUNCTIONW = ?fn (DWORD, [*c]LPWSTR) callconv(std.os.windows.WINAPI) void;
+pub const LPSERVICE_MAIN_FUNCTIONA = ?fn (DWORD, [*c]LPSTR) callconv(std.os.windows.WINAPI) void;
 pub const struct__SERVICE_TABLE_ENTRYA = extern struct {
     lpServiceName: LPSTR,
     lpServiceProc: LPSERVICE_MAIN_FUNCTIONA,
@@ -16622,11 +16624,11 @@ pub const SERVICE_TABLE_ENTRYW = struct__SERVICE_TABLE_ENTRYW;
 pub const LPSERVICE_TABLE_ENTRYW = [*c]struct__SERVICE_TABLE_ENTRYW;
 pub const SERVICE_TABLE_ENTRY = SERVICE_TABLE_ENTRYA;
 pub const LPSERVICE_TABLE_ENTRY = LPSERVICE_TABLE_ENTRYA;
-pub const HANDLER_FUNCTION = fn (DWORD) callconv(.C) void;
-pub const HANDLER_FUNCTION_EX = fn (DWORD, DWORD, LPVOID, LPVOID) callconv(.C) DWORD;
-pub const LPHANDLER_FUNCTION = ?fn (DWORD) callconv(.C) void;
-pub const LPHANDLER_FUNCTION_EX = ?fn (DWORD, DWORD, LPVOID, LPVOID) callconv(.C) DWORD;
-pub const PFN_SC_NOTIFY_CALLBACK = ?fn (PVOID) callconv(.C) void;
+pub const HANDLER_FUNCTION = fn (DWORD) callconv(std.os.windows.WINAPI) void;
+pub const HANDLER_FUNCTION_EX = fn (DWORD, DWORD, LPVOID, LPVOID) callconv(std.os.windows.WINAPI) DWORD;
+pub const LPHANDLER_FUNCTION = ?fn (DWORD) callconv(std.os.windows.WINAPI) void;
+pub const LPHANDLER_FUNCTION_EX = ?fn (DWORD, DWORD, LPVOID, LPVOID) callconv(std.os.windows.WINAPI) DWORD;
+pub const PFN_SC_NOTIFY_CALLBACK = ?fn (PVOID) callconv(std.os.windows.WINAPI) void;
 pub const struct__SERVICE_NOTIFY_1 = extern struct {
     dwVersion: DWORD,
     pfnNotifyCallback: PFN_SC_NOTIFY_CALLBACK,
@@ -16747,9 +16749,9 @@ pub const enum__SC_EVENT_TYPE = extern enum {
 };
 pub const SC_EVENT_TYPE = enum__SC_EVENT_TYPE;
 pub const PSC_EVENT_TYPE = [*c]enum__SC_EVENT_TYPE;
-pub const SC_NOTIFICATION_CALLBACK = fn (DWORD, PVOID) callconv(.C) void;
+pub const SC_NOTIFICATION_CALLBACK = fn (DWORD, PVOID) callconv(std.os.windows.WINAPI) void;
 pub const PSC_NOTIFICATION_CALLBACK = [*c]SC_NOTIFICATION_CALLBACK;
-pub const struct__SC_NOTIFICATION_REGISTRATION = @OpaqueType();
+pub const struct__SC_NOTIFICATION_REGISTRATION = opaque {};
 pub const PSC_NOTIFICATION_REGISTRATION = ?*struct__SC_NOTIFICATION_REGISTRATION;
 extern fn SubscribeServiceChangeNotifications(hService: SC_HANDLE, eEventType: SC_EVENT_TYPE, pCallback: PSC_NOTIFICATION_CALLBACK, pCallbackContext: PVOID, pSubscription: [*c]PSC_NOTIFICATION_REGISTRATION) DWORD;
 extern fn UnsubscribeServiceChangeNotifications(pSubscription: PSC_NOTIFICATION_REGISTRATION) void;
@@ -16955,7 +16957,7 @@ pub const IMECHARPOSITION = struct_tagIMECHARPOSITION;
 pub const PIMECHARPOSITION = [*c]struct_tagIMECHARPOSITION;
 pub const NPIMECHARPOSITION = [*c]struct_tagIMECHARPOSITION;
 pub const LPIMECHARPOSITION = [*c]struct_tagIMECHARPOSITION;
-pub const IMCENUMPROC = ?fn (HIMC, LPARAM) callconv(.C) BOOL;
+pub const IMCENUMPROC = ?fn (HIMC, LPARAM) callconv(std.os.windows.WINAPI) BOOL;
 extern fn ImmInstallIMEA(lpszIMEFileName: LPCSTR, lpszLayoutText: LPCSTR) HKL;
 extern fn ImmInstallIMEW(lpszIMEFileName: LPCWSTR, lpszLayoutText: LPCWSTR) HKL;
 extern fn ImmGetDefaultIMEWnd(arg0: HWND) HWND;
@@ -17006,8 +17008,8 @@ extern fn ImmSetCandidateWindow(arg0: HIMC, lpCandidate: LPCANDIDATEFORM) BOOL;
 extern fn ImmIsUIMessageA(arg0: HWND, arg1: UINT, arg2: WPARAM, arg3: LPARAM) BOOL;
 extern fn ImmIsUIMessageW(arg0: HWND, arg1: UINT, arg2: WPARAM, arg3: LPARAM) BOOL;
 extern fn ImmGetVirtualKey(arg0: HWND) UINT;
-pub const REGISTERWORDENUMPROCA = ?fn (LPCSTR, DWORD, LPCSTR, LPVOID) callconv(.C) c_int;
-pub const REGISTERWORDENUMPROCW = ?fn (LPCWSTR, DWORD, LPCWSTR, LPVOID) callconv(.C) c_int;
+pub const REGISTERWORDENUMPROCA = ?fn (LPCSTR, DWORD, LPCSTR, LPVOID) callconv(std.os.windows.WINAPI) c_int;
+pub const REGISTERWORDENUMPROCW = ?fn (LPCWSTR, DWORD, LPCWSTR, LPVOID) callconv(std.os.windows.WINAPI) c_int;
 extern fn ImmRegisterWordA(arg0: HKL, lpszReading: LPCSTR, arg2: DWORD, lpszRegister: LPCSTR) BOOL;
 extern fn ImmRegisterWordW(arg0: HKL, lpszReading: LPCWSTR, arg2: DWORD, lpszRegister: LPCWSTR) BOOL;
 extern fn ImmUnregisterWordA(arg0: HKL, lpszReading: LPCSTR, arg2: DWORD, lpszUnregister: LPCSTR) BOOL;
