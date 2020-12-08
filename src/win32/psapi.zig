@@ -1,3 +1,4 @@
+const std = @import("std");
 const win32 = @import("./c.zig");
 
 pub const EmptyWorkingSet = K32EmptyWorkingSet;
@@ -26,12 +27,12 @@ pub const PENUM_PAGE_FILE_CALLBACKW = ?fn (
     win32.LPVOID,
     PENUM_PAGE_FILE_INFORMATION,
     win32.LPCWSTR,
-) callconv(.C) win32.BOOL;
+) callconv(std.os.windows.WINAPI) win32.BOOL;
 pub const PENUM_PAGE_FILE_CALLBACKA = ?fn (
     win32.LPVOID,
     PENUM_PAGE_FILE_INFORMATION,
     win32.LPCSTR,
-) callconv(.C) win32.BOOL;
+) callconv(std.os.windows.WINAPI) win32.BOOL;
 
 pub const struct__ENUM_PAGE_FILE_INFORMATION = extern struct {
     cb: win32.DWORD,
@@ -288,7 +289,7 @@ pub const struct__PSAPI_WS_WATCH_INFORMATION_EX = extern struct {
 pub const PSAPI_WS_WATCH_INFORMATION_EX = struct__PSAPI_WS_WATCH_INFORMATION_EX;
 pub const PPSAPI_WS_WATCH_INFORMATION_EX = [*c]struct__PSAPI_WS_WATCH_INFORMATION_EX;
 
-const struct_unnamed_258 = @Type(.Opaque); // C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\psapi.h:277:19: warning: struct demoted to opaque type - has bitfield
+const struct_unnamed_258 = opaque {}; // C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\psapi.h:277:19: warning: struct demoted to opaque type - has bitfield
 pub const union__PSAPI_WORKING_SET_BLOCK = extern union {
     Flags: win32.ULONG_PTR,
     unnamed_0: struct_unnamed_258,
@@ -301,8 +302,8 @@ pub const struct__PSAPI_WORKING_SET_INFORMATION = extern struct {
 };
 pub const PSAPI_WORKING_SET_INFORMATION = struct__PSAPI_WORKING_SET_INFORMATION;
 pub const PPSAPI_WORKING_SET_INFORMATION = [*c]struct__PSAPI_WORKING_SET_INFORMATION;
-const struct_unnamed_260 = @Type(.Opaque); // C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\psapi.h:298:23: warning: struct demoted to opaque type - has bitfield
-const struct_unnamed_261 = @Type(.Opaque); // C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\psapi.h:313:23: warning: struct demoted to opaque type - has bitfield
+const struct_unnamed_260 = opaque {}; // C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\psapi.h:298:23: warning: struct demoted to opaque type - has bitfield
+const struct_unnamed_261 = opaque {}; // C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\psapi.h:313:23: warning: struct demoted to opaque type - has bitfield
 const union_unnamed_259 = extern union {
     unnamed_0: struct_unnamed_260,
     Invalid: struct_unnamed_261,
