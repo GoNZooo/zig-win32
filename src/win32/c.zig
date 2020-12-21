@@ -1,5 +1,4 @@
 const std = @import("std");
-const maxInt = std.math.maxInt;
 
 pub const va_list = [*c]u8;
 pub extern fn __va_start(arg0: [*c]([*c]u8), ...) void;
@@ -64303,7 +64302,7 @@ pub const PEERDIST_ERROR_INVALID_CONFIGURATION = @as(c_long, 4063);
 pub const PHYSICALOFFSETY = 113;
 pub const SUBLANG_UKRAINIAN_UKRAINE = 1;
 pub const CRYPT_X942_KEY_LENGTH_BYTE_LENGTH = 4;
-pub const CW_USEDEFAULT = if (@typeInfo(@TypeOf(2147483648)) == @import("builtin").TypeId.Pointer) @ptrCast(INT, 2147483648) else if (@typeInfo(@TypeOf(2147483648)) == @import("builtin").TypeId.Int) @intToPtr(INT, 2147483648) else maxInt(INT);
+pub const CW_USEDEFAULT = 0x80000000;
 pub const X509_ANY_STRING = X509_NAME_VALUE;
 pub const DISPLAY_DEVICE_MIRRORING_DRIVER = 8;
 pub const IME_CMODE_HANGUL = IME_CMODE_NATIVE;

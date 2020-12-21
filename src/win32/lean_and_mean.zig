@@ -31131,7 +31131,7 @@ pub const PHYSICALOFFSETY = 113;
 pub const SUBLANG_UKRAINIAN_UKRAINE = 1;
 pub const SUBLANG_ENGLISH_SOUTH_AFRICA = 7;
 pub const ERROR_DS_EXISTS_IN_AUX_CLS = c_long(8393);
-pub const CW_USEDEFAULT = if (@typeInfo(@TypeOf(2147483648)) == @import("builtin").TypeId.Pointer) @ptrCast(int, 2147483648) else if (@typeInfo(@TypeOf(2147483648)) == @import("builtin").TypeId.Int) @intToPtr(int, 2147483648) else int(2147483648);
+pub const CW_USEDEFAULT = 0x80000000;
 pub const BANDINFO = 24;
 pub const DISPLAY_DEVICE_MIRRORING_DRIVER = 8;
 pub const IME_CMODE_HANGUL = IME_CMODE_NATIVE;
