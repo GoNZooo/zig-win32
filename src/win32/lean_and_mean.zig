@@ -1,4 +1,5 @@
 const std = @import("std");
+const builtin = @import("builtin");
 
 pub const va_list = [*c]u8;
 extern fn __va_start(arg0: [*c]([*c]u8), ...) void;
@@ -22,7 +23,7 @@ pub const enum__EXCEPTION_DISPOSITION = extern enum {
 pub const EXCEPTION_DISPOSITION = enum__EXCEPTION_DISPOSITION;
 pub const DWORD = c_ulong;
 pub const PVOID = ?*c_void;
-pub const ULONG_PTR = c_ulonglong;
+pub const ULONG_PTR = (if (builtin.arch == .x86_64) c_ulonglong else c_ulong);
 pub const struct__EXCEPTION_RECORD = extern struct {
     ExceptionCode: DWORD,
     ExceptionFlags: DWORD,
