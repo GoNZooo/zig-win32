@@ -1,5 +1,11 @@
 # zig-win32
 
+## Archived
+
+I would suggest using [this library](https://github.com/marlersoft/zigwin32) instead.
+If there is some reason you cannot, feel free to reach out and I'll unarchive this so
+people can continue to work on it if they want.
+
 ## Linking
 
 You will need to add something like the following to your `build.zig` depending
